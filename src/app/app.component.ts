@@ -7,4 +7,26 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'G5-Scrum';
+
+  isUserLoggedIn: boolean = false;
+  loggedInUserName: string = "johnDoe";
+
+
+  passReveal(){
+    console.log("reveal password");
+  }
+  
+  passRevealLast(){
+    console.log("reveal password");
+  }
+
+
+  constructor (
+
+  )
+  {
+
+  }
+
+
 }
