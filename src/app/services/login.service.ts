@@ -12,7 +12,7 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class LoginService {
-  private REST_API_SERVER = "http://localhost:8003/"; // najt nacin da to daš generic
+  // private REST_API_SERVER = "http://localhost:8003/"; // najt nacin da to daš generic
 
   loggedInUser$: BehaviorSubject<User> = new BehaviorSubject<User>(null); // behaviour subject je observable, ki ima default vrednost, vsakic ko se vrednost spremeni se pošlje vsem ki so subscribani nanj ta nova vrednost
 
@@ -23,11 +23,6 @@ export class LoginService {
   // origin => http:// +IP
   // tk da pol na " origin + /product-catalog/ " posiljat zahtevke na endpointe
 
-  getTypeRequest(url: string) { 
-    return this.httpClient.get(this.REST_API_SERVER+url).pipe(map(res => { 
-      return res; 
-    })); 
-  } 
  
   login(payload: LogInData) { 
     const url = 'login';
@@ -38,7 +33,7 @@ export class LoginService {
     //   })
     // };
     // return this.http.post<User>(logInUrl, logInData, httpOptions)
-    return this.httpClient.post<LogInResponse>(this.REST_API_SERVER + url, payload).pipe(
+    return this.httpClient.post<LogInResponse>(/* this.REST_API_SERVER + */ url, payload).pipe(
       tap((res: LogInResponse) => {
         if(res != null){
           this.authService.setAuthToken(res.token);
@@ -51,7 +46,7 @@ export class LoginService {
   } 
  
   putTypeRequest(url: string, payload: any) { 
-    return this.httpClient.put(this.REST_API_SERVER+url, payload).pipe(map(res => { 
+    return this.httpClient.put(/* this.REST_API_SERVER+ */url, payload).pipe(map(res => { 
       return res; 
     })) 
   }   

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core'; 
-import { HttpEvent, HttpHandler, HttpRequest} from '@angular/common/http'; 
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http'; 
 import { Observable } from 'rxjs'; 
 import { Router } from '@angular/router'; 
 import { AuthService } from './auth.service'; 
@@ -7,27 +7,29 @@ import { AuthService } from './auth.service';
 @Injectable({ 
   providedIn: 'root' 
 }) 
-export class InterceptorService { 
- 
+export class InterceptorService implements HttpInterceptor { 
+  private baseURL = 'http://localhost:8003/';
+
+
   constructor( 
     private router: Router, 
     private auth: AuthService 
   ) { 
   } 
  
-  intercept( 
-    request: HttpRequest<any>, 
-    next: HttpHandler 
-  ): Observable<HttpEvent<any>> { 
-    if (!request.headers.has('Content-Type')) { 
+  intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> { 
+    request = request.clone({ url: `${this.baseURL}${request.url}` }); //* base url
+    if (!request.headers.has('Content-Type')) 
       request = request.clone({ headers: request.headers.set('Content-Type', 'application/json') }); 
-    } 
+    
     request = request.clone({ headers: request.headers.set('Accept', 'application/json') }).clone({ 
       setHeaders: { 
         Authorization: `Bearer ${this.auth.getAuthToken()}` 
       } 
     });     
  
+    
+
     return next.handle(request) 
   } 
 }
