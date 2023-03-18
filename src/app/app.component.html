@@ -14,13 +14,10 @@
       <ng-container *ngIf="!isUserLoggedIn">
         <a class="nav-link" routerLink="login">Login</a>
       </ng-container>
-      
+
       <ng-container *ngIf="isUserLoggedIn">
-        <a class="nav-link" routerLink="user_details">{{ loggedInUserName }}</a>
-      
-        <a class="dropdown-item" routerLink="pass_change">Change password</a>
-        <a class="dropdown-item" (click)="passReveal()">Reveal paassword</a>
-        <a class="dropdown-item" (click)="passRevealLast()">Reveal last pass character</a>
+        <a class="nav-link" class="link-divider" routerLink="user_details">{{ loggedInUserName }}</a>
+        <a class="nav-link" class="logout-link" (click)="logout()">Logout</a>            
       </ng-container>      
     </div>
 
@@ -31,9 +28,9 @@
 
 <div role="main">
 
-<div>
 <router-outlet></router-outlet>
-</div>
+
+
 
 
 </div>

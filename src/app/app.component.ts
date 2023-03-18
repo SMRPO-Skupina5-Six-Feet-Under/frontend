@@ -1,4 +1,8 @@
 import { Component } from '@angular/core';
+import { tap } from 'rxjs';
+import { User } from './models/user';
+import { AuthService } from './services/auth.service';
+import { LoginService } from './services/login.service';
 
 @Component({
   selector: 'app-root',
@@ -12,21 +16,32 @@ export class AppComponent {
   loggedInUserName: string = "johnDoe";
 
 
-  passReveal(){
-    console.log("reveal password");
+  logout(){
+    this.loginService.logout();
   }
   
-  passRevealLast(){
-    console.log("reveal password");
-  }
-
-
   constructor (
-
+    private loginService: LoginService,
+    private authService: AuthService
   )
   {
-
+    this.checkIfUserIsLoggedIn();
   }
 
+
+  private checkIfUserIsLoggedIn(){
+    console.log('Checking if user is logged in...');
+    this.loginService.checkIfUserIsLoggedIn();
+    this.loginService.loggedInUser$.pipe(
+      tap((user:User) => {
+        if(user){
+          this.isUserLoggedIn = true;
+          this.loggedInUserName = user.userName;
+        }
+        else
+          this.isUserLoggedIn = false;
+      })
+    ).subscribe()
+  }
 
 }

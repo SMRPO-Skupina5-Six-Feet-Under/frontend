@@ -1,0 +1,35 @@
+.user-details-title{
+  text-align: center;
+}
+
+.log-in-button{
+  margin-top: 10px;
+}
+
+
+.form-group.row{
+  margin-bottom: 10px;
+}
+
+.row{
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+
+.reveal-password-container{
+  display:flex;
+  justify-content: flex-start;
+  flex-wrap: nowrap;
+  padding-right: 10px;
+}
+
+.reveal-btn-container{
+  min-width: 170px;
+  flex-shrink: 800;
+}
+
+.save-button-container{
+  display: flex;
+  justify-content: flex-end;
+}

@@ -12,13 +12,19 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import appRoutes from './routerConfig';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { UserDetailsComponent } from './components/user-details/user-details.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { InterceptorService } from './services/interceptor.service';
+import { DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    UserDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -26,9 +32,18 @@ import { HttpClientModule } from '@angular/common/http';
     RouterModule.forRoot(appRoutes),
     AppRoutingModule,
     FormsModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    DatePipe,
+    {
+      provide: 'HTTP_INTERCEPTORS',
+      useClass: InterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
