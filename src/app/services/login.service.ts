@@ -12,28 +12,13 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class LoginService {
-  // private REST_API_SERVER = "http://localhost:8003/"; // najt nacin da to daš generic
-
+  ks
   loggedInUser$: BehaviorSubject<User> = new BehaviorSubject<User>(null); // behaviour subject je observable, ki ima default vrednost, vsakic ko se vrednost spremeni se pošlje vsem ki so subscribani nanj ta nova vrednost
-
-  // baseHref: string = location.origin;
-  // console.log(location);
-    
-  // location.host => barebones IP 
-  // origin => http:// +IP
-  // tk da pol na " origin + /product-catalog/ " posiljat zahtevke na endpointe
-
  
   login(payload: LogInData) { 
     const url = 'login';
-    //  const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'auth-token' //TODO pogruntat authorization za na server na kak način
-    //   })
-    // };
-    // return this.http.post<User>(logInUrl, logInData, httpOptions)
-    return this.httpClient.post<LogInResponse>(/* this.REST_API_SERVER + */ url, payload).pipe(
+   
+    return this.httpClient.post<LogInResponse>(url, payload).pipe(
       tap((res: LogInResponse) => {
         if(res != null){
           this.authService.setAuthToken(res.token);
@@ -45,11 +30,7 @@ export class LoginService {
       ); 
   } 
  
-  putTypeRequest(url: string, payload: any) { 
-    return this.httpClient.put(/* this.REST_API_SERVER+ */url, payload).pipe(map(res => { 
-      return res; 
-    })) 
-  }   
+ 
 
   checkIfUserIsLoggedIn(): boolean{
     const token: string = this.authService.getAuthToken();
