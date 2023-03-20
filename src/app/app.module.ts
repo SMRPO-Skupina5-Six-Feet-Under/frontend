@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { UsersComponent } from './components/users/users.component';
 
 import appRoutes from './routerConfig';
 import { FormsModule } from '@angular/forms';
@@ -24,7 +25,8 @@ import { DatePipe } from '@angular/common';
     HomeComponent,
     LoginComponent,
     DashboardComponent,
-    UserDetailsComponent
+    UserDetailsComponent,
+    UsersComponent
   ],
   imports: [
     BrowserModule,

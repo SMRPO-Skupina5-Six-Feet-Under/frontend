@@ -14,6 +14,7 @@ export class AppComponent {
 
   isUserLoggedIn: boolean = false;
   loggedInUserName: string = "johnDoe";
+  isAdmin: boolean = false;
 
 
   logout(){
@@ -37,6 +38,7 @@ export class AppComponent {
         if(user){
           this.isUserLoggedIn = true;
           this.loggedInUserName = user.userName;
+          this.isAdmin = user.isAdmin;
         }
         else
           this.isUserLoggedIn = false;
@@ -44,4 +46,10 @@ export class AppComponent {
     ).subscribe()
   }
 
+  //TODO: set isAdmin variable
+  private setAdmin(){
+    if(this.isUserLoggedIn){
+      
+    }
+  }
 }
