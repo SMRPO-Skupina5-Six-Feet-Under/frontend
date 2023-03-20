@@ -7,6 +7,6 @@ export class LogInData{
 
 
 export class LogInResponse{
-  token: string;
+  access_token: string;
   user: User;
 }

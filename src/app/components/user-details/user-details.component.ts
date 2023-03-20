@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { LoginService } from 'src/app/services/login.service';
+import { UserService } from 'src/app/services/user-service';
 
 @Component({
   selector: 'app-user-details',
@@ -37,16 +38,28 @@ export class UserDetailsComponent {
   }
 
   changePassword(){
-    if(!this.oldPassword || !this.newPassword || !this.newPassword2)
-      this.toastr.warning('Please fill all fields!', 'Warning');
-    else if(this.newPassword.length > 128 || this.newPassword.length < 12)
-      this.toastr.warning('Password must be between 12 and 128 characters long!', 'Warning');
-    else if( this.newPassword !== this.newPassword2)
-      this.toastr.warning('New passwords do not match!', 'Warning');
-    else{
-      //TODO vse ok - pošlji zahtevek na server
-    }
+    if(this.user?.id){
+      if(!this.oldPassword || !this.newPassword || !this.newPassword2)
+        this.toastr.warning('Please fill all fields!', 'Warning');
+      else if(this.newPassword.length > 128 || this.newPassword.length < 12)
+        this.toastr.warning('Password must be between 12 and 128 characters long!', 'Warning');
+      else if( this.newPassword !== this.newPassword2)
+        this.toastr.warning('New passwords do not match!', 'Warning');
+      else if( this.oldPassword !== this.user.password)
+        this.toastr.warning('Current password incorrect!', 'Warning');
+      else
+        this.userService.changePassword(this.user.id, this.newPassword).pipe(
+          tap((user: User) => {
+            this.oldPassword = '';
+            this.newPassword = '';
+            this.newPassword2 = '';
+            const cancelPassChangeButton = document.getElementById('cancelPassChangeButton');
+            cancelPassChangeButton.click();
 
+          })
+        ).subscribe();
+    } else
+      this.toastr.error('User not logged in!', 'Error');
   }
 
   saveUser(){
@@ -59,7 +72,8 @@ export class UserDetailsComponent {
   constructor(
     private toastr: ToastrService,
     private router: Router,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private userService: UserService,
   ){
     this.testIfUserIsLoggedIn();
   }

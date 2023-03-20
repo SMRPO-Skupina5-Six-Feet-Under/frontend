@@ -12,16 +12,15 @@ import { User } from '../models/user';
   providedIn: 'root'
 })
 export class LoginService {
-  ks
   loggedInUser$: BehaviorSubject<User> = new BehaviorSubject<User>(null); // behaviour subject je observable, ki ima default vrednost, vsakic ko se vrednost spremeni se pošlje vsem ki so subscribani nanj ta nova vrednost
  
   login(payload: LogInData) { 
     const url = 'login';
-   
+    
     return this.httpClient.post<LogInResponse>(url, payload).pipe(
       tap((res: LogInResponse) => {
         if(res != null){
-          this.authService.setAuthToken(res.token);
+          this.authService.setAuthToken(res.access_token);
           this.authService.setUserToken(res.user);
           this.loggedInUser$.next(res.user);
         }
