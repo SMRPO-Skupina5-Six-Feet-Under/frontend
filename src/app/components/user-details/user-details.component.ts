@@ -4,7 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
 import { User } from 'src/app/models/user';
 import { LoginService } from 'src/app/services/login.service';
-import { UserService } from 'src/app/services/user-service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-user-details',

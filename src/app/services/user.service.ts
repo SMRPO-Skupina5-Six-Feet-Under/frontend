@@ -5,6 +5,8 @@ import { BehaviorSubject, Observable, of, throwError } from 'rxjs';
 import { LogInData } from '../models/logInData';
 import { ToastrService } from 'ngx-toastr';
 import { User, UserCreate } from '../models/user';
+import { AuthService } from './auth.service';
+import { LoginService } from './login.service';
 
 
 
@@ -14,12 +16,15 @@ import { User, UserCreate } from '../models/user';
 export class UserService {
   private REST_API_SERVER = "http://localhost:8003/"; // najt nacin da to daš generic
 
-  constructor(private httpClient: HttpClient,
-    private toastr: ToastrService,) { }
+  constructor(private http: HttpClient,
+    private toastr: ToastrService,
+    private authService: AuthService,
+    private loginService: LoginService
+    ) { }
 
   getAllUsers(): Observable<User[]> {
     const url = "users"
-    return this.httpClient.get<User[]>(this.REST_API_SERVER + url)
+    return this.http.get<User[]>(url)
       .pipe(
         catchError(er => this.handleError(er))
       );
@@ -27,10 +32,24 @@ export class UserService {
 
   addNewUser(newUser: UserCreate): Observable<User>{
     const url = "users"
-    return this.httpClient.post<User>(this.REST_API_SERVER + url, newUser)
+    return this.http.post<User>(url, newUser)
       .pipe(
         catchError(er => this.handleError(er))
       );
+  }
+
+  changePassword(userId: number, newPassword: string): Observable<User>{
+    const url = `users/${userId}/change-password`;
+    return this.http.post<User>(url, {newPassword: newPassword}).pipe(
+      tap((res: User) => {
+        if(res != null){
+          this.toastr.success('Password successfully changed');
+          this.authService.setUserToken(res);
+          this.loginService.loggedInUser$.next(res);
+        }
+      }),
+      catchError(er => this.handleError(er)),
+    );
   }
 
 
