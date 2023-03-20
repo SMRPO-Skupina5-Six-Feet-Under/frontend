@@ -9,3 +9,13 @@ export class User{
   permissions: string;
   lastLogin: Date;
 }
+
+export class UserCreate{
+  userName: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  isAdmin: boolean;
+  password: string;
+  permissions: string;
+}

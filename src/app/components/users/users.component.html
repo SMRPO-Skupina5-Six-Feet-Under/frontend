@@ -1,0 +1,121 @@
+<h3 class="users-title">Users</h3>
+
+<div class="col-12 users-container">
+    <div class="row">
+        <div class="col-10"></div>
+        <div class="col-2">
+            <div class="form-group row">
+                <div class="col-12 add-new-button-container">
+                    <!-- Button trigger Change password Modal -->
+                    <button type="button" class="btn btn-primary" 
+                    data-bs-toggle="modal" data-bs-target="#newUserModal">Add new user</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <table class="tbl">
+                <tr class="tbl-head">
+                    <th>Username</th>
+                    <th>First name</th>
+                    <th>Last name</th>
+                    <th>E-mail</th>
+                    <th>Admin role</th>
+                    <th>Actions</th>
+                </tr>
+                <tbody class="tbl-body">
+                    <tr *ngFor="let usr of users">
+                        <td>{{usr.userName}}</td>
+                        <td>{{usr.firstName}}</td>
+                        <td>{{usr.lastName}}</td>
+                        <td>{{usr.email}}</td>
+                        <td>{{usr.isAdmin}}</td>
+                        <td>Update/Delete actions</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-1"></div>
+    </div>
+</div>
+
+
+
+
+
+<!-- Add new user Modal -->
+<div class="modal fade" 
+id="newUserModal" tabindex="-1" role="dialog" 
+aria-labelledby="newUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="newUserModalLabel">Add new user</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            <div class="col-12 new-user-container">
+                <div class="row">
+                    <div class="col-12 form-group">
+                        <div class="row frm-item">
+                            <div class="col-4">
+                                <label for="username" class="col-form-label">Username</label>
+                            </div>
+                            <div class="col-8">
+                                <input [(ngModel)]="newUser.userName" type="text" class="form-control" id="username" required>
+                            </div>
+                        </div>
+                        <div class="row frm-item">
+                            <div class="col-4">
+                                <label for="firstName" class="col-form-label">First name</label>
+                            </div>
+                            <div class="col-8">
+                                <input [(ngModel)]="newUser.firstName" type="text" class="form-control" id="firstName" required>
+                            </div>
+                        </div>
+                        <div class="row frm-item">
+                            <div class="col-4">
+                                <label for="lastName" class="col-form-label">Last name</label>
+                            </div>
+                            <div class="col-8">
+                                <input [(ngModel)]="newUser.lastName" type="text" class="form-control" id="lastName" required>
+                            </div>
+                        </div>
+                        <div class="row frm-item">
+                            <div class="col-4">
+                                <label for="email" class="col-form-label">E-mail</label>
+                            </div>
+                            <div class="col-8">
+                                <input [(ngModel)]="newUser.email" type="email" class="form-control" id="email" required>
+                            </div>
+                        </div>
+                        <div class="row frm-item">
+                            <div class="col-4">
+                                <label for="password" class="col-form-label">Password</label>
+                            </div>
+                            <div class="col-8">
+                                <input [(ngModel)]="newUser.password" type="password" class="form-control" id="password" required>
+                            </div>
+                        </div>
+                        <div class="row frm-item">
+                            <div class="col-4">
+                                <label for="isAdmin" class="col-form-label">Admin user</label>
+                            </div>
+                            <div class="col-8">
+                                <input [(ngModel)]="newUser.isAdmin" type="checkbox" class="form-check-input" id="isAdmin">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="newUserModalCancelButton">Cancel</button>
+                <button type="button" (click)="addNewUser()" class="btn btn-primary" id="newUserModalAddButton">Add user</button>
+            </div>
+        </div>
+    </div>
+</div>
