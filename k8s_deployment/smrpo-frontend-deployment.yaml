@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: smrpo-frontend-deployment
+  namespace: smrpo-deploy-namespace
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: smrpo-frontend-service
+  template:
+    metadata:
+      labels:
+        app: smrpo-frontend-service
+    spec:
+      containers:
+        - name: smrpo-frontend-container
+          image: vcesar0edu/frontend_repo:ng-dckr-image         
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80 #The port that the container is running on in the cluser
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: smrpo-frontend-service
+  namespace: smrpo-deploy-namespace
+spec:
+  type: LoadBalancer
+  ports:
+    - port: 80 #The port that the service is running on in the cluser
+      protocol: TCP
+      targetPort: 80 #The port exposed by the service
+  selector:
+    app: smrpo-frontend-service
