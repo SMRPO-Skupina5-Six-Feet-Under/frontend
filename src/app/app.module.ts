@@ -18,6 +18,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InterceptorService } from './services/interceptor.service';
 import { DatePipe } from '@angular/common';
+import { ProjectListComponent } from './components/project-list/project-list.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { DatePipe } from '@angular/common';
     LoginComponent,
     DashboardComponent,
     UserDetailsComponent,
-    UsersComponent
+    UsersComponent,
+    ProjectListComponent
   ],
   imports: [
     BrowserModule,
