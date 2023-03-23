@@ -4,7 +4,7 @@ export class User{
   firstName: string;
   lastName: string;
   email: string;
-  isAdmin: boolean;
+  isAdmin: boolean = false;
   password: string;
   permissions: string;
   lastLogin: Date;
@@ -15,7 +15,7 @@ export class UserCreate{
   firstName: string;
   lastName: string;
   email: string;
-  isAdmin: boolean;
+  isAdmin: boolean = false;
   password: string;
   permissions: string;
 }

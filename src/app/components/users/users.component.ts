@@ -27,6 +27,8 @@ export class UsersComponent {
     permissions: '',
   }  
   users: User[] = []
+  showPwd: boolean = false
+  passwordRetype: string = ''
 
   constructor(
     private toastr: ToastrService,
@@ -71,6 +73,10 @@ export class UsersComponent {
       this.toastr.warning('Password must be between 12 and 128 characters long.', 'Warning');
       return;
     }
+    if(this.newUser.password !== this.passwordRetype){
+      this.toastr.warning('Passwords must match.', 'Warning');
+      return;
+    }
 
     this.newUser.userName = this.newUser.userName.trim();
     this.newUser.firstName = this.newUser.firstName.trim();
@@ -96,5 +102,11 @@ export class UsersComponent {
     this.toastr.success('New user successfully added.', 'Success');
     this.users.push(usr);
   });*/
+  }
+
+  clearNewUserModal(){
+    this.newUser = new UserCreate();
+    this.showPwd = false;
+    this.passwordRetype = '';
   }
 }

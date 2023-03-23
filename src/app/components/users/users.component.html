@@ -8,7 +8,7 @@
                 <div class="col-12 add-new-button-container">
                     <!-- Button trigger Change password Modal -->
                     <button type="button" class="btn btn-primary" 
-                    data-bs-toggle="modal" data-bs-target="#newUserModal">Add new user</button>
+                    data-bs-toggle="modal" data-bs-target="#newUserModal" (click)="clearNewUserModal()">Add new user</button>
                 </div>
             </div>
         </div>
@@ -98,7 +98,23 @@ aria-labelledby="newUserModalLabel" aria-hidden="true">
                                 <label for="password" class="col-form-label">Password</label>
                             </div>
                             <div class="col-8">
-                                <input [(ngModel)]="newUser.password" type="password" class="form-control" id="password" required>
+                                <input [(ngModel)]="newUser.password" type="{{showPwd?'text':'password'}}" class="form-control" id="password" required>
+                            </div>
+                        </div>
+                        <div class="row frm-item">
+                            <div class="col-4">
+                                <label for="passwordRetype" class="col-form-label">Retype password</label>
+                            </div>
+                            <div class="col-8" >
+                                <input [(ngModel)]="passwordRetype" type="{{showPwd?'text':'password'}}" class="form-control" id="passwordRetype" required>
+                            </div>
+                        </div>
+                        <div class="row frm-item">
+                            <div class="col-4">
+                                <label for="showPassword" class="col-form-label">Show password</label>
+                            </div>
+                            <div class="col-8">
+                                <input [(ngModel)]="showPwd" type="checkbox" class="form-check-input" id="showPassword">
                             </div>
                         </div>
                         <div class="row frm-item">
