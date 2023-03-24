@@ -16,6 +16,7 @@
     <thead class="table-light">
       <tr>
         <th>Name</th>
+        <th>Description</th>
         <th>Product owner</th>
         <th>Scrum Master</th>
         <th>Developers</th>
@@ -33,6 +34,13 @@
               <p class="fw-bold mb-1">{{project.name}}</p>
             </div>
           </div>
+        </td>
+        <td>
+          <textarea class="form-control" 
+          placeholder="Enter project description" id="descriptionTextArea" 
+          style="height: 70px"
+          [(ngModel)]="project.description"
+        ></textarea>
         </td>
         <td>
           <span class="badge rounded-pill bg-danger fw-normal mb-1">
