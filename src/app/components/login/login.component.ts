@@ -16,8 +16,10 @@ export class LoginComponent {
   userName: string='';
   password: string='';
 
+  displayPass: boolean = false;
+
   logIn(){
-    this.password = this.password.trim();
+    this.password = this.password;
     this.userName = this.userName.trim();    
     console.log('UserName: ',this.userName,'  Pass: ',this.password);
     if(this.userName && this.password){

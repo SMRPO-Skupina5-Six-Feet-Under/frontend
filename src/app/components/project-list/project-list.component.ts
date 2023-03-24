@@ -24,29 +24,55 @@ export class ProjectListComponent {
     ... new Project,
   }
 
+//-----------------------------------------------
+//? Modal stuff
+//-----------------------------------------------
+
   addProject(){
     this.newProject.name = this.newProject.name?.trim();
-    const isPOSelected = this.availableProjectParticipants.some(x => x.projectOwner && x.selected);
-    const isSMSelected = this.availableProjectParticipants.some(x => x.scrumMaster && x.selected);
     if(!this.newProject.name){
       this.toastr.warning('Please enter project name!', 'Warning');
       return;
     }
+
+    const isPOSelected = this.availableProjectParticipants.some(x => x.productOwner && x.selected);
     if(!isPOSelected){
       this.toastr.warning('Please select product owner!', 'Warning');
       return;
     }
+
+    const isSMSelected = this.availableProjectParticipants.some(x => x.scrumMaster && x.selected);
     if(!isSMSelected){
       this.toastr.warning('Please select scrum master!', 'Warning');
       return;
     }
+
+    const isDSelected = this.availableProjectParticipants.some(x => x.developer && x.selected);
+    if(!isDSelected){
+      this.toastr.warning('Please select at least 1 developer!', 'Warning');
+      return;
+    }
     
+    this.newProject.projectParticipants = [];
     this.availableProjectParticipants.filter(x => x.selected).forEach(selectedPP => {
-      this.newProject.projectParticipants.push({
-        ... new ProjectParticipantsInput,
-        userId: selectedPP.userId,
-        roleId: selectedPP.roleId
-      });
+      if(selectedPP.scrumMaster)
+        this.newProject.projectParticipants.push({
+          ... new ProjectParticipantsInput,
+          userId: selectedPP.userId,
+          roleId: ProjectRole['Scrum master']
+        });
+      if(selectedPP.developer)
+        this.newProject.projectParticipants.push({
+          ... new ProjectParticipantsInput,
+          userId: selectedPP.userId,
+          roleId: ProjectRole.Developer
+        });
+      if(selectedPP.productOwner)
+        this.newProject.projectParticipants.push({
+          ... new ProjectParticipantsInput,
+          userId: selectedPP.userId,
+          roleId: ProjectRole['Product owner']
+        });
     });
     
     this.projectService.addProject(this.newProject).pipe(
@@ -63,18 +89,25 @@ export class ProjectListComponent {
     ).subscribe();
   }
 
+  userSelected(newPOUserId: number){
+    this.availableProjectParticipants.forEach(pp => {
+      if(pp.userId === newPOUserId){
+        pp.developer = true;
+        return;
+      } 
+    });
+  }
+
   productOwnerSelected(newPOUserId: number){
     this.availableProjectParticipants.forEach(pp => {
       if(pp.userId === newPOUserId){
-        pp.projectOwner = true;
+        pp.productOwner = true;
         pp.scrumMaster = false;
         pp.developer = false;
-        pp.roleId = ProjectRole['Product owner'];
       } 
-      else if(pp.projectOwner){
-        pp.projectOwner = false;
+      else if(pp.productOwner){
+        pp.productOwner = false;
         pp.developer = true;
-        pp.roleId = ProjectRole.Developer;
       } 
     });
   }
@@ -83,24 +116,31 @@ export class ProjectListComponent {
     this.availableProjectParticipants.forEach(pp => {
       if(pp.userId === newSMUserId){
         pp.scrumMaster = true;
-        pp.projectOwner = false;
-        pp.developer = false;
-        pp.roleId = ProjectRole['Scrum master'];
+        pp.productOwner = false;
+        pp.selected = true;
       } 
       else if(pp.scrumMaster){
         pp.scrumMaster = false;
         pp.developer = true;
-        pp.roleId = ProjectRole.Developer;
+        pp.selected = true;
       } 
     });
   }
 
-
-  setRoleIds(){
-    this.newProject.projectParticipants.forEach(pp => {
-      if(!pp.projectOwner && !pp.scrumMaster) pp.developer = true;
-    });
+  developerSelected(newDUserId: number){
+    const availablePP = this.availableProjectParticipants.find(x => x.userId === newDUserId);
+    if(availablePP){
+      availablePP.productOwner = false;
+      availablePP.selected = true;
+    }
   }
+
+
+  // setRoleIds(){
+  //   this.newProject.projectParticipants.forEach(pp => {
+  //     if(!pp.projectOwner && !pp.scrumMaster) pp.developer = true;
+  //   });
+  // }
 
   clearData(){
     this.newProject = {... new Project};
@@ -109,12 +149,15 @@ export class ProjectListComponent {
       const pp: ProjectParticipantsInput = {
         ... new ProjectParticipantsInput,
         userId: user.id,
-        roleId: ProjectRole.Developer,
         username: user.userName,
       };
       this.availableProjectParticipants.push(pp);
     });    
   }
+
+//-----------------------------------------------
+//? END modal stuff
+//-----------------------------------------------
 
   constructor(
     private projectService: ProjectService,

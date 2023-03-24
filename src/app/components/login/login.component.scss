@@ -2,6 +2,11 @@
   text-align: center;
 }
 
-.log-in-button{
+
+
+.button-container{
+  display: flex;
+  align-items: center;
   margin-top: 10px;
+  justify-content: center;
 }

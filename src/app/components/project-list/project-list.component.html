@@ -82,6 +82,21 @@
           </div>
         </div>
 
+        <div class="col-12 form-group">
+          <div class="form-floating">
+            <div class="row">
+              <div class="col-3">Project description: </div>
+              <div class="col-9">
+                <textarea class="form-control" 
+                placeholder="Enter project description" id="descriptionTextArea" 
+                style="height: 100px"
+                [(ngModel)]="newProject.description"
+              ></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+
 
         <div class="col-12 form-group">
           <table class="table">
@@ -91,19 +106,23 @@
                 <th scope="col">Username</th>
                 <th scope="col">Product owner</th>
                 <th scope="col">Scrum master</th>
+                <th scope="col">Developer</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let pp of availableProjectParticipants">
                 <td>
-                  <input class="form-check-input" type="checkbox" [(ngModel)]="pp.selected">
+                  <input class="form-check-input" type="checkbox" (click)="userSelected(pp.userId)" [(ngModel)]="pp.selected">
                 </td>
                 <td>{{pp.username}}</td>
                 <td>
-                  <input class="form-check-input" type="checkbox" (click)="productOwnerSelected(pp.userId)" [(ngModel)]="pp.projectOwner">
+                  <input class="form-check-input" type="checkbox" (click)="productOwnerSelected(pp.userId)" [(ngModel)]="pp.productOwner">
                 </td>
                 <td>
                   <input class="form-check-input" type="checkbox" (click)="scrumMasterSelected(pp.userId)" [(ngModel)]="pp.scrumMaster">
+                </td>
+                <td>
+                  <input class="form-check-input" type="checkbox" (click)="developerSelected(pp.userId)" [(ngModel)]="pp.developer">
                 </td>
               </tr>              
             </tbody>

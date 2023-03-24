@@ -7,7 +7,7 @@ export class ProjectParticipantsInput{
   //polja na klentu
   selected: boolean = false;
   username: string;
-  projectOwner: boolean = false;
+  productOwner: boolean = false;
   scrumMaster: boolean = false;
-  developer: boolean = true;
+  developer: boolean = false;
 }

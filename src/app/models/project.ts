@@ -3,6 +3,7 @@ import { ProjectParticipantsInput } from "./projectParticipantsInput";
 export class Project{
   id: number;
   name: string;
+  description: string;
   projectParticipants: ProjectParticipantsInput[] = [];
 
 
