@@ -1,0 +1,34 @@
+
+<div class="project-details-container">
+  <div class="col-12 form-group">
+    <div class="row project-title-container">
+      <h1 *ngIf="project" class="display-5">{{project.name}}</h1>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="title-buttons-container">
+      <div class="dummy"></div>
+      <div class="selected-title-container">
+        <h4 *ngIf="displayingSprintBacklog">Active Sprint</h4>
+        <h4 *ngIf="displayingProductBacklog">Product Backlog</h4>
+      </div>
+      <div class="buttons-container">
+        
+        <button *ngIf="displayingSprintBacklog" type="button" class="btn btn-primary" (click)="showProductBacklog()">Product backlog</button>
+        <button *ngIf="displayingProductBacklog" type="button" class="btn btn-primary" (click)="showSprintBacklog()">Sprint backlog </button>
+        <button type="button" class="btn btn-outline-secondary" (click)="showSprints()">Sprints</button>
+        <button type="button" class="btn btn-info" (click)="editProjectUsers()">Users</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-12">
+    <div class="add-user-story-btn-container">
+      <button *ngIf="displayingProductBacklog" type="button" class="btn btn-outline-success" (click)="addUserStory()">Add user story</button>
+    </div>
+  </div>
+</div>
+
+
+
+<app-user-story-popup></app-user-story-popup>
+

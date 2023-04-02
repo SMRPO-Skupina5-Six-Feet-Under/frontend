@@ -21,10 +21,6 @@ p {
   margin: 0;
 }
 
-.spacer {
-  flex: 1;
-}
-
 .toolbar {
   position: absolute;
   top: 0;
@@ -292,12 +288,19 @@ svg#clouds {
   }
 }
 
-
-
 .frm-item {
   margin-bottom: 10px;
 }
 
 .form-group{
   margin-top: 10px;
+}
+
+.icon-btn{
+  cursor: pointer;
+  width: fit-content;
+}
+
+.btn-table-column{
+  text-align: center;
 }

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { UserDetailsComponent } from './components/user-details/user-details.component';
 import { UsersComponent } from './components/users/users.component';
@@ -31,6 +32,11 @@ const routes: Routes = [
   {
     path: 'projects',
     component: ProjectListComponent,
+    canActivate:[AuthGuardService]
+  },
+  {
+    path: 'project',
+    component: ProjectDetailsComponent,
     canActivate:[AuthGuardService]
   },
 ];

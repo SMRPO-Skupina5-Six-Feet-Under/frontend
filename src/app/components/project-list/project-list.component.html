@@ -1,17 +1,13 @@
 
 <div class="form-group col-12">
-  <div class="row">
-    <div class="mx-auto button-container">
-      <button type="button" class="btn btn-primary" 
-        data-bs-toggle="modal" data-bs-target="#newProjectModal" (click)="clearData()">Add project
-      </button>
-    </div>
+  <div class="button-container">
+    <button *ngIf="currentUserAdmin" type="button" class="btn btn-primary" 
+      data-bs-toggle="modal" data-bs-target="#newProjectModal" (click)="clearData()">Add project
+    </button>
   </div>
 </div>
 
-<div class="table-container">
-
-
+<div class="table-container col-12">
   <table class="table bordered">
     <thead class="table-light">
       <tr>
@@ -20,7 +16,7 @@
         <th>Product owner</th>
         <th>Scrum Master</th>
         <th>Developers</th>
-        <th>Action</th>
+        <!-- <th>Action</th> -->
       </tr>
     </thead>
     <tbody>
@@ -31,7 +27,7 @@
         <td>
           <div class="d-flex align-items-center">
             <div class="ms-3">
-              <p class="fw-bold mb-1">{{project.name}}</p>
+              <p class="fw-bold mb-1 edit-link" (click)="editProject(project.id)">{{project.name}}</p>
             </div>
           </div>
         </td>
@@ -62,10 +58,10 @@
           <span class="badge rounded-pill bg-info text-dark">Developer</span> -->
         </td>
         <td>
-          <button type="button" class="btn btn-link btn-sm btn-rounded">
+          <!-- <button type="button" class="btn btn-link btn-sm btn-rounded">
             Edit
           </button>
-        </td>
+        </td> -->
       </tr>
 
     </tbody>
@@ -74,7 +70,7 @@
 
 
 
-<!-- Modal -->
+<!-- Add project Modal -->
 <div class="modal fade" id="newProjectModal" tabindex="-1" aria-labelledby="newProjectModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
@@ -120,7 +116,7 @@
             <tbody>
               <tr *ngFor="let pp of availableProjectParticipants">
                 <td>
-                  <input class="form-check-input" type="checkbox" (click)="userSelected(pp.userId)" [(ngModel)]="pp.selected">
+                  <input class="form-check-input" type="checkbox" (click)="userSelected(pp.userId, pp.selected)" [(ngModel)]="pp.selected">
                 </td>
                 <td>{{pp.username}}</td>
                 <td>

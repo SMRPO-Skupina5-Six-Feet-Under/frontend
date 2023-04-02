@@ -1,0 +1,28 @@
+.project-title-container{
+  display: flex;
+  justify-content: flex-start;
+  margin: 0 !important; //drugace ga ven iz ekrana hiti
+  padding-left: 10px;
+}
+
+.title-buttons-container{
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+
+  div{
+    flex: 1 1 0; // flex-grow flex-shrink flex-basis
+  }
+}
+
+.buttons-container{
+  display: flex;
+  // justify-content: space-between;
+  align-items: left;
+  gap:10px;
+}
+
+.add-user-story-btn-container>button
+{
+  margin-left: 10px;
+}

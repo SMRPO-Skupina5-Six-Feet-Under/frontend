@@ -1,45 +1,67 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { catchError, map, Observable, of, throwError } from 'rxjs';
-import { Project } from '../models/project';
+import { Observable, catchError, of, throwError } from 'rxjs';
+import { Story } from '../models/story';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectService {
+export class StoryService {
 
+  loadStoriesForProject(projectId:number): Observable<Story[]>{
+    const endpoint = `stories/${projectId}`;
 
-  loadProjects(): Observable<Project[]>{
-    const endpoint = 'project/all';
-
-    return this.http.get<Project[]>(endpoint).pipe(
+    return this.http.get<Story[]>(endpoint).pipe(
       catchError(err => this.handleError(err)),
     ); 
   }
 
-  addProject(newProject: Project): Observable<Project>{
-    const endpoint = 'project';
+  saveStory(story: Story): Observable<Story>{
+    if(story.id) //*if story has id (it's already in db) update it
+      return this.updateStory(story);
+    else
+      return this.addStory(story);
+  }
 
-    return this.http.post<Project>(endpoint, newProject).pipe(
+  private addStory(newStory: Story): Observable<Story>{
+    const endpoint = 'story';
+    const obj = {
+      story: newStory,
+      tests: newStory.acceptanceTests,
+    }
+
+    return this.http.post<Story>(endpoint, obj).pipe(
       catchError(err => this.handleError(err)),
     ); 
   }
 
-  loadProjectById(id: number): Observable<Project>{
-    const endpoint = `project/${id}`;
+  private updateStory(story: Story): Observable<Story>{
+    //TODO implement update
+    return of(null);
+  }
 
-    return this.http.get<Project>(endpoint).pipe(
+  loadStoryById(id: number): Observable<Story>{
+    const endpoint = `story/${id}`;
+
+    return this.http.get<Story>(endpoint).pipe(
       catchError(err => this.handleError(err)),
     ); 
   }
+
+
+
+
 
   constructor(
     private http: HttpClient,
     private toastr: ToastrService,
-  ) { }
+  ) { 
+
+  }
 
 
+  
   private handleError(error: HttpErrorResponse) {
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.

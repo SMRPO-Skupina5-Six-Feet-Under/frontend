@@ -19,6 +19,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { InterceptorService } from './services/interceptor.service';
 import { DatePipe } from '@angular/common';
 import { ProjectListComponent } from './components/project-list/project-list.component';
+import { ProjectDetailsComponent } from './components/project-details/project-details.component';
+import { UserStoryPopupComponent } from './components/popups/user-story-popup/user-story-popup.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,9 @@ import { ProjectListComponent } from './components/project-list/project-list.com
     DashboardComponent,
     UserDetailsComponent,
     UsersComponent,
-    ProjectListComponent
+    ProjectListComponent,
+    ProjectDetailsComponent,
+    UserStoryPopupComponent
   ],
   imports: [
     BrowserModule,
