@@ -6,6 +6,7 @@ import { Project } from 'src/app/models/project';
 import { Story } from 'src/app/models/story';
 import { ProjectService } from 'src/app/services/project.service';
 import { UserStoryPopupComponent } from '../popups/user-story-popup/user-story-popup.component';
+import { LoginService } from 'src/app/services/login.service';
 
 @Component({
   selector: 'app-project-details',
@@ -13,7 +14,7 @@ import { UserStoryPopupComponent } from '../popups/user-story-popup/user-story-p
   styleUrls: ['./project-details.component.scss']
 })
 export class ProjectDetailsComponent {
-
+  userCanAddStory: boolean = false;
 
   projectId: number;
   project: Project;
@@ -81,19 +82,30 @@ export class ProjectDetailsComponent {
     private router: Router,
     private projectService: ProjectService,
     private toastr: ToastrService,
+    private loginService: LoginService,
   ) { 
-   
+    
   }
 
   private loadProject(){
     this.projectService.loadProjectById(this.projectId).pipe(
       tap((project: Project) => {
         console.log("projectLoaded");
+        this.setUserCanAddStory(project);
         this.project = project;
         console.log(this.project);
       }
     )).subscribe();
   }
+
+  private setUserCanAddStory(project: Project){
+    const loggedInUser = this.loginService.getLoggedInUser();
+    if(project && loggedInUser){
+      if(project.productOwnerUserId === loggedInUser.id || project.scrumMasterUserId === loggedInUser.id)
+        this.userCanAddStory = true;
+    }
+  }
+
 
 
 ngOnInit(): void {	

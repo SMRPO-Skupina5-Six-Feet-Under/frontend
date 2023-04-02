@@ -188,25 +188,11 @@ export class ProjectListComponent {
       this.projectService.loadProjects(),
       this.userService.getAllUsers(),
       ]).pipe(
-        map(([projects, users]: [Project[], User[]]) => {
+        tap(([projects, users]: [Project[], User[]]) => {
           console.log(users);
           this.users = users;
           if(this.availableProjectParticipants.length === 0)
             this.setProjectParticipants();
-
-          for (const project of projects) { //nastavimo propertije projektov za prikaz
-            const scrumMasterUserId = project.projectParticipants.find(pp => pp.roleId === ProjectRole['Scrum master']);
-            const productOwnerUserId = project.projectParticipants.find(pp => pp.roleId === ProjectRole['Product owner']);
-            if(scrumMasterUserId)
-              project.scrumMasterUserName = users.find(u => u.id === scrumMasterUserId.userId).userName;
-            if(productOwnerUserId)
-              project.productOwnerUserName = users.find(u => u.id === productOwnerUserId.userId).userName;
-            const developerUserIds: number [] = project.projectParticipants.filter(pp => pp.roleId === ProjectRole.Developer).map(pp => pp.userId);
-            project.developerParticipantUserNames = users.filter(u => developerUserIds.some(dui => dui === u.id)).map(u => u.userName);
-          }
-          return projects;
-        }),
-        tap((projects: Project[]) => {
           this.projects = projects;
         })
       ).subscribe();

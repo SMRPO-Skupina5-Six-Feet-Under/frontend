@@ -6,6 +6,7 @@ import { LogInData, LogInResponse } from '../models/logInData';
 import { ToastrService } from 'ngx-toastr';
 import { AuthService } from './auth.service';
 import { User } from '../models/user';
+import { Router } from '@angular/router';
  
 
 @Injectable({
@@ -52,12 +53,14 @@ export class LoginService {
     this.authService.removeAuthToken();
     this.authService.removeUserToken();
     this.loggedInUser$.next(null);
+    this.router.navigate(['/login']);
   }
   
 
   constructor(private httpClient: HttpClient,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router,
     ) { } 
 
 

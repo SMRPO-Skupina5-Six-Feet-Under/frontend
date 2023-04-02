@@ -23,7 +23,7 @@
   </div>
   <div class="col-12">
     <div class="add-user-story-btn-container">
-      <button *ngIf="displayingProductBacklog" type="button" class="btn btn-outline-success" (click)="addUserStory()">Add user story</button>
+      <button *ngIf="displayingProductBacklog && userCanAddStory" type="button" class="btn btn-outline-success" (click)="addUserStory()">Add user story</button>
     </div>
   </div>
 </div>
