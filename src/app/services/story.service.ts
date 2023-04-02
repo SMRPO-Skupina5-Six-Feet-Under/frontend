@@ -9,7 +9,7 @@ import { Story } from '../models/story';
 })
 export class StoryService {
 
-  loadStoriesForProject(projectId:number): Observable<Story[]>{
+  loadProjectStories(projectId:number): Observable<Story[]>{
     const endpoint = `stories/${projectId}`;
 
     return this.http.get<Story[]>(endpoint).pipe(

@@ -21,14 +21,20 @@
       </div>
     </div>
   </div>
-  <div class="col-12">
-    <div class="add-user-story-btn-container">
-      <button *ngIf="displayingProductBacklog && userCanAddStory" type="button" class="btn btn-outline-success" (click)="addUserStory()">Add user story</button>
-    </div>
+  
+  <div class="backlog-container">
+    <ng-container *ngIf="displayingProductBacklog">
+      <app-product-backlog
+        [project]="project"
+      ></app-product-backlog>
+    </ng-container>
+    <ng-container *ngIf="displayingSprintBacklog">
+      <!-- <app-sprint-backlog></app-sprint-backlog> -->
+    </ng-container>
   </div>
+
 </div>
 
 
 
-<app-user-story-popup></app-user-story-popup>
 

@@ -21,6 +21,8 @@ import { DatePipe } from '@angular/common';
 import { ProjectListComponent } from './components/project-list/project-list.component';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { UserStoryPopupComponent } from './components/popups/user-story-popup/user-story-popup.component';
+import { ProductBacklogComponent } from './components/project-details/product-backlog/product-backlog.component';
+import { StoryCardComponent } from './components/project-details/story-card/story-card.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +34,9 @@ import { UserStoryPopupComponent } from './components/popups/user-story-popup/us
     UsersComponent,
     ProjectListComponent,
     ProjectDetailsComponent,
-    UserStoryPopupComponent
+    UserStoryPopupComponent,
+    ProductBacklogComponent,
+    StoryCardComponent
   ],
   imports: [
     BrowserModule,

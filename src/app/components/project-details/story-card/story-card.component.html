@@ -1,0 +1,28 @@
+
+<div class="card border-secondary" > <!-- style="max-width: 18rem;" -->
+  <div (click)="displayStoryInfo()"
+    class="card-header bg-transparent border-secondary pointer">
+    <a>{{story?.name}}</a>
+  </div>
+
+  <div class="my-card-body text-secondary ">
+    <div class="col-12">
+      <span *ngIf="story?.priority===storyPriority.must" class="badge rounded-pill bg-danger">{{storyPriority?.must}}</span>
+      <span *ngIf="story?.priority===storyPriority.should" class="badge rounded-pill bg-warning text-dark">{{storyPriority?.could}}</span>
+      <span *ngIf="story?.priority===storyPriority.could" class="badge rounded-pill bg-primary">{{storyPriority?.should}}</span>
+      <span *ngIf="story?.priority===storyPriority.wont" class="badge rounded-pill bg-secondary">{{storyPriority?.wont}}</span>
+    </div>
+
+    <div class="col-12">
+      <div class="row">
+        <p><i class="bi bi-clock-history"></i> {{story?.timeEstimate}}</p>
+      </div>
+    </div>
+    <p>Business value: {{story?.businessValue}}</p>
+  </div>
+
+  <div class="card-footer bg-transparent border-secondary">
+    <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteStory()"><i class="bi bi-trash3"></i></button>
+    <button type="button" class="btn btn-outline-secondary btn-sm" (click)="editStory()">Edit</button>
+  </div>
+</div>

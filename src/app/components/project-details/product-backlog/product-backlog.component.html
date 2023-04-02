@@ -1,0 +1,151 @@
+<div class="my-component-container">
+  <div class="col-12">
+    <div class="add-user-story-btn-container">
+      <button *ngIf="userCanAddStory" type="button" class="btn btn-outline-success" (click)="addUserStory()">Add user story</button>
+    </div>
+  </div>
+
+  <div class="col-12">
+    <div class="row">
+      <div class="col-3 basket-section">
+        <div class="section-title">
+          <h5>Won't have this time</h5>
+        </div>
+
+        <div class="cards-container">
+          <app-story-card *ngFor="let wh of whStories"
+          [story]="wh"
+          (storyDeleted)="whStoryDeleted($event)"
+          ></app-story-card>
+        </div>
+      </div>
+
+      <div class="col-3 basket-section">
+        <div class="section-title">
+          <h5>Unasigned</h5>
+        </div>
+        
+        <div class="cards-container">
+          <app-story-card *ngFor="let unasignedStory of unasignedStories"
+          [story]="unasignedStory"
+          (storyDeleted)="unasignedStoryDeleted($event)"
+          ></app-story-card>
+        </div>
+
+      </div>
+
+      <div class="col-3 basket-section">
+        <div class="section-title">
+          <h5>Asigned</h5>
+        </div>
+
+        <div class="cards-container">
+          <app-story-card *ngFor="let asignedStory of assignedStories"
+          [story]="asignedStory"
+          (storyDeleted)="assignedStoryDeleted($event)"
+          ></app-story-card>
+        </div>
+      </div>
+
+      <div class="col-3 basket-section">
+        <div class="section-title">
+          <h5>Finished</h5>
+        </div>
+
+        <div class="cards-container">
+          <app-story-card *ngFor="let finishedStory of finishedStories"
+            [story]="finishedStory"
+            (storyDeleted)="finishedStoryDeleted($event)"
+          ></app-story-card>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+  <app-user-story-popup
+    (storySaved)="userStorySaved($event)"
+  ></app-user-story-popup>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div>

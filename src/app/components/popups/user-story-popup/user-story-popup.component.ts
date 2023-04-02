@@ -13,6 +13,9 @@ import { StoryService } from 'src/app/services/story.service';
   styleUrls: ['./user-story-popup.component.scss']
 })
 export class UserStoryPopupComponent {
+  @Output() storySaved: EventEmitter<number> = new EventEmitter<number>();
+  //-- end of input/output
+
   userStory: Story;
   visible: boolean = false;
   storyPriorityValues = Object.values(StoryPriority);
@@ -34,6 +37,7 @@ export class UserStoryPopupComponent {
       this.storyService.saveStory(this.userStory).pipe(
         tap(story => {
           this.toastr.success("User story saved");
+          this.storySaved.emit(story.id);
           this.visible = false;
         })
       ).subscribe();
