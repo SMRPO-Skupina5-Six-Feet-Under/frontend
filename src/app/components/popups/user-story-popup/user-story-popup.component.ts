@@ -42,7 +42,6 @@ export class UserStoryPopupComponent {
         })
       ).subscribe();
     }
-    //TODO klic na strežnik za shranjevanje
   }
 
   private checkData(): boolean{
