@@ -23,6 +23,8 @@ import { ProjectDetailsComponent } from './components/project-details/project-de
 import { UserStoryPopupComponent } from './components/popups/user-story-popup/user-story-popup.component';
 import { ProductBacklogComponent } from './components/project-details/product-backlog/product-backlog.component';
 import { StoryCardComponent } from './components/project-details/story-card/story-card.component';
+import { SprintPopupComponent } from './components/popups/sprint-popup/sprint-popup.component';
+import { SprintListComponent } from './components/project-details/sprint-list/sprint-list.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { StoryCardComponent } from './components/project-details/story-card/stor
     ProjectDetailsComponent,
     UserStoryPopupComponent,
     ProductBacklogComponent,
-    StoryCardComponent
+    StoryCardComponent,
+    SprintPopupComponent,
+    SprintListComponent
   ],
   imports: [
     BrowserModule,

@@ -8,17 +8,22 @@
 .title-buttons-container{
   display: flex;
   justify-content: space-between;
-  align-items: baseline;
+  align-items: center;
 
   div{
     flex: 1 1 0; // flex-grow flex-shrink flex-basis
+  }
+
+  .selected-title-container{
+    text-align: right
   }
 }
 
 .buttons-container{
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
   gap:10px;
+  margin-right: 10px;
 }
 
 

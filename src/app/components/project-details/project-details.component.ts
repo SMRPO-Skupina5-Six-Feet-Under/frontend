@@ -1,11 +1,9 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
 import { Project } from 'src/app/models/project';
-import { Story } from 'src/app/models/story';
 import { ProjectService } from 'src/app/services/project.service';
-import { UserStoryPopupComponent } from '../popups/user-story-popup/user-story-popup.component';
 
 @Component({
   selector: 'app-project-details',
@@ -16,8 +14,9 @@ export class ProjectDetailsComponent {
   projectId: number;
   project: Project;
 
+  displayingProductBacklog: boolean = true;
   displayingSprintBacklog: boolean = false;
-  displayingProductBacklog: boolean = !this.displayingSprintBacklog;
+  displayingSprints: boolean = false;
 
   //#region EditUsers
   //TODO: treba komponento za urejanje userjev //najlažje modal -> premakni logiko v servis za bo ista tu in na project list
@@ -31,26 +30,26 @@ export class ProjectDetailsComponent {
   //#region Sprints -> neznam tono kaj bo se tu 
   showSprints(){
     //dummy nastavek
-    console.log("showSprints");
+    this.displayingProductBacklog = false;
+    this.displayingSprintBacklog = false;
+    this.displayingSprints = true;
   }
   //#endregion
 
   //#region Display toogle
   showProductBacklog(){
-    //TODO komponenta posebaj, ki bo prikazala product backlog 
-    // Nalozit product backlog (ce še ni naložen) pogledat kk sploh
-    this.toggleDisplayPrintProdutBacklog();
+    this.displayingSprintBacklog = false;
+    this.displayingSprints = false;
+    this.displayingProductBacklog = true;
   }
 
   showSprintBacklog(){
     //TODO posebaj komponenta za sprint backlog
-    this.toggleDisplayPrintProdutBacklog();
+    this.displayingProductBacklog = false;
+    this.displayingSprints = false;
+    this.displayingSprintBacklog = true;
   }
 
-  private toggleDisplayPrintProdutBacklog(){
-    this.displayingProductBacklog = !this.displayingProductBacklog;
-    this.displayingSprintBacklog = !this.displayingSprintBacklog;
-  }
   //#endregion
 
 

@@ -360,3 +360,29 @@ a {
 .my-component-container{
   margin: 10px 10px 0 10px;
 }
+
+
+.row{
+  margin-left: 0;
+  margin-right: 0;
+
+}
+
+.my-modal-backdrop-show{
+  opacity: 0.5;
+  background-color: #000;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1050;
+  width: 100vw;
+  height: 100vh;
+}
+
+th{
+  text-align: center;
+}
+
+td{
+  text-align: center;
+}

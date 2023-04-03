@@ -1,0 +1,56 @@
+<div  *ngIf="visible" style="display: block;"
+class="modal show" aria-modal="true" tabindex="-1" role="dialog" > 
+    <div style="display: block; visibility: visible;" class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="storyModalLabel">Sprint</h5>
+          <button type="button" class="btn-close" (click)="close()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+         
+          
+
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Velocity:</div>
+              <div class="col-9">
+                <input type="number" min="1" [(ngModel)]="sprint.velocity"
+                class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Start date:</div>
+              <div class="col-9">
+                <input type="date" [(ngModel)]="sprint.startDate"
+                class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">End date:</div>
+              <div class="col-9">
+                <input type="date" [(ngModel)]="sprint.endDate"
+                class="form-control">
+              </div>
+            </div>
+          </div>
+          
+         
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Cancel</button>
+          <button type="button" class="btn btn-outline-success" (click)="save()">Save</button>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<div  *ngIf="visible" style="display: block;"
+  class="my-modal-backdrop-show"
+></div>

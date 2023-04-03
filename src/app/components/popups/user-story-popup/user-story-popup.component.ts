@@ -71,14 +71,14 @@ export class UserStoryPopupComponent {
     //   this.toastr.warning("Time estimate is required");
     //   return false;
     // }
-    // else if(this.userStory.timeEstimate < 0){
-    //   this.toastr.warning("Time estimate must be positive number");
-    //   return false;
-    // }
-    // else if(!Number.isInteger(this.userStory.timeEstimate)){
-    //   this.toastr.warning("Time estimate must be integer");
-    //   return false;
-    // }
+    if(this.userStory.timeEstimate < 0){
+      this.toastr.warning("Time estimate must be positive number");
+      return false;
+    }
+    if(!Number.isInteger(this.userStory.timeEstimate)){
+      this.toastr.warning("Time estimate must be integer");
+      return false;
+    }
 
     if(this.userStory.acceptanceTests.length == 0){
       this.toastr.warning("At least one acceptance test is required");
