@@ -37,8 +37,16 @@ export class SprintListComponent {
     this.sprintPopup.display(newSprint);
   }
 
+  editSprint(sprint: Sprint){
+    this.sprintPopup.display(JSON.parse(JSON.stringify(sprint)));
+  }
+
   sprintSaved(sprint: Sprint){
-    this.sprints.push(sprint);
+    const sprintIndex = this.sprints.findIndex(s => s.id === sprint.id);
+    if(sprintIndex === -1)
+      this.sprints.push(sprint);
+    else
+      this.sprints[sprintIndex] = sprint;
   }
 
   private _deleteSprintIndex: number;

@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { filter, tap } from 'rxjs';
@@ -15,12 +16,20 @@ export class SprintPopupComponent {
 
   sprint: Sprint;
   visible: boolean = false;
+  startDate: string;
+  endDate: string;
 
 
   display(sprint: Sprint){
-    this.sprint = sprint;
-    if(this.sprint != null)
+    this.sprint = JSON.parse(JSON.stringify(sprint));
+    if(this.sprint != null){
+      if(this.sprint.startDate != null)
+        this.startDate = this.datePipe.transform(this.sprint.startDate, 'yyyy-MM-dd');
+      if(this.sprint.endDate != null)
+        this.endDate = this.datePipe.transform(this.sprint.endDate, 'yyyy-MM-dd');
+
       this.visible = true;
+    }
     else
       console.error("Sprint is null");
   }
@@ -38,7 +47,6 @@ export class SprintPopupComponent {
       this.sprintService.saveSprint(JSON.parse(JSON.stringify(this.sprint))).pipe(
         filter(ss => ss != null),
         tap(savedSprint => {
-          this.toastr.success("Sprint saved");
           this.sprintSaved.emit(savedSprint);
           this.visible = false;
         })
@@ -47,6 +55,8 @@ export class SprintPopupComponent {
   }
 
   private checkData(): boolean{
+    this.sprint.startDate = new Date(this.startDate);
+    this.sprint.endDate = new Date(this.endDate);
     if(this.sprint.velocity == null){
       this.toastr.error("Velocity is required");
       return false;
@@ -92,17 +102,14 @@ export class SprintPopupComponent {
       return false;
     }
 
-
-
-
     return true;
   }
 
 
-
   constructor(
     private toastr: ToastrService,
-    private sprintService: SprintService
+    private sprintService: SprintService,
+    private datePipe: DatePipe
   ){
 
   }

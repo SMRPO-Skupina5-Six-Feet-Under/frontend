@@ -47,13 +47,17 @@ export class SprintService {
 
     const endpoint = `sprint/${newSprint.projectId}`;
     return this.http.post<Sprint>(endpoint, newSprint).pipe(
+      tap(() => this.toastr.success("Sprint added successfully")),
       catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }
 
   private updateSprint(sprint: Sprint): Observable<Sprint>{
-    //TODO implement update
-    return of(null);
+    const endpoint = `sprint/${sprint.id}`;
+    return this.http.patch<Sprint>(endpoint, sprint).pipe(
+      tap(() => this.toastr.success("Sprint updated successfully")),
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
   }
 
 

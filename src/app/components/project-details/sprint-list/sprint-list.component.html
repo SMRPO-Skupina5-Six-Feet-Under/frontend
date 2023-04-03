@@ -14,7 +14,7 @@
           <th scope="col">Start date</th>
           <th scope="col">End date</th>
           <th scope="col">Sprint velocity</th>
-          <th scope="col">Delete</th>
+          <th scope="col">Edit / Delete</th>
         </tr>
       </thead>
       <tbody>
@@ -32,6 +32,8 @@
             {{sprint.velocity}}
           </td>
           <td class="btn-table-column">
+            <i *ngIf="userIsScrumMaster"
+            (click)="editSprint(sprint)" class="icon-btn bi bi-pencil"></i>
             <i *ngIf="userIsScrumMaster" 
             class="icon-btn bi bi-trash3" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" (click)="deleteSprint(i)"></i>
             <i *ngIf="!userIsScrumMaster"
