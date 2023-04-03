@@ -1,8 +1,8 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { Observable, catchError, of, throwError } from 'rxjs';
+import { Observable, catchError, of } from 'rxjs';
 import { Story } from '../models/story';
+import { HandleErrorService } from './handler-error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,7 @@ export class StoryService {
     const endpoint = `stories/${projectId}`;
 
     return this.http.get<Story[]>(endpoint).pipe(
-      catchError(err => this.handleError(err)),
+      catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }
 
@@ -32,7 +32,7 @@ export class StoryService {
     }
 
     return this.http.post<Story>(endpoint, obj).pipe(
-      catchError(err => this.handleError(err)),
+      catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }
 
@@ -45,7 +45,7 @@ export class StoryService {
     const endpoint = `story/${id}`;
 
     return this.http.get<Story>(endpoint).pipe(
-      catchError(err => this.handleError(err)),
+      catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }
 
@@ -55,25 +55,9 @@ export class StoryService {
 
   constructor(
     private http: HttpClient,
-    private toastr: ToastrService,
+    private handleErrorService: HandleErrorService
   ) { 
 
   }
 
-
-  
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-      this.toastr.error('An error occurred: ' + error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(`Server error: ${error.status}, body was: `, error.error.detail);
-      this.toastr.error(error.error?.detail, `Backend error: ${error.status}`);
-    }
-    // Return an observable with a user-facing error message.
-    return throwError(() => of(null)/* new Error('Something bad happened; please try again later.') */);
-  }
 }

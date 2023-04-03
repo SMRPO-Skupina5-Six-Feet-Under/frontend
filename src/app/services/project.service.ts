@@ -1,11 +1,11 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ToastrService } from 'ngx-toastr';
-import { catchError, combineLatest, map, Observable, of, throwError } from 'rxjs';
+import { catchError, combineLatest, map, Observable} from 'rxjs';
 import { Project } from '../models/project';
 import { UserService } from './user.service';
 import { User } from '../models/user';
 import { ProjectRole } from '../enums/project-role';
+import { HandleErrorService } from './handler-error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,7 +18,7 @@ export class ProjectService {
 
     //napolnimo se z dolocenimi podatki za lazje operiranje
     return combineLatest([
-      this.http.get<Project[]>(endpoint).pipe(catchError(err => this.handleError(err))),
+      this.http.get<Project[]>(endpoint).pipe(catchError(err => this.handleErrorService.handleError(err))),
       this.userService.getAllUsers()
       ]).pipe(
         map(([projects, users]: [Project[], User[]]) => {
@@ -34,7 +34,7 @@ export class ProjectService {
     const endpoint = 'project';
 
     return this.http.post<Project>(endpoint, newProject).pipe(
-      catchError(err => this.handleError(err)),
+      catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }
 
@@ -42,7 +42,7 @@ export class ProjectService {
     const endpoint = `project/${id}`;
 
     return combineLatest([
-      this.http.get<Project>(endpoint).pipe(catchError(err => this.handleError(err))),
+      this.http.get<Project>(endpoint).pipe(catchError(err => this.handleErrorService.handleError(err))),
       this.userService.getAllUsers()  
     ]).pipe(
       map(([project, users]: [Project, User[]]) => {
@@ -54,8 +54,8 @@ export class ProjectService {
 
   constructor(
     private http: HttpClient,
-    private toastr: ToastrService,
-    private userService: UserService
+    private userService: UserService,
+    private handleErrorService: HandleErrorService
   ) { }
 
   private setProjectClientProperties(project:Project, users: User[]){
@@ -73,19 +73,4 @@ export class ProjectService {
     project.developerParticipantUserNames = users.filter(u => developerUserIds.some(dui => dui === u.id)).map(u => u.userName);
   }
 
-
-  private handleError(error: HttpErrorResponse) {
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-      this.toastr.error('An error occurred: ' + error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(`Server error: ${error.status}, body was: `, error.error.detail);
-      this.toastr.error(error.error?.detail, `Backend error: ${error.status}`);
-    }
-    // Return an observable with a user-facing error message.
-    return throwError(() => of(null)/* new Error('Something bad happened; please try again later.') */);
-  }
 }
