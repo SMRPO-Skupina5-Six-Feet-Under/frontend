@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Sprint } from '../models/sprint';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, of, tap } from 'rxjs';
 import { HandleErrorService } from './handler-error.service';
 import { HttpClient } from '@angular/common/http';
 import { ToastrService } from 'ngx-toastr';
@@ -57,6 +57,16 @@ export class SprintService {
   }
 
 
+  deleteSprint(sprintId: number): Observable<Sprint>{
+    const endpoint = `sprint/${sprintId}`;
+    
+    return this.http.delete<Sprint>(endpoint).pipe(
+      tap(() => this.toastr.success("Sprint deleted successfully")),
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
+  }
+
+
 
   constructor(
     private http: HttpClient,
@@ -65,5 +75,4 @@ export class SprintService {
   ) { }
 
 
- 
 }

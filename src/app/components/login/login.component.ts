@@ -21,7 +21,7 @@ export class LoginComponent {
   logIn(){
     this.password = this.password;
     this.userName = this.userName.trim();    
-    console.log('UserName: ',this.userName,'  Pass: ',this.password);
+    // console.log('UserName: ',this.userName,'  Pass: ',this.password);
     if(this.userName && this.password){
       const logInData: LogInData = {
         ... new LogInData,

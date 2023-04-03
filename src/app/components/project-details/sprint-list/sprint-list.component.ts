@@ -41,17 +41,28 @@ export class SprintListComponent {
     this.sprints.push(sprint);
   }
 
+  private _deleteSprintIndex: number;
   deleteSprint(sprintIndex: number){
-    //TODO --> treba preverit če je master
     console.log("deleteSprint ", sprintIndex);
-   //TODO modal for confirmation
+    this._deleteSprintIndex = sprintIndex;
   }
 
-  confirmedDeleteSprint(sprintIndex: number){
-    console.log("confirmedDeleteSprint ", sprintIndex);
+  confirmedDeleteSprint(){
+    console.log("confirmedDeleteSprint ", this._deleteSprintIndex);
     //!check if sprint can be deleted
     //TODO delete sprint
-
+    if(this._deleteSprintIndex != null){
+      const sprint = this.sprints[this._deleteSprintIndex];
+      if(sprint)
+        this.sprintService.deleteSprint(sprint.id).pipe(
+          tap(() => {
+            this.sprints.splice(this._deleteSprintIndex, 1);
+            //close modal
+            const btn = document.getElementById('closeDelSprintConfirmation');
+            btn.click();
+          })
+        ).subscribe();
+    }
   }
   
   //#endregion

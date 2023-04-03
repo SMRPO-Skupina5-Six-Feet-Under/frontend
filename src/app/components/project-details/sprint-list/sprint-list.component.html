@@ -33,9 +33,9 @@
           </td>
           <td class="btn-table-column">
             <i *ngIf="userIsScrumMaster" 
-            class="icon-btn bi bi-trash3" (click)="deleteSprint(i)"></i>
+            class="icon-btn bi bi-trash3" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" (click)="deleteSprint(i)"></i>
             <i *ngIf="!userIsScrumMaster"
-            data-bs-toggle="tooltip" data-bs-placement="left" title="User is not scrum master"
+            data-bs-toggle="tooltip" data-bs-placement="top" title="User is not scrum master"
             class="bi bi-slash-circle"></i>
           </td>
         </tr>              
@@ -51,3 +51,28 @@
 <app-sprint-popup
   (sprintSaved)="sprintSaved($event)"
 ></app-sprint-popup>
+
+
+
+
+<!-- MODALS -->
+
+
+<!-- Confirm Sprint delete Modal -->
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation</h5>
+        <button type="button" class="btn-close" id="closeDelSprintConfirmation" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this sprint?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="confirmedDeleteSprint()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
