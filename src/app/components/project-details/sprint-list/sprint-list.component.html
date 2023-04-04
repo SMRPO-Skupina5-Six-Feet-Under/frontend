@@ -35,7 +35,7 @@
             <i *ngIf="userIsScrumMaster"
             (click)="editSprint(sprint)" class="icon-btn bi bi-pencil"></i>
             <i *ngIf="userIsScrumMaster" 
-            class="icon-btn bi bi-trash3" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal" (click)="deleteSprint(i)"></i>
+            class="icon-btn bi bi-trash3" (click)="deleteSprint(i)"></i>
             <i *ngIf="!userIsScrumMaster"
             data-bs-toggle="tooltip" data-bs-placement="top" title="User is not scrum master"
             class="bi bi-slash-circle"></i>
@@ -59,6 +59,14 @@
 
 <!-- MODALS -->
 
+<button 
+  type="button" 
+  style="display: none;"
+  data-bs-toggle="modal" 
+  id="#openConfirmDeleteModal"
+  data-bs-target="#confirmDeleteModal">
+  Hidden button for opening modal
+</button>
 
 <!-- Confirm Sprint delete Modal -->
 <div class="modal fade" id="confirmDeleteModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
