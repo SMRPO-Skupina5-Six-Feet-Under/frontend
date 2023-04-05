@@ -4,9 +4,9 @@ export class Story{
   id: number;
   projectId: number;
 
-  name: string;
-  storyDescription: string;
-  priority: string;
+  name: string = '';
+  storyDescription: string = '';
+  priority: string = '';
   businessValue: number;
   timeEstimate: number;
 

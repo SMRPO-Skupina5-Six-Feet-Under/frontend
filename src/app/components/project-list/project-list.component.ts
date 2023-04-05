@@ -24,6 +24,7 @@ export class ProjectListComponent {
 
   newProject: Project = {
     ... new Project,
+    description: '',
   }
 
   currentUserAdmin: boolean = false;
@@ -149,7 +150,9 @@ export class ProjectListComponent {
 
   clearData(){
     console.log("clearData", this.users);
-    this.newProject = {... new Project};
+    this.newProject = {
+      ... new Project
+    };
     this.setProjectParticipants();
   }
 
