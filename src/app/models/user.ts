@@ -6,8 +6,8 @@ export class User{
   email: string = ''
   isAdmin: boolean = false;
   password: string = ''
-  permissions: string = ''
   lastLogin: Date;
+  userDeleted: boolean = false;
 }
 
 export class UserCreate{
@@ -17,5 +17,4 @@ export class UserCreate{
   email: string = ''
   isAdmin: boolean = false;
   password: string = ''
-  permissions: string = ''
 }
