@@ -81,9 +81,11 @@ export class ProjectDetailsComponent {
 
   private setUserPermissions(){
     const currUser = this.loginService.getLoggedInUser();
-    this.userIsScrumMaster = this.project.scrumMasterUserId === currUser.id;
-    this.userIsProductOwner = this.project.productOwnerUserId === currUser.id;
-    this.userIsDeveloper = this.project.developerParticipantUserNames.find(x => x === currUser.userName) != null;
+    if(currUser){
+      this.userIsScrumMaster = this.project.scrumMasterUserId === currUser.id;
+      this.userIsProductOwner = this.project.productOwnerUserId === currUser.id;
+      this.userIsDeveloper = this.project.developerParticipantUserNames.find(x => x === currUser.userName) != null;
+    }
   }
 
 
