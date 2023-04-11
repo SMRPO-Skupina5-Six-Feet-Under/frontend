@@ -17,6 +17,7 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class ProjectListComponent {
   projects: Project [] = [];
+  userOnProject: any = {};
 
   private users: User [] = [];
   availableProjectParticipants: ProjectParticipantsInput[] = [];
@@ -197,6 +198,11 @@ export class ProjectListComponent {
           if(this.availableProjectParticipants.length === 0)
             this.setProjectParticipants();
           this.projects = projects;
+
+          const currUser = this.loginService.getLoggedInUser();
+          this.projects.forEach(p => {
+            this.userOnProject[p.id] = p.projectParticipants.find(x => x.userId === currUser.id);
+          });
         })
       ).subscribe();
    }

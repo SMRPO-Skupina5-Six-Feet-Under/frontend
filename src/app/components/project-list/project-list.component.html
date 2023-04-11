@@ -27,7 +27,13 @@
         <td>
           <div class="d-flex align-items-center">
             <div class="ms-3">
-              <p class="fw-bold mb-1 edit-link" (click)="editProject(project.id)">{{project.name}}</p>
+              <p *ngIf="userOnProject[project.id]"
+              class="fw-bold mb-1 edit-link" 
+              (click)="editProject(project.id)">{{project.name}}</p>
+
+              <p *ngIf="!userOnProject[project.id]"
+              class="fw-bold mb-1">
+              {{project.name}}</p>
             </div>
           </div>
         </td>
