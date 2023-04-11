@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
 import { Project } from 'src/app/models/project';
+import { LoginService } from 'src/app/services/login.service';
 import { ProjectService } from 'src/app/services/project.service';
 
 @Component({
@@ -17,6 +18,10 @@ export class ProjectDetailsComponent {
   displayingProductBacklog: boolean = true;
   displayingSprintBacklog: boolean = false;
   displayingSprints: boolean = false;
+
+  userIsScrumMaster: boolean = false;
+  userIsProductOwner: boolean = false;
+  userIsDeveloper: boolean = false;
 
   //#region EditUsers
   //TODO: treba komponento za urejanje userjev //najlažje modal -> premakni logiko v servis za bo ista tu in na project list
@@ -58,6 +63,7 @@ export class ProjectDetailsComponent {
     private router: Router,
     private projectService: ProjectService,
     private toastr: ToastrService,
+    private loginService: LoginService
   ) { 
     
   }
@@ -68,8 +74,16 @@ export class ProjectDetailsComponent {
         console.log("projectLoaded");
         this.project = project;
         console.log(this.project);
+        this.setUserPermissions();
       }
     )).subscribe();
+  }
+
+  private setUserPermissions(){
+    const currUser = this.loginService.getLoggedInUser();
+    this.userIsScrumMaster = this.project.scrumMasterUserId === currUser.id;
+    this.userIsProductOwner = this.project.productOwnerUserId === currUser.id;
+    this.userIsDeveloper = this.project.developerParticipantUserNames.find(x => x === currUser.userName) != null;
   }
 
 
