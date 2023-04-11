@@ -99,10 +99,9 @@ export class ProductBacklogComponent {
 
   private loadStories(){
     if(!this.project) return;
-
     this.storyService.loadProjectStories(this.project.id).pipe(
       tap((stories: Story[]) => {
-        this.stories = stories;
+        this.stories = stories.sort((a,b) => a.id - b.id);
 
         this.finishedStories = stories.filter(s => s.isDone);
         stories = stories.filter(s => !s.isDone);

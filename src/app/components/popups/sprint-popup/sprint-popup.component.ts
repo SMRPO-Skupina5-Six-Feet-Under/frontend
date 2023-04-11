@@ -21,6 +21,8 @@ export class SprintPopupComponent {
 
 
   display(sprint: Sprint){
+    this.startDate = null;
+    this.endDate = null;
     this.sprint = JSON.parse(JSON.stringify(sprint));
     if(this.sprint != null){
       if(this.sprint.startDate != null)

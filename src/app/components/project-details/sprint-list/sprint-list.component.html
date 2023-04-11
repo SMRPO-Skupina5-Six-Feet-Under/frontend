@@ -6,11 +6,11 @@
   <div class="col-12">
     <div class="row">
 
-    
     <table class="table">
       <thead>
         <tr>
           <th scope="col">Sprint Id</th>
+          <th scope="col">Status</th>
           <th scope="col">Start date</th>
           <th scope="col">End date</th>
           <th scope="col">Sprint velocity</th>
@@ -21,6 +21,17 @@
         <tr *ngFor="let sprint of sprints; index as i">
           <td>
             {{sprint.id}}
+          </td>
+          <td>
+            <span *ngIf="sprint.status === sprintStatus.finished"
+             class="badge rounded-pill bg-success fw-normal mb-1">
+              {{sprintStatus.finished}}
+            </span>
+
+            <span *ngIf="sprint.status === sprintStatus.active"
+             class="badge rounded-pill bg-primary fw-normal mb-1">
+              {{sprintStatus.active}}
+            </span>
           </td>
           <td>
             {{sprint.startDate | date :'dd.MM.yyyy'}}

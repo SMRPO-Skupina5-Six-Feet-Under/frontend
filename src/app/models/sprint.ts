@@ -4,6 +4,9 @@ export class Sprint{
   endDate: Date;
   velocity: number; //float
   projectId: number;
+
+  //frontend only
+  status: string; //enum: 'active', 'finished''
 }
 
 // <label for="startDate">Start</label>

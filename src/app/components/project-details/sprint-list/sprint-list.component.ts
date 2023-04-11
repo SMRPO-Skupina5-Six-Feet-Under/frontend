@@ -6,6 +6,7 @@ import { SprintService } from 'src/app/services/sprint.service';
 import { SprintPopupComponent } from '../../popups/sprint-popup/sprint-popup.component';
 import { LoginService } from 'src/app/services/login.service';
 import { ToastrService } from 'ngx-toastr';
+import { SprintStatus } from 'src/app/enums/sprint-status';
 
 @Component({
   selector: 'app-sprint-list',
@@ -28,6 +29,8 @@ export class SprintListComponent {
   //-- end of input/output
   sprints: Sprint[] = [];
   userIsScrumMaster: boolean = false;
+  sprintStatus = SprintStatus
+
 
   //#region Manage Sprints
   addSprint(){
@@ -63,11 +66,12 @@ export class SprintListComponent {
   }
 
   sprintSaved(sprint: Sprint){
-    const sprintIndex = this.sprints.findIndex(s => s.id === sprint.id);
-    if(sprintIndex === -1)
-      this.sprints.push(sprint);
-    else
-      this.sprints[sprintIndex] = sprint;
+    // const sprintIndex = this.sprints.findIndex(s => s.id === sprint.id);
+    // if(sprintIndex === -1)
+    //   this.sprints.push(sprint);
+    // else
+    //   this.sprints[sprintIndex] = sprint;
+    this.loadSprints();
   }
 
   private _deleteSprintIndex: number;
