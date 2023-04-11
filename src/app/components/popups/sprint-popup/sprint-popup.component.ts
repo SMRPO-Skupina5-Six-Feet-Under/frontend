@@ -100,15 +100,15 @@ export class SprintPopupComponent {
       this.toastr.error("Start date must be in future");
       return false;
     }
-    //check for velocity //max is 15 developers * 1,25 * 6 ~ 115 hours/day
-    //so if the total number for velocity is more than number of days * 115 we won't let to save this sprint
+    //check for velocity //max is 15 developers * 1,25 ~ 19 pts/day
+    //so if the total number for velocity is more than number of days * 19 we won't let to save this sprint
     const startDate = new Date(this.sprint.startDate);
     const endDate = new Date(this.sprint.endDate);
     const diff = Math.abs(startDate.getTime() - endDate.getTime());
     const diffDays = Math.ceil(diff / (1000 * 3600 * 24)); 
-    if(this.sprint.velocity > diffDays * 115){
+    if(this.sprint.velocity > diffDays * 19){
       this.toastr.error("Velocity is too high for this sprint)");
-      console.error("15 developers * 1.25 * 6 ~ 115 hours/day")
+      console.error("15 developers * 1.25  ~ 19 pts/day")
       return false;
     }
 
