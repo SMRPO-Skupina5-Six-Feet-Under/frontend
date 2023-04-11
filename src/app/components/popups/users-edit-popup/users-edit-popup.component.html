@@ -1,0 +1,74 @@
+<div  *ngIf="visible" style="display: block;"
+class="modal show" aria-modal="true" tabindex="-1" role="dialog" > 
+    <div style="display: block; visibility: visible;" class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="userModalLabel">User</h5>
+          <button type="button" class="btn-close" (click)="close()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+         
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Username</div>
+              <div class="col-9">
+                <input type="text" [(ngModel)]="user.userName" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">First name</div>
+              <div class="col-9">
+                <input type="text" [(ngModel)]="user.firstName" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Last name</div>
+              <div class="col-9">
+                <input type="text" [(ngModel)]="user.lastName" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Email</div>
+              <div class="col-9">
+                <input type="email" [(ngModel)]="user.email" class="form-control">
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Admin user</div>
+              <div class="col-9">
+                <input type="checkbox" [(ngModel)]="user.isAdmin" class="form-check-input">
+              </div>
+            </div>
+          </div>
+
+            
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="changePassword()">Change user password</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Cancel</button>
+          <button type="button" class="btn btn-outline-success" (click)="save()">Save</button>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<app-change-password-popup
+  
+></app-change-password-popup>
+
+<div  *ngIf="visible" style="display: block;"
+  class="my-modal-backdrop-show"
+></div>

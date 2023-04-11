@@ -51,4 +51,21 @@ export class UserService {
     );
   }
 
+  deleteUser(userId: number): Observable<User>{
+    const endpoint = `users/${userId}`;
+    
+    return this.http.delete<User>(endpoint).pipe(
+      tap(() => this.toastr.success("User deleted successfully")),
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
+  }
+
+  editUser(user: User): Observable<User>{
+    const endpoint = `users/${user.id}`;
+    return this.http.put<User>(endpoint, user).pipe(
+      tap(() => this.toastr.success("User updated successfully")),
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
+  }
+
 }

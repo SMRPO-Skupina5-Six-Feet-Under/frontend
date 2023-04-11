@@ -1,10 +1,11 @@
 import { HttpResponse } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { NgForm, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { from, tap } from 'rxjs';
 import { User, UserCreate } from 'src/app/models/user';
+import { UsersEditPopupComponent } from '../popups/users-edit-popup/users-edit-popup.component';
 import { LoginService } from 'src/app/services/login.service';
 import { UserService } from 'src/app/services/user.service';
 
@@ -24,12 +25,12 @@ export class UsersComponent {
     email: '',
     isAdmin: false,
     password: '',
-    permissions: '',
   }  
   users: User[] = []
   showPwd: boolean = false
   passwordRetype: string = ''
 
+  @ViewChild(UsersEditPopupComponent) userPopup: UsersEditPopupComponent;
   constructor(
     private toastr: ToastrService,
     private router: Router,
@@ -37,14 +38,19 @@ export class UsersComponent {
     private userService: UserService
   ){
     this.testIfUserIsLoggedIn();
-    this.getAllUsers();
   }
 
   private testIfUserIsLoggedIn(){
     this.loginService.loggedInUser$.pipe(
       tap((user: User) => {
         if(user)
-          this.user = user;
+          if(user.isAdmin){
+            this.user = user;
+            this.getAllUsers();
+          }else{
+            this.toastr.error('Only admin can access this tab.', 'Error');
+            this.router.navigate(['/user_details'])
+          }
         else
           this.router.navigate(['/login']);
       })
@@ -52,7 +58,7 @@ export class UsersComponent {
   }
 
   private getAllUsers(){
-    this.userService.getAllUsers().subscribe(users => this.users = users);
+    this.userService.getAllUsers().subscribe(users => this.users = users.filter(x => !x.userDeleted));
     /*
     this.userService.getAllUsers().pipe(
       tap((users: User[]) => {
@@ -82,9 +88,6 @@ export class UsersComponent {
     this.newUser.firstName = this.newUser.firstName.trim();
     this.newUser.lastName = this.newUser.lastName.trim();
     this.newUser.email = this.newUser.email.trim();
-    if(this.newUser.permissions != null && this.newUser.permissions.length == 0){
-      this.newUser.permissions = null;
-    }
    let data = this.userService.addNewUser(this.newUser).pipe(
     tap((user: User) => {
       if(user){
@@ -102,6 +105,43 @@ export class UsersComponent {
     this.toastr.success('New user successfully added.', 'Success');
     this.users.push(usr);
   });*/
+  }
+
+  editUser(user: User){
+    this.userPopup.display(JSON.parse(JSON.stringify(user)));
+  }
+
+  userSaved(user: User){
+    const userIndex = this.users.findIndex(u => u.id === user.id);
+    if(userIndex === -1)
+      this.users.push(user);
+    else
+      this.users[userIndex] = user;
+  }
+
+  private _deleteUserIndex: number;
+  deleteUser(userIndex: number){
+    console.log("deleteUser ", userIndex);
+    const openConfirmDeleteBtn = document.getElementById('#openConfirmDeleteModal');
+    openConfirmDeleteBtn.click();
+    this._deleteUserIndex = userIndex;
+  }
+
+  confirmedDeleteUser(){
+    console.log("confirmedDeleteUser ", this._deleteUserIndex);
+    if(this._deleteUserIndex != null){
+      const user = this.users[this._deleteUserIndex];
+      if(user)
+        this.userService.deleteUser(user.id).pipe(
+          tap(() => {
+            //this.users[this._deleteUserIndex].userDeleted = true;
+            this.users.splice(this._deleteUserIndex, 1);
+            //close modal
+            const btn = document.getElementById('closeDelUserConfirmation');
+            btn.click();
+          })
+        ).subscribe();
+    }
   }
 
   clearNewUserModal(){
