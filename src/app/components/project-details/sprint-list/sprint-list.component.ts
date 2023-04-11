@@ -42,29 +42,20 @@ export class SprintListComponent {
   }
 
   editSprint(sprint: Sprint){
-    if(!this.canEditDeleteSprint(sprint)) return;
+    if(!this.canEditSprint(sprint)) return;
     this.sprintPopup.display(JSON.parse(JSON.stringify(sprint)));
   }
 
-  canEditDeleteSprint(sprint: Sprint): boolean{
-    const today = new Date();
-    today.setHours(0,0,0,0);
-    const endDate = new Date(sprint.endDate);
-    endDate.setHours(0,0,0,0);
-    if(endDate <= today){
-      this.toastr.warning("This sprint has already ended");
-      return false
+  private canEditSprint(sprint: Sprint): boolean{
+    if(!sprint) return false;
+    if(sprint.status === SprintStatus.finished){
+      this.toastr.warning("This sprint has already finished");
+      return false;
     }
-    const startDate = new Date(sprint.startDate);
-    startDate.setHours(0,0,0,0)
-    if(startDate <= today){
-      this.toastr.warning("This sprint has already started");
-      return false
-    }
-
     return true;
   }
 
+ 
   sprintSaved(sprint: Sprint){
     // const sprintIndex = this.sprints.findIndex(s => s.id === sprint.id);
     // if(sprintIndex === -1)
@@ -76,12 +67,26 @@ export class SprintListComponent {
 
   private _deleteSprintIndex: number;
   deleteSprint(sprintIndex: number){
-    if(!this.canEditDeleteSprint(this.sprints[sprintIndex])) return;
+    if(!this.canDeleteSprint(this.sprints[sprintIndex])) return;
     console.log("deleteSprint ", sprintIndex);
     const openConfirmDeleteBtn = document.getElementById('#openConfirmDeleteModal');
     openConfirmDeleteBtn.click();
     this._deleteSprintIndex = sprintIndex;
   }
+
+  private canDeleteSprint(sprint: Sprint): boolean{
+    if(sprint.status === SprintStatus.finished){
+      this.toastr.warning("This sprint has already ended");
+      return false
+    }
+    if(sprint.status === SprintStatus.active){
+      this.toastr.warning("This sprint has already started");
+      return false
+    }
+
+    return true;
+  }
+
 
   confirmedDeleteSprint(){
     console.log("confirmedDeleteSprint ", this._deleteSprintIndex);

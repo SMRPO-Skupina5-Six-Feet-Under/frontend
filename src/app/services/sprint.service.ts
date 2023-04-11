@@ -24,7 +24,7 @@ export class SprintService {
     const endpoint = `sprint/${sprintId}`;
 
     return this.http.get<Sprint>(endpoint).pipe(
-      map(sprint => this.setSprintStatus(sprint)),
+      map(sprint => this.setSprintFrontendProperties(sprint)),
       catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }
@@ -39,7 +39,7 @@ export class SprintService {
       obs = this.addSprint(sprint);
 
     return obs.pipe(
-      map(sprint => this.setSprintStatus(sprint))
+      map(sprint => this.setSprintFrontendProperties(sprint))
     );
   }
 
@@ -62,6 +62,11 @@ export class SprintService {
 
   private updateSprint(sprint: Sprint): Observable<Sprint>{
     const endpoint = `sprint/${sprint.id}`;
+
+    if(sprint.status === SprintStatus.active){
+      sprint.startDate = null;
+      sprint.endDate = null;
+    }
     return this.http.patch<Sprint>(endpoint, sprint).pipe(
       tap(() => this.toastr.success("Sprint updated successfully")),
       catchError(err => this.handleErrorService.handleError(err)),
@@ -89,14 +94,14 @@ export class SprintService {
   private setSprints(sprints: Sprint[]): Sprint []{
     let setSprints: Sprint[] = [];
     sprints.forEach(s => {
-      const setSprint = this.setSprintStatus(s);
+      const setSprint = this.setSprintFrontendProperties(s);
       setSprints.push(setSprint);
     });
 
     return setSprints
   }
 
-  private setSprintStatus(s: Sprint): Sprint{
+  private setSprintFrontendProperties(s: Sprint): Sprint{
     const sprint: Sprint = JSON.parse(JSON.stringify(s)); //deep copy
     const startDate = new Date(sprint.startDate);
     startDate.setHours(0,0,0,0);

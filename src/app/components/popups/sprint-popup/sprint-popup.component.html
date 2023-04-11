@@ -26,6 +26,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
               <div class="col-9">
                 <input type="date" 
                   [(ngModel)]="startDate"
+                  [readonly]="!startDateEditable"
+                  [disabled]="!startDateEditable"
                 class="form-control">
               </div>
             </div>
@@ -35,8 +37,11 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
             <div class="row">
               <div class="col-3">End date:</div>
               <div class="col-9">
-                <input type="date" [(ngModel)]="endDate"
-                class="form-control">
+                <input type="date" 
+                  [(ngModel)]="endDate"
+                  [readonly]="!endDateEditable"
+                  [disabled]="!endDateEditable"
+                  class="form-control">
               </div>
             </div>
           </div>

@@ -6,7 +6,7 @@ export class Sprint{
   projectId: number;
 
   //frontend only
-  status: string; //enum: 'active', 'finished''
+  status: string; //enum: 'Active', 'Finished'
 }
 
 // <label for="startDate">Start</label>

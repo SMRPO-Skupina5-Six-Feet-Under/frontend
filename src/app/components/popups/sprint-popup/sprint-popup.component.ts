@@ -2,6 +2,7 @@ import { DatePipe } from '@angular/common';
 import { Component, EventEmitter, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { filter, tap } from 'rxjs';
+import { SprintStatus } from 'src/app/enums/sprint-status';
 import { Sprint } from 'src/app/models/sprint';
 import { SprintService } from 'src/app/services/sprint.service';
 
@@ -17,19 +18,26 @@ export class SprintPopupComponent {
   sprint: Sprint;
   visible: boolean = false;
   startDate: string;
+  startDateEditable: boolean = true;
   endDate: string;
+  endDateEditable: boolean = true;
 
 
   display(sprint: Sprint){
     this.startDate = null;
+    this.startDateEditable = true;
     this.endDate = null;
+    this.endDateEditable = true;
     this.sprint = JSON.parse(JSON.stringify(sprint));
     if(this.sprint != null){
       if(this.sprint.startDate != null)
         this.startDate = this.datePipe.transform(this.sprint.startDate, 'yyyy-MM-dd');
       if(this.sprint.endDate != null)
         this.endDate = this.datePipe.transform(this.sprint.endDate, 'yyyy-MM-dd');
-
+      if(this.sprint.status === SprintStatus.active){
+        this.startDateEditable = false;
+        this.endDateEditable = false;
+      }
       this.visible = true;
     }
     else
