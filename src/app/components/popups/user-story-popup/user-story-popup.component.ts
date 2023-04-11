@@ -2,8 +2,10 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
 import { StoryPriority } from 'src/app/enums/storyPriority';
+import { Project } from 'src/app/models/project';
 import { Story } from 'src/app/models/story';
 import { StoryAcceptanceTest } from 'src/app/models/storyAcceptanceTest';
+import { LoginService } from 'src/app/services/login.service';
 import { StoryService } from 'src/app/services/story.service';
 
 
@@ -13,12 +15,25 @@ import { StoryService } from 'src/app/services/story.service';
   styleUrls: ['./user-story-popup.component.scss']
 })
 export class UserStoryPopupComponent {
+  private _project: Project;
+  @Input() set project(project: Project){
+    if(!project) return;
+
+    this._project = project;
+    this.setUserProperties();
+  }
+  get project(): Project{
+    return this._project;
+  }
   @Output() storySaved: EventEmitter<number> = new EventEmitter<number>();
   //-- end of input/output
 
   userStory: Story;
   visible: boolean = false;
   storyPriorityValues = Object.values(StoryPriority);
+
+  userIsProductOwner: boolean = false;
+
 
   display(story: Story){
     this.userStory = JSON.parse(JSON.stringify(story)); //depp copy
@@ -71,15 +86,14 @@ export class UserStoryPopupComponent {
     //   this.toastr.warning("Time estimate is required");
     //   return false;
     // }
+    if(this.userStory.timeEstimate && !Number.isInteger(this.userStory.timeEstimate)){
+      this.toastr.warning("Time estimate must be integer");
+      return false;
+    }
     if(this.userStory.timeEstimate < 0){
       this.toastr.warning("Time estimate must be positive number");
       return false;
     }
-    if(!Number.isInteger(this.userStory.timeEstimate)){
-      this.toastr.warning("Time estimate must be integer");
-      return false;
-    }
-
     if(this.userStory.acceptanceTests.length == 0){
       this.toastr.warning("At least one acceptance test is required");
       return false;
@@ -110,9 +124,18 @@ export class UserStoryPopupComponent {
 
   constructor(
     private toastr: ToastrService,
-    private storyService: StoryService
+    private storyService: StoryService,
+    private loginService: LoginService
   ) { 
 
+  }
+
+
+  private setUserProperties(){
+    const loggedInUser = this.loginService.getLoggedInUser();
+    if(loggedInUser){
+      this.userIsProductOwner = this.project.productOwnerUserId === loggedInUser.id;
+    }
   }
 
 

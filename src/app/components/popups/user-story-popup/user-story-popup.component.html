@@ -43,7 +43,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
             </div>
           </div>
           
-          <div class="col-12 form-group">
+          <div  *ngIf="!userIsProductOwner"
+          class="col-12 form-group">
             <div class="row">
               <div class="col-3">Time estimate (pts):</div>
               <div class="col-9">
@@ -82,10 +83,14 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                   <td>
                     <input  [(ngModel)]="aT.description" type="text" class="form-control">
                   </td>
-                  <td class="btn-table-column">
-                    <i class="icon-btn bi bi-trash3" (click)="deleteAcceptanceTest(i)">
+                  <td>
+                    <div class="btn-table-column">
+                      <i class="icon-btn bi bi-trash3" 
+                        (click)="deleteAcceptanceTest(i)">
+                      </i>
+                    </div>
 
-                    </i></td>
+                    </td>
                 </tr>              
               </tbody>
             </table>
