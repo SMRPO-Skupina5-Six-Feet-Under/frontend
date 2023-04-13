@@ -3,11 +3,12 @@ import { Component, Input, ViewChild } from '@angular/core';
 import { NgForm, FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { from, tap } from 'rxjs';
+import { from, take, tap } from 'rxjs';
 import { User, UserCreate } from 'src/app/models/user';
 import { UsersEditPopupComponent } from '../popups/users-edit-popup/users-edit-popup.component';
 import { LoginService } from 'src/app/services/login.service';
 import { UserService } from 'src/app/services/user.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-users',
@@ -35,7 +36,8 @@ export class UsersComponent {
     private toastr: ToastrService,
     private router: Router,
     private loginService: LoginService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ){
     this.testIfUserIsLoggedIn();
   }
@@ -53,7 +55,8 @@ export class UsersComponent {
           }
         else
           this.router.navigate(['/login']);
-      })
+      }),
+      take(1)
     ).subscribe();
   }
 
@@ -113,6 +116,18 @@ export class UsersComponent {
 
   userSaved(user: User){
     const userIndex = this.users.findIndex(u => u.id === user.id);
+    //if logged in user was updated, set updated user in loggedInUser and set token and if admin privileges were removed, refresh window
+    if(user.id == this.user.id){
+      if(user.userName !== this.user.userName){
+        this.loginService.logout();
+      }else{
+        this.loginService.loggedInUser$.next(user);
+        this.authService.setUserToken(user);
+        if(!user.isAdmin){
+          window.location.reload();
+        }
+      }
+    }
     if(userIndex === -1)
       this.users.push(user);
     else

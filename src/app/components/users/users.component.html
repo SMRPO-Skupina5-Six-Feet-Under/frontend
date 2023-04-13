@@ -22,8 +22,8 @@
                     <th>First name</th>
                     <th>Last name</th>
                     <th>E-mail</th>
-                    <th>Admin role</th>
-                    <th>Edit / Delete</th>
+                    <th class="table-th-align-center">Admin role</th>
+                    <th class="table-th-align-center">Edit / Delete</th>
                 </tr>
                 <tbody class="tbl-body">
                     <tr *ngFor="let usr of users; index as i">
@@ -31,7 +31,7 @@
                         <td>{{usr.firstName}}</td>
                         <td>{{usr.lastName}}</td>
                         <td>{{usr.email}}</td>
-                        <td>{{usr.isAdmin}}</td>
+                        <td><div class="users-check"><i *ngIf="usr.isAdmin" class="bi bi-check-square admin-check"></i></div></td>
                         <td class="btn-table-column btn-table-column-local">
                             <i (click)="editUser(usr)" class="icon-btn bi bi-pencil" data-bs-toggle="tooltip" data-bs-placement="top" title="Edit user"></i>
                             <i (click)="deleteUser(i)" class="icon-btn bi bi-trash3" data-bs-toggle="tooltip" data-bs-placement="top" title="Delete user"></i>

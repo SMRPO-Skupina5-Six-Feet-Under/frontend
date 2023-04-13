@@ -60,7 +60,8 @@ export class LoginComponent {
       tap((user: User) => {
         if(user)
           this.router.navigate(['/user_details']);
-      })
+      }),
+      take(1)
     ).subscribe();
   }
 }
