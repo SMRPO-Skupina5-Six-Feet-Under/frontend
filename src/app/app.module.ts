@@ -27,6 +27,8 @@ import { SprintPopupComponent } from './components/popups/sprint-popup/sprint-po
 import { SprintListComponent } from './components/project-details/sprint-list/sprint-list.component';
 import { UsersEditPopupComponent } from './components/popups/users-edit-popup/users-edit-popup.component';
 import { ChangePasswordPopupComponent } from './components/popups/change-password-popup/change-password-popup.component';
+import { SprintBacklogComponent } from './components/project-details/sprint-backlog/sprint-backlog.component';
+import { StoryTasksPopupComponent } from './components/popups/story-tasks-popup/story-tasks-popup.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,9 @@ import { ChangePasswordPopupComponent } from './components/popups/change-passwor
     SprintPopupComponent,
     SprintListComponent,
     UsersEditPopupComponent,
-    ChangePasswordPopupComponent
+    ChangePasswordPopupComponent,
+    SprintBacklogComponent,
+    StoryTasksPopupComponent
   ],
   imports: [
     BrowserModule,

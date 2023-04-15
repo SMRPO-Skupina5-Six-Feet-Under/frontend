@@ -1,0 +1,80 @@
+<div class="my-component-container">
+
+
+<!-- imas en pogled kjer so samo kartice zgodb, na njih lahko stisnes in -->
+
+<div class="col-12">
+  <div class="view-changer-button-container">
+    
+    <button *ngIf="displayingStories" 
+      type="button" class="btn btn-outline-success" 
+      (click)="toggleDisplay()">
+      Show tasks (neznam še al bomo sam naše al vse taske)
+    </button>
+
+    <button *ngIf="displayingTasks" 
+      type="button" class="btn btn-outline-success" 
+      (click)="toggleDisplay()">
+      Show sprint stories
+    </button>
+
+
+    <ng-container *ngIf="displayingStories">
+      <div class="col-12">
+        <div class="row center-elements">
+          <div class="col-8 centered">
+            <app-story-card *ngFor="let story of sprintStories"
+              [story]="story"
+              [project]="project"
+              [canDelete]="false"
+              [canEdit]="true"
+              [canAddToActiveSprint]="false"
+              [canReject]="false"
+              [canEditTasks]="true"
+              [displayTasks]="true"
+              (storyEdited)="userStoryEdited($event)"
+            ></app-story-card>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div>

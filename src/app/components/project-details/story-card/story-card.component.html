@@ -1,8 +1,7 @@
 
 <div class="card border-secondary" > <!-- style="max-width: 18rem;" -->
-  <div (click)="displayStoryInfo()"
-    class="card-header bg-transparent border-secondary pointer">
-    <a>{{story?.name}}</a>
+  <div class="card-header bg-transparent border-secondary">
+    {{story?.name}}
   </div>
 
   <div class="my-card-body text-secondary ">
@@ -21,14 +20,75 @@
     <p>Business value: {{story?.businessValue}}</p>
   </div>
 
+  <div *ngIf="displayTasks" 
+    class="col-12">
+    <table class="table table-borderless">
+      <thead class="table-light">
+        <tr>
+          <th>Task</th>
+          <th>Status / action</th>
+          <th>Member</th>
+          <th>Remaining</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let st of storyTasks">
+          <td>{{st.description}}</td>
+          <td>
+            <ng-container *ngIf="!st.hasAssigneeConfirmed && (st.assigneeUserId === currentUserId
+            || st.assigneeUserId == null)">
+            <div (click)="acceptTask(st)" 
+              class="pointer">
+              <a>Accept task</a>
+            </div>
+
+            </ng-container>
+            <ng-container *ngIf="st.hasAssigneeConfirmed && st.assigneeUserId === currentUserId">
+              <div (click)="declineTask(st)" 
+                class="pointer">
+                <a>Decline task</a>
+              </div>
+            </ng-container>
+
+            <ng-container *ngIf="st.hasAssigneeConfirmed && st.assigneeUserId !== currentUserId">
+              <b>Accepted</b>
+            </ng-container>
+
+          </td>
+
+          <td>
+            {{st.asigneeFullName}}
+          </td>
+        
+          <td>
+            {{st.timeRemainingEstimate}}
+          </td>
+
+          </tr>
+      </tbody>
+    </table>
+  </div>
+
   <div class="card-footer bg-transparent border-secondary">
-    <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteStory()"><i class="bi bi-trash3"></i></button>
-    <button *ngIf="!addToActiveSprintDisabled"
-    type="button" class="btn btn-outline-secondary btn-sm" (click)="addToActiveSprint()">Add to active sprint</button>
+    <button *ngIf="canDelete"
+      type="button" class="btn btn-outline-danger btn-sm" 
+      (click)="deleteStory()"><i class="bi bi-trash3"></i></button>
+    <button *ngIf="!addToActiveSprintDisabled && canAddToActiveSprint"
+      type="button" class="btn btn-outline-secondary btn-sm" 
+      (click)="addToActiveSprint()">Add to active sprint</button>
     <!-- nastavek za zavračanje zgodbe
-      <button *ngIf="userIsProductOwner && !story.isDone && storyInActiveSprint"
+      <button *ngIf="userIsProductOwner && !story.isDone && storyInActiveSprint && canReject"
     type="button" class="btn btn-outline-danger btn-sm" (click)="rejectStory()">Reject</button> -->
-    <button *ngIf="!story.isDone"
+    <button *ngIf="canEditTasks && !story.isDone"
+      type="button" class="btn btn-outline-secondary btn-sm" 
+      (click)="editTasks()">Edit tasks</button>
+    
+    <button *ngIf="!story.isDone && canEdit"
     type="button" class="btn btn-outline-secondary btn-sm" (click)="editStory()">Edit</button>
   </div>
 </div>
+
+
+<app-story-tasks-popup
+  (storyTasksSaved)="storyTasksSaved($event)"
+></app-story-tasks-popup>

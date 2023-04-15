@@ -338,7 +338,7 @@ svg#clouds {
 .card-footer{
   display: flex;
   justify-content: space-between;
-  padding: 5px
+  gap: 10px;
 }
 
 .my-card-body{
@@ -388,4 +388,14 @@ th{
 
 td{
   text-align: center;
+}
+
+.cell-align-items-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.cell-vertical-align-middle{
+  vertical-align: middle;
 }

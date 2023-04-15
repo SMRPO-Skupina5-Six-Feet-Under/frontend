@@ -13,4 +13,5 @@ export class Project{
   scrumMasterUserName: string;
   productOwnerUserId: number;
   productOwnerUserName: string;
+  developerFullNamesIds: {id: number, fullName: string} [] = [];
 }

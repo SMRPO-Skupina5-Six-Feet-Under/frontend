@@ -29,7 +29,10 @@
       ></app-product-backlog>
     </ng-container>
     <ng-container *ngIf="displayingSprintBacklog">
-      <!-- <app-sprint-backlog></app-sprint-backlog> -->
+      <app-sprint-backlog
+        [project]="project"
+        [activeSprint]="activeSprint"
+      ></app-sprint-backlog>
     </ng-container>
     <ng-container *ngIf="displayingSprints">
       <app-sprint-list

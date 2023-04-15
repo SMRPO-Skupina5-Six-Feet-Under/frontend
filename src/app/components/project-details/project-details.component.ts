@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { tap } from 'rxjs';
+import { SprintStatus } from 'src/app/enums/sprint-status';
 import { Project } from 'src/app/models/project';
+import { Sprint } from 'src/app/models/sprint';
 import { LoginService } from 'src/app/services/login.service';
 import { ProjectService } from 'src/app/services/project.service';
+import { SprintService } from 'src/app/services/sprint.service';
 
 @Component({
   selector: 'app-project-details',
@@ -14,6 +16,7 @@ import { ProjectService } from 'src/app/services/project.service';
 export class ProjectDetailsComponent {
   projectId: number;
   project: Project;
+  activeSprint: Sprint;
 
   displayingProductBacklog: boolean = true;
   displayingSprintBacklog: boolean = false;
@@ -49,7 +52,6 @@ export class ProjectDetailsComponent {
   }
 
   showSprintBacklog(){
-    //TODO posebaj komponenta za sprint backlog
     this.displayingProductBacklog = false;
     this.displayingSprints = false;
     this.displayingSprintBacklog = true;
@@ -62,8 +64,8 @@ export class ProjectDetailsComponent {
     private route: ActivatedRoute,
     private router: Router,
     private projectService: ProjectService,
-    private toastr: ToastrService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private sprintService: SprintService
   ) { 
     
   }
@@ -75,6 +77,7 @@ export class ProjectDetailsComponent {
         this.project = project;
         console.log(this.project);
         this.setUserPermissions();
+        this.loadActiveSprint(this.project);
       }
     )).subscribe();
   }
@@ -86,6 +89,14 @@ export class ProjectDetailsComponent {
       this.userIsProductOwner = this.project.productOwnerUserId === currUser.id;
       this.userIsDeveloper = this.project.developerParticipantUserNames.find(x => x === currUser.userName) != null;
     }
+  }
+
+  private loadActiveSprint(project: Project){
+    this.sprintService.loadProjectSprints(project.id).pipe(
+      tap((sprints: Sprint[]) => {
+        this.activeSprint = sprints.filter(s => s.status === SprintStatus.active)?.[0];
+      })
+    ).subscribe();
   }
 
 

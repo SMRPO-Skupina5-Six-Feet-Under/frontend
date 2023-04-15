@@ -71,6 +71,13 @@ export class ProjectService {
     }
     const developerUserIds: number [] = project.projectParticipants.filter(pp => pp.roleId === ProjectRole.Developer).map(pp => pp.userId);
     project.developerParticipantUserNames = users.filter(u => developerUserIds.some(dui => dui === u.id)).map(u => u.userName);
+
+    project.developerFullNamesIds = [];
+    project.developerParticipantUserNames.forEach(uName => {
+      const usr = users.find(u => u.userName === uName);
+      if(usr)
+        project.developerFullNamesIds.push({id: usr.id, fullName: usr.firstName + ' ' + usr.lastName});
+    });
   }
 
 }
