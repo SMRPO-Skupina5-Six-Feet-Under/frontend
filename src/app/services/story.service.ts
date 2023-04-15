@@ -28,7 +28,7 @@ export class StoryService {
     const endpoint = 'story';
     const obj = {
       story: newStory,
-      tests: newStory.acceptanceTests,
+      tests: newStory.acceptenceTests,
     }
 
     return this.http.post<Story>(endpoint, obj).pipe(
@@ -37,8 +37,16 @@ export class StoryService {
   }
 
   private updateStory(story: Story): Observable<Story>{
-    //TODO implement update
-    return of(null);
+    //TODO implement update for acc tests - ko bo na backend also
+    const endpoint = `story/${story.id}`;
+
+    // const obj = {
+    //   story: story,
+    //   tests: story.acceptenceTests,
+    // }
+    return this.http.put<Story>(endpoint, story).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    ); 
   }
 
   loadStoryById(id: number): Observable<Story>{
@@ -47,6 +55,23 @@ export class StoryService {
     return this.http.get<Story>(endpoint).pipe(
       catchError(err => this.handleErrorService.handleError(err)),
     ); 
+  }
+
+  updateStorySprint(story: Story): Observable<Story>{
+    const endpoint = `story/${story.id}/sprint/`;
+
+
+    return this.http.put<Story>(endpoint, story).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    ); 
+  }
+
+  deleteStory(storyId: number): Observable<Story>{
+    const endpoint = `story/${storyId}`;
+
+    return this.http.delete<Story>(endpoint).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
   }
 
 

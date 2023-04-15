@@ -14,8 +14,9 @@
 
         <div class="cards-container">
           <app-story-card *ngFor="let wh of whStories"
-          [story]="wh"
-          (storyDeleted)="whStoryDeleted($event)"
+            [story]="wh"
+            (storyDeleted)="whStoryDeleted($event)"
+            (storyEdited)="editUserStory($event)"
           ></app-story-card>
         </div>
       </div>
@@ -27,8 +28,10 @@
         
         <div class="cards-container">
           <app-story-card *ngFor="let unasignedStory of unasignedStories"
-          [story]="unasignedStory"
-          (storyDeleted)="unasignedStoryDeleted($event)"
+            [story]="unasignedStory"
+            (storyDeleted)="unasignedStoryDeleted($event)"
+            (storyEdited)="editUserStory($event)"
+            (addedToActiveSprint)="addedToActiveSprint($event)"
           ></app-story-card>
         </div>
 
@@ -41,8 +44,9 @@
 
         <div class="cards-container">
           <app-story-card *ngFor="let asignedStory of assignedStories"
-          [story]="asignedStory"
-          (storyDeleted)="assignedStoryDeleted($event)"
+            [story]="asignedStory"
+            (storyDeleted)="assignedStoryDeleted($event)"
+            (storyEdited)="editUserStory($event)"
           ></app-story-card>
         </div>
       </div>
@@ -56,6 +60,7 @@
           <app-story-card *ngFor="let finishedStory of finishedStories"
             [story]="finishedStory"
             (storyDeleted)="finishedStoryDeleted($event)"
+            (storyEdited)="editUserStory($event)"
           ></app-story-card>
         </div>
       </div>

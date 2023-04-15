@@ -13,5 +13,5 @@ export class Story{
   sprint_id: number; //can be null
   isDone: boolean = false;
 
-  acceptanceTests: StoryAcceptanceTest[] = [];
+  acceptenceTests: StoryAcceptanceTest[] = [];
 }

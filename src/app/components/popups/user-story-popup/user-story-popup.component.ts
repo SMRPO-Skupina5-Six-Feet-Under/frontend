@@ -37,8 +37,14 @@ export class UserStoryPopupComponent {
 
   display(story: Story){
     this.userStory = JSON.parse(JSON.stringify(story)); //depp copy
-    if(this.userStory != null)
+    if(this.userStory != null){
+
+      //! possible check if story has ID
+
+
+      
       this.visible = true;
+    }
     else
       console.error("User story is null");
   }
@@ -51,7 +57,6 @@ export class UserStoryPopupComponent {
     else{
       this.storyService.saveStory(this.userStory).pipe(
         tap(story => {
-          this.toastr.success("User story saved");
           this.storySaved.emit(story.id);
           this.visible = false;
         })
@@ -94,7 +99,7 @@ export class UserStoryPopupComponent {
       this.toastr.warning("Time estimate must be positive number");
       return false;
     }
-    if(this.userStory.acceptanceTests.length == 0){
+    if(this.userStory.acceptenceTests.length == 0){
       this.toastr.warning("At least one acceptance test is required");
       return false;
     }
@@ -108,10 +113,10 @@ export class UserStoryPopupComponent {
   }
 
   deleteAcceptanceTest(index: number){
-    this.userStory.acceptanceTests.splice(index, 1);
+    this.userStory.acceptenceTests.splice(index, 1);
   }
   addAcceptanceTest(){
-    this.userStory.acceptanceTests.push(
+    this.userStory.acceptenceTests.push(
       {... new StoryAcceptanceTest(),
         storyId: this.userStory.id, 
         description: ""

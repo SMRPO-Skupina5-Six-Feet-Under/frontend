@@ -7,6 +7,7 @@ import { Story } from 'src/app/models/story';
 import { LoginService } from 'src/app/services/login.service';
 import { StoryService } from 'src/app/services/story.service';
 import { UserStoryPopupComponent } from '../../popups/user-story-popup/user-story-popup.component';
+import { SprintService } from 'src/app/services/sprint.service';
 
 @Component({
   selector: 'app-product-backlog',
@@ -71,22 +72,25 @@ export class ProductBacklogComponent {
   userStorySaved(newStoryId: number){
     this.loadStories();
   }
-
   //#endregion
 
+  editUserStory(story: Story){
+    this.userStoryPopupComponent.display(story);
+  }
 
+  addedToActiveSprint(story: Story){
+    this.loadStories();
+  }
 
   @ViewChild(UserStoryPopupComponent) userStoryPopupComponent: UserStoryPopupComponent;
   constructor(
     private storyService: StoryService,
     private loginService: LoginService,
     private toastr: ToastrService,
+    private sprintService: SprintService
   ) { 
 
   }
-
-
-
 
   //#region call when input for project is received
   private setUserCanAddStory(project: Project){
