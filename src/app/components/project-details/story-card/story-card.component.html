@@ -25,6 +25,9 @@
     <button type="button" class="btn btn-outline-danger btn-sm" (click)="deleteStory()"><i class="bi bi-trash3"></i></button>
     <button *ngIf="!addToActiveSprintDisabled"
     type="button" class="btn btn-outline-secondary btn-sm" (click)="addToActiveSprint()">Add to active sprint</button>
+    <!-- nastavek za zavračanje zgodbe
+      <button *ngIf="userIsProductOwner && !story.isDone && storyInActiveSprint"
+    type="button" class="btn btn-outline-danger btn-sm" (click)="rejectStory()">Reject</button> -->
     <button *ngIf="!story.isDone"
     type="button" class="btn btn-outline-secondary btn-sm" (click)="editStory()">Edit</button>
   </div>
