@@ -62,6 +62,7 @@ export class StoryCardComponent {
   addToActiveSprintDisabled: boolean = false;
   storyTasks: Task[] = [];
   currentUserId: number;
+  remainingTimeSUM: number = 0;
 
   displayStoryInfo(){
     this.addToActiveSprintDisabled = false;
@@ -161,10 +162,12 @@ export class StoryCardComponent {
   }
 
   private loadStoryTasks(){
+    this.remainingTimeSUM = 0;
     if(this.story != null){
       this.taskService.loadStoryTasks(this.story.id).pipe(
         tap((tasks: Task[]) => {
         this.storyTasks = tasks;
+        this.remainingTimeSUM = tasks.reduce((sum, task) => sum + task.timeRemainingEstimate ? task.timeRemainingEstimate : 0, 0);
         console.log('tasks loaded', this.storyTasks);
       })
       ).subscribe();

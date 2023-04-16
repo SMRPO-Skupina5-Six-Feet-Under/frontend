@@ -70,6 +70,16 @@
 
           </tr>
       </tbody>
+      <tfoot>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <ng-container *ngIf="storyTasks.length > 0">
+            SUM: {{remainingTimeSUM}}
+          </ng-container>
+        </td>
+      </tfoot>
     </table>
   </div>
 
