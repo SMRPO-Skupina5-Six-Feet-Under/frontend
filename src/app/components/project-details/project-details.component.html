@@ -15,9 +15,9 @@
       <div class="buttons-container">
         
         <button *ngIf="!displayingProductBacklog" type="button" class="btn btn-primary" (click)="showProductBacklog()">Product backlog</button>
-        <button *ngIf="!displayingSprintBacklog && !userIsProductOwner" type="button" class="btn btn-primary" (click)="showSprintBacklog()">Sprint backlog</button>
+        <button *ngIf="!displayingSprintBacklog && !userIsProductOwner" type="button" class="btn btn-outline-primary" (click)="showSprintBacklog()">Sprint backlog</button>
         <button *ngIf="!displayingSprints && !userIsProductOwner" type="button" class="btn btn-outline-secondary" (click)="showSprints()">Sprints</button>
-        <button type="button" class="btn btn-info" (click)="editProjectUsers()">Users</button>
+        <!-- <button type="button" class="btn btn-info" (click)="editProjectUsers()">Users</button> -->
       </div>
     </div>
   </div>
