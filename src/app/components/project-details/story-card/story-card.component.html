@@ -34,6 +34,7 @@
       <tbody>
         <tr *ngFor="let st of storyTasks">
           <td>{{st.description}}</td>
+
           <td>
             <ng-container *ngIf="!st.hasAssigneeConfirmed && (st.assigneeUserId === currentUserId
             || st.assigneeUserId == null)">
@@ -54,6 +55,9 @@
               <b>Accepted</b>
             </ng-container>
 
+            <ng-container *ngIf="!st.hasAssigneeConfirmed && st.assigneeUserId !== currentUserId">
+              <b>Pending</b>
+            </ng-container>
           </td>
 
           <td>
