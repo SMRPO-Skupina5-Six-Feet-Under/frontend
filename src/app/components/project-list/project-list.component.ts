@@ -18,12 +18,13 @@ import { UserService } from 'src/app/services/user.service';
 export class ProjectListComponent {
   projects: Project [] = [];
   userOnProject: any = {};
+  scrumMasterOnProject: any = {};
 
   private users: User [] = [];
   availableProjectParticipants: ProjectParticipantsInput[] = [];
   
 
-  newProject: Project = {
+  editedProject: Project = {
     ... new Project,
     description: '',
   }
@@ -32,9 +33,9 @@ export class ProjectListComponent {
 
   /* #region Modal stuff */
 //--------------------------
-  addProject(){
-    this.newProject.name = this.newProject.name?.trim();
-    if(!this.newProject.name){
+  saveProject(){
+    this.editedProject.name = this.editedProject.name?.trim();
+    if(!this.editedProject.name){
       this.toastr.warning('Please enter project name!', 'Warning');
       return;
     }
@@ -57,29 +58,29 @@ export class ProjectListComponent {
       return;
     }
     
-    this.newProject.projectParticipants = [];
+    this.editedProject.projectParticipants = [];
     this.availableProjectParticipants.filter(x => x.selected).forEach(selectedPP => {
       if(selectedPP.scrumMaster)
-        this.newProject.projectParticipants.push({
+        this.editedProject.projectParticipants.push({
           ... new ProjectParticipantsInput,
           userId: selectedPP.userId,
           roleId: ProjectRole['Scrum master']
         });
       if(selectedPP.developer)
-        this.newProject.projectParticipants.push({
+        this.editedProject.projectParticipants.push({
           ... new ProjectParticipantsInput,
           userId: selectedPP.userId,
           roleId: ProjectRole.Developer
         });
       if(selectedPP.productOwner)
-        this.newProject.projectParticipants.push({
+        this.editedProject.projectParticipants.push({
           ... new ProjectParticipantsInput,
           userId: selectedPP.userId,
           roleId: ProjectRole['Product owner']
         });
     });
     
-    this.projectService.addProject(this.newProject).pipe(
+    this.projectService.saveProject(this.editedProject).pipe(
       tap((project: Project) => {
         if(project){
 
@@ -91,6 +92,12 @@ export class ProjectListComponent {
         }
       })
     ).subscribe();
+  }
+
+  editProject(project: Project){
+    this.editedProject = JSON.parse(JSON.stringify(project));
+    this.setProjectParticipantsForExistingProject(this.editedProject);
+    console.log('editProject', project);
   }
 
   userSelected(newPOUserId: number, isCurrentlySelected: boolean){
@@ -151,7 +158,7 @@ export class ProjectListComponent {
 
   clearData(){
     console.log("clearData", this.users);
-    this.newProject = {
+    this.editedProject = {
       ... new Project
     };
     this.setProjectParticipants();
@@ -169,9 +176,30 @@ export class ProjectListComponent {
     });
   }
 
+  private setProjectParticipantsForExistingProject(project: Project){
+    this.setProjectParticipants();
+    project.projectParticipants.forEach(pp => {
+      const app = this.availableProjectParticipants.find(x => x.userId === pp.userId);
+      if(app){
+        if(pp.roleId === ProjectRole['Scrum master']){
+          app.scrumMaster = true;
+          app.selected = true;
+        }
+        else if(pp.roleId === ProjectRole['Product owner']){
+          app.productOwner = true;
+          app.selected = true;
+        }
+        else if(pp.roleId === ProjectRole.Developer){
+          app.developer = true;
+          app.selected = true;
+        }
+      }
+    });
+  }
+
 /* #endregion */
 
-  editProject(projectId: number){
+  openProjectDetails(projectId: number){
     this.router.navigate(['/project', {id: projectId}]);
   }
 
@@ -202,6 +230,7 @@ export class ProjectListComponent {
           const currUser = this.loginService.getLoggedInUser();
           this.projects.forEach(p => {
             this.userOnProject[p.id] = p.projectParticipants.find(x => x.userId === currUser.id);
+            this.scrumMasterOnProject[p.id] = p.projectParticipants.find(x => x.userId === currUser.id && x.roleId === ProjectRole['Scrum master']);
           });
         })
       ).subscribe();

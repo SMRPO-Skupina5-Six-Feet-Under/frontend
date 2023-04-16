@@ -1,14 +1,15 @@
 
 <div class="form-group col-12">
   <div class="button-container">
-    <button *ngIf="currentUserAdmin" type="button" class="btn btn-primary" 
-      data-bs-toggle="modal" data-bs-target="#newProjectModal" (click)="clearData()">Add project
+    <button *ngIf="currentUserAdmin" id="addProjectButton"
+      type="button" class="btn btn-primary" 
+      data-bs-toggle="modal" data-bs-target="#projectModal" (click)="clearData()">Add project
     </button>
   </div>
 </div>
 
 <div class="table-container col-12">
-  <table class="table bordered">
+  <table class="table bordered align-middle">
     <thead class="table-light">
       <tr>
         <th>Name</th>
@@ -16,7 +17,7 @@
         <th>Product owner</th>
         <th>Scrum Master</th>
         <th>Developers</th>
-        <!-- <th>Action</th> -->
+        <th>Action</th>
       </tr>
     </thead>
     <tbody>
@@ -29,7 +30,7 @@
             <div class="ms-3">
               <p *ngIf="userOnProject[project.id]"
               class="fw-bold mb-1 edit-link" 
-              (click)="editProject(project.id)">{{project.name}}</p>
+              (click)="openProjectDetails(project.id)">{{project.name}}</p>
 
               <p *ngIf="!userOnProject[project.id]"
               class="fw-bold mb-1">
@@ -64,10 +65,13 @@
           <span class="badge rounded-pill bg-info text-dark">Developer</span> -->
         </td>
         <td>
-          <!-- <button type="button" class="btn btn-link btn-sm btn-rounded">
-            Edit
+          <button *ngIf="scrumMasterOnProject[project.id] || currentUserAdmin"
+            (click)="editProject(project)"
+            data-bs-toggle="modal" data-bs-target="#projectModal"
+            type="button" class="btn btn-sm btn-rounded">
+            <i class="bi bi-pencil-square icon-btn"></i>
           </button>
-        </td> -->
+        </td>
       </tr>
 
     </tbody>
@@ -77,18 +81,19 @@
 
 
 <!-- Add project Modal -->
-<div class="modal fade" id="newProjectModal" tabindex="-1" aria-labelledby="newProjectModalLabel" aria-hidden="true">
+<div class="modal fade" id="projectModal" tabindex="-1" 
+  aria-labelledby="projectModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg modal-dialog-scrollable">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="newProjectModalLabel">Add project</h5>
+        <h5 class="modal-title" id="projectModalLabel">Add project</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <div class="col-12 form-group">
           <div class="row">
             <div class="col-3">Project name: </div>
-            <div class="col-9"><input [(ngModel)]="newProject.name" type="text" class="form-control"></div>
+            <div class="col-9"><input [(ngModel)]="editedProject.name" type="text" class="form-control"></div>
           </div>
         </div>
 
@@ -100,7 +105,7 @@
                 <textarea class="form-control" 
                 placeholder="Enter project description" id="descriptionTextArea" 
                 style="height: 100px"
-                [(ngModel)]="newProject.description"
+                [(ngModel)]="editedProject.description"
               ></textarea>
               </div>
             </div>
@@ -144,7 +149,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="cancelModalButton">Cancel</button>
-        <button type="button" class="btn btn-outline-success" (click)="addProject()">Save</button>
+        <button type="button" class="btn btn-outline-success" (click)="saveProject()">Save</button>
       </div>
     </div>
   </div>

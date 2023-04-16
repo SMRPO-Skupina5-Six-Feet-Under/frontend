@@ -2,7 +2,6 @@ import { Component, EventEmitter, Output } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { forkJoin, tap } from 'rxjs';
 import { Project } from 'src/app/models/project';
-import { ProjectParticipantsInput } from 'src/app/models/projectParticipantsInput';
 import { Story } from 'src/app/models/story';
 import { Task } from 'src/app/models/task';
 import { TaskService } from 'src/app/services/task.service';
@@ -21,12 +20,14 @@ export class StoryTasksPopupComponent {
   visible: boolean = false;
   storyTasks: Task[] = [];
   story: Story;
+  triggerReload: boolean = false;
 
   projectDevelopers: {id: number, fullName: string}[] = [];
 
 
   display(story: Story, project: Project){
     this.storyTasks = [];
+    this.triggerReload = false;
     this.story = JSON.parse(JSON.stringify(story));
     if(this.story != null){
       this.loadStoryTasks();
@@ -55,6 +56,8 @@ export class StoryTasksPopupComponent {
 
   close(){
     this.visible = false;
+    if(this.triggerReload)
+      this.storyTasksSaved.emit(this.story);
   }
 
   addTask(){
@@ -70,6 +73,7 @@ export class StoryTasksPopupComponent {
       this.taskService.deleteTask(task.id).pipe(
         tap(deletedTask => {
           this.storyTasks.splice(index, 1);
+          this.triggerReload = true;
         })
       ).subscribe();
       

@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { catchError, combineLatest, map, Observable} from 'rxjs';
+import { catchError, combineLatest, forkJoin, map, Observable, of} from 'rxjs';
 import { Project } from '../models/project';
 import { UserService } from './user.service';
 import { User } from '../models/user';
 import { ProjectRole } from '../enums/project-role';
 import { HandleErrorService } from './handler-error.service';
+import { ProjectParticipantsInput } from '../models/projectParticipantsInput';
 
 @Injectable({
   providedIn: 'root'
@@ -25,18 +26,53 @@ export class ProjectService {
           for (const project of projects) { //nastavimo propertije projektov za prikaz
             this.setProjectClientProperties(project, users);
           }
-          return projects;
+          return projects.sort((a,b) => a.id - b.id);
         })
     ); 
   }
 
-  addProject(newProject: Project): Observable<Project>{
+
+  //#region Save project
+  saveProject(project: Project): Observable<Project>{
+    if(project == null) return of(null);
+    if(project.id)
+      return this.updateProject(project);
+    else
+      return this.addProject(project);
+  }
+
+  private addProject(newProject: Project): Observable<Project>{
     const endpoint = 'project';
 
     return this.http.post<Project>(endpoint, newProject).pipe(
       catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }
+
+  private updateProject(project:Project): Observable<Project>{
+    const endpoint = `project/${project.id}/data`;
+
+    return forkJoin([this.http.put<Project>(endpoint, project).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    ),
+    this.updateProjectParticipants(project)
+    ]).pipe(
+      map(([project, projectParticipants]: [Project, ProjectParticipantsInput[]]) => {
+        project.projectParticipants = projectParticipants;
+        return project;
+      })
+    );
+  }
+
+  private updateProjectParticipants(project:Project): Observable<ProjectParticipantsInput[]>{
+    const endpoint = `project/${project.id}/participants`;
+
+    return this.http.put<ProjectParticipantsInput[]>(endpoint, project.projectParticipants).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
+  }
+
+  //#endregion
 
   loadProjectById(id: number): Observable<Project>{
     const endpoint = `project/${id}`;

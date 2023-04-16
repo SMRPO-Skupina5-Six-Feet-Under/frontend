@@ -129,7 +129,8 @@ export class StoryCardComponent {
 
 
   storyTasksSaved(story: Story){
-    this.storyEdited.emit(this.story);
+    // this.storyEdited.emit(this.story);
+    this.loadStoryTasks();
   }
 
 
