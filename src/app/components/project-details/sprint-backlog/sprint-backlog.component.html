@@ -1,77 +1,45 @@
 <div class="my-component-container">
 
+  <div class="col-12">
+    <div class="view-changer-button-container">
 
-<!-- imas en pogled kjer so samo kartice zgodb, na njih lahko stisnes in -->
+          <button *ngIf="displayingStories" 
+            type="button" class="btn btn-outline-success" 
+            (click)="toggleDisplay()">
+            Show sprint tasks
+          </button>
+      
+          <button *ngIf="displayingTasks" 
+            type="button" class="btn btn-outline-success" 
+            (click)="toggleDisplay()">
+            Show sprint stories
+          </button>
 
-<div class="col-12">
-  <div class="view-changer-button-container">
-    
-    <button *ngIf="displayingStories" 
-      type="button" class="btn btn-outline-success" 
-      (click)="toggleDisplay()">
-      Show tasks (neznam še al bomo sam naše al vse taske)
-    </button>
+    </div>
 
-    <button *ngIf="displayingTasks" 
-      type="button" class="btn btn-outline-success" 
-      (click)="toggleDisplay()">
-      Show sprint stories
-    </button>
-
-
-    <ng-container *ngIf="displayingStories">
-      <div class="col-12">
-        <div class="row center-elements">
-          <div class="col-8 centered">
-            <app-story-card *ngFor="let story of sprintStories"
-              [story]="story"
-              [project]="project"
-              [canDelete]="false"
-              [canEdit]="true"
-              [canAddToActiveSprint]="false"
-              [canReject]="false"
-              [canEditTasks]="true"
-              [displayTasks]="true"
-              (storyEdited)="userStoryEdited($event)"
-            ></app-story-card>
-          </div>
+  <ng-container *ngIf="displayingStories">
+    <div class="col-12">
+      <div class="row center-elements">
+        <div class="col-8" *ngFor="let story of sprintStories">
+          <app-story-card
+            [story]="story"
+            [project]="project"
+            [canDelete]="false"
+            [canEdit]="true"
+            [canAddToActiveSprint]="false"
+            [canReject]="false"
+            [canEditTasks]="true"
+            [displayTasks]="true"
+            (storyEdited)="userStoryEdited($event)"
+          ></app-story-card>
         </div>
       </div>
-    </ng-container>
+    </div>
+  </ng-container>
+
+
 
   </div>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
