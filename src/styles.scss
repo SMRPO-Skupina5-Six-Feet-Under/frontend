@@ -405,3 +405,16 @@ td{
   cursor: pointer;
   font-size: x-large;
 }
+
+.text-same-row{
+  display: flex;
+  gap: 5px;  
+}
+
+.highlighted-text{
+  color: #0DCAF0;
+}
+
+.success-text{
+  color: #198754;
+}

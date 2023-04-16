@@ -4,13 +4,13 @@
     <div class="view-changer-button-container">
 
           <button *ngIf="displayingStories" 
-            type="button" class="btn btn-outline-success" 
+            type="button" class="btn btn-outline-primary" 
             (click)="toggleDisplay()">
             Show sprint tasks
           </button>
       
           <button *ngIf="displayingTasks" 
-            type="button" class="btn btn-outline-success" 
+            type="button" class="btn btn-outline-primary" 
             (click)="toggleDisplay()">
             Show sprint stories
           </button>
@@ -37,7 +37,9 @@
     </div>
   </ng-container>
 
-
+  <app-sprint-tasks *ngIf="displayingTasks"
+    [sprintStories]="sprintStories"
+  ></app-sprint-tasks>
 
   </div>
 

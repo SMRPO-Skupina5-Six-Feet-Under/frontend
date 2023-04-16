@@ -1,0 +1,56 @@
+
+<div class="card border-secondary" > <!-- style="max-width: 18rem;" -->
+  <div class="card-header bg-transparent border-secondary">
+    <!-- {{task?.name}} -->
+  </div>
+
+  <div class="my-card-body text-secondary ">
+
+    <div class="col-12">
+      <div class="row">
+        <p>Estimate (h): {{task?.timeEstimate}}</p>
+      </div>
+    </div>
+    <p>Estimate remaining (h): {{task?.timeRemainingEstimate ? task.timeRemainingEstimate : 0}}</p>
+    <br>
+    <div class="text-same-row">
+      <b>Status / action:</b>
+      <ng-container *ngIf="!task.hasAssigneeConfirmed && (task.assigneeUserId === currentUserId
+      || task.assigneeUserId == null)">
+      <span (click)="acceptTask()" 
+        class="pointer">
+        <a>Accept task</a>
+      </span>
+
+      </ng-container>
+      <ng-container *ngIf="task.hasAssigneeConfirmed && task.assigneeUserId === currentUserId">
+        <span (click)="declineTask()" 
+          class="pointer">
+          <a>Decline task</a>
+        </span>
+      </ng-container>
+
+      <ng-container *ngIf="task.hasAssigneeConfirmed && task.assigneeUserId !== currentUserId">
+        <b class="success-text">Accepted</b>
+      </ng-container>
+        
+
+      <ng-container *ngIf="!task.hasAssigneeConfirmed && task.assigneeUserId !== currentUserId">
+        <b class="highlighted-text">Pending</b>
+      </ng-container>
+    </div>
+
+  </div>
+
+  <div class="card-footer bg-transparent border-secondary">
+    
+    <button *ngIf="!task.isFinished"
+      type="button" class="btn btn-outline-secondary btn-sm" 
+      (click)="editTask()">Edit</button>
+  </div>
+
+
+
+
+</div>
+
