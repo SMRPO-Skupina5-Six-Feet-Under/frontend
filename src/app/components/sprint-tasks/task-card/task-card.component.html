@@ -35,7 +35,7 @@
       </ng-container>
         
 
-      <ng-container *ngIf="!task.hasAssigneeConfirmed && task.assigneeUserId !== currentUserId">
+      <ng-container *ngIf="!task.hasAssigneeConfirmed && (task.assigneeUserId && task.assigneeUserId !== currentUserId)">
         <b class="highlighted-text">Pending</b>
       </ng-container>
     </div>

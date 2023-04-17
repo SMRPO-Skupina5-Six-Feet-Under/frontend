@@ -52,11 +52,11 @@
             </ng-container>
 
             <ng-container *ngIf="st.hasAssigneeConfirmed && st.assigneeUserId !== currentUserId">
-              <b>Accepted</b>
+              <b class="success-text">Accepted</b>
             </ng-container>
 
-            <ng-container *ngIf="!st.hasAssigneeConfirmed && st.assigneeUserId !== currentUserId">
-              <b>Pending</b>
+            <ng-container *ngIf="!st.hasAssigneeConfirmed && (st.assigneeUserId && st.assigneeUserId !== currentUserId)">
+              <b class="highlighted-text">Pending</b>
             </ng-container>
           </td>
 
