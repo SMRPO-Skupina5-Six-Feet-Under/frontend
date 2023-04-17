@@ -31,7 +31,7 @@ export class SprintTasksComponent {
 
 
   taskUpdated(task: Task){
-
+    this.loadSprintTasks();
   }
 
   constructor(

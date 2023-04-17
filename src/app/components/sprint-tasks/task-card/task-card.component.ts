@@ -3,6 +3,7 @@ import { take, tap } from 'rxjs';
 import { Task } from 'src/app/models/task';
 import { User } from 'src/app/models/user';
 import { LoginService } from 'src/app/services/login.service';
+import { TaskService } from 'src/app/services/task.service';
 
 //! komponenta 
 @Component({
@@ -28,11 +29,17 @@ export class TaskCardComponent {
   currentUserId: number;
 
   acceptTask(){
-    //TODO accept and emmit event
+    console.log('accepted task', this.task);
+    this.taskService.acceptTask(this.task).pipe(
+      tap(() => this.taskUpdated.emit(this.task))
+    ).subscribe();
   }
 
   declineTask(){
-    //TODO decline and emmit event
+    console.log('declined task', this.task);
+    this.taskService.declineTask(this.task).pipe(
+      tap(() => this.taskUpdated.emit(this.task))
+    ).subscribe();
   }
 
   editTask(){
@@ -41,7 +48,8 @@ export class TaskCardComponent {
 
 
   constructor(
-    private loginService: LoginService
+    private loginService: LoginService,
+    private taskService: TaskService
   ) { 
     this.setCurrentUserId();
 

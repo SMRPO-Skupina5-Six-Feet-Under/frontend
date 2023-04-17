@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HandleErrorService } from './handler-error.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, combineLatest, map, of } from 'rxjs';
+import { Observable, catchError, combineLatest, map, of, tap } from 'rxjs';
 import { Task } from '../models/task';
 import { User } from '../models/user';
 import { UserService } from './user.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,7 @@ export class TaskService {
     const endpoint = `task/${newTask.storyId}`;
 
     return this.http.post<Task>(endpoint, newTask).pipe(
+      tap(() => this.toastr.success('Task added successfully')),
       catchError(err => this.handleErrorService.handleError(err)),
     );
   }
@@ -49,6 +51,7 @@ export class TaskService {
     const endpoint = `task/${task.id}`;
     
     return this.http.put<Task>(endpoint, task).pipe(
+      tap(() => this.toastr.success('Task updated successfully')),
       catchError(err => this.handleErrorService.handleError(err)),
     );
   }
@@ -70,6 +73,7 @@ export class TaskService {
     
     task.hasAssigneeConfirmed = true;
     return this.http.put<Task>(endpoint, task).pipe(
+      tap(() => this.toastr.success('Task accepted')),
       catchError(err => this.handleErrorService.handleError(err))
     );
   }
@@ -80,6 +84,7 @@ export class TaskService {
 
     task.hasAssigneeConfirmed = false;
     return this.http.put<Task>(endpoint, task).pipe(
+      tap(() => this.toastr.success('Task declined')),
       catchError(err => this.handleErrorService.handleError(err))
     );
   }
@@ -87,7 +92,8 @@ export class TaskService {
   constructor(
     private http: HttpClient,
     private handleErrorService: HandleErrorService,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) { }
 
   private setTaskClientProperties(task: Task, users: User[]){
