@@ -1,7 +1,9 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { enableProdMode, Injectable } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { catchError, combineLatest, forkJoin, map, Observable, of} from 'rxjs';
 import { Project } from '../models/project';
+import { Message, NewMessage } from '../models/message';
 import { UserService } from './user.service';
 import { User } from '../models/user';
 import { ProjectRole } from '../enums/project-role';
@@ -88,6 +90,40 @@ export class ProjectService {
     );
   }
 
+  //#region Messages
+
+  loadMessages(projectId: number): Observable<Message[]>{
+    const endpoint = `messages/${projectId}/all`;
+
+    return combineLatest([
+      this.http.get<Message[]>(endpoint).pipe(catchError(err => this.handleErrorService.handleError(err))),
+      this.userService.getAllUsers()
+    ]).pipe(
+      map(([messages, users]: [Message[], User[]]) => {
+        for (const message of messages) { //nastavimo propertije projektov za prikaz
+          this.setMessageClientProperties(message, users);
+        }
+        return messages.sort((a,b) => a.timestamp.valueOf() - b.timestamp.valueOf());
+      })
+    );
+  }
+
+  sendMessage(projectId: number, newMessage: NewMessage): Observable<Message>{
+    const endpoint = `messages/${projectId}`;
+
+    return combineLatest([
+      this.http.post<Message>(endpoint, newMessage).pipe(catchError(err => this.handleErrorService.handleError(err))),
+      this.userService.getAllUsers()
+    ]).pipe(
+      map(([message, users]: [Message, User[]]) => {
+        this.setMessageClientProperties(message, users);
+        return message;
+      })
+    );
+  }
+
+  //#endregion
+
   constructor(
     private http: HttpClient,
     private userService: UserService,
@@ -116,4 +152,13 @@ export class ProjectService {
     });
   }
 
+  private setMessageClientProperties(message: Message, users: User[]){
+    const usr = users.find(u => u.id == message.userId);
+    const datepipe: DatePipe = new DatePipe('en-US');
+    if(usr){
+      message.userFullName = usr.firstName + " " + usr.lastName;
+      let formattedDate = datepipe.transform(message.timestamp, 'dd.MM.YYYY HH:mm:ss')
+      message.date = formattedDate;
+    }
+  }
 }

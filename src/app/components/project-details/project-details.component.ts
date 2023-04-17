@@ -21,6 +21,7 @@ export class ProjectDetailsComponent {
   displayingProductBacklog: boolean = true;
   displayingSprintBacklog: boolean = false;
   displayingSprints: boolean = false;
+  displayingForum: boolean = false;
 
   userIsScrumMaster: boolean = false;
   userIsProductOwner: boolean = false;
@@ -40,6 +41,7 @@ export class ProjectDetailsComponent {
     //dummy nastavek
     this.displayingProductBacklog = false;
     this.displayingSprintBacklog = false;
+    this.displayingForum = false;
     this.displayingSprints = true;
   }
   //#endregion
@@ -48,15 +50,23 @@ export class ProjectDetailsComponent {
   showProductBacklog(){
     this.displayingSprintBacklog = false;
     this.displayingSprints = false;
+    this.displayingForum = false;
     this.displayingProductBacklog = true;
   }
 
   showSprintBacklog(){
     this.displayingProductBacklog = false;
     this.displayingSprints = false;
+    this.displayingForum = false;
     this.displayingSprintBacklog = true;
   }
 
+  showProjectForum(){
+    this.displayingProductBacklog = false;
+    this.displayingSprints = false;
+    this.displayingSprintBacklog = false;
+    this.displayingForum = true;
+  }
   //#endregion
 
 

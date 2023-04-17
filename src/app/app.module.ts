@@ -32,6 +32,7 @@ import { StoryTasksPopupComponent } from './components/popups/story-tasks-popup/
 import { SprintTasksComponent } from './components/sprint-tasks/sprint-tasks.component';
 import { TaskCardComponent } from './components/sprint-tasks/task-card/task-card.component';
 import { TaskPopupComponent } from './components/popups/task-popup/task-popup.component';
+import { ProjectForumComponent } from './components/project-details/project-forum/project-forum.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { TaskPopupComponent } from './components/popups/task-popup/task-popup.co
     StoryTasksPopupComponent,
     SprintTasksComponent,
     TaskCardComponent,
-    TaskPopupComponent
+    TaskPopupComponent,
+    ProjectForumComponent
   ],
   imports: [
     BrowserModule,
