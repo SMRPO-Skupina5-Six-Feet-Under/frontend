@@ -31,6 +31,7 @@ import { SprintBacklogComponent } from './components/project-details/sprint-back
 import { StoryTasksPopupComponent } from './components/popups/story-tasks-popup/story-tasks-popup.component';
 import { SprintTasksComponent } from './components/sprint-tasks/sprint-tasks.component';
 import { TaskCardComponent } from './components/sprint-tasks/task-card/task-card.component';
+import { ProjectForumComponent } from './components/project-details/project-forum/project-forum.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { TaskCardComponent } from './components/sprint-tasks/task-card/task-card
     SprintBacklogComponent,
     StoryTasksPopupComponent,
     SprintTasksComponent,
-    TaskCardComponent
+    TaskCardComponent,
+    ProjectForumComponent
   ],
   imports: [
     BrowserModule,

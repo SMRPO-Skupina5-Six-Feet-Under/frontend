@@ -11,12 +11,14 @@
         <h4 *ngIf="displayingSprintBacklog">Active Sprint</h4>
         <h4 *ngIf="displayingProductBacklog">Product Backlog</h4>
         <h4 *ngIf="displayingSprints">Sprints</h4>
+        <h4 *ngIf="displayingForum">Forum</h4>
       </div>
       <div class="buttons-container">
         
         <button *ngIf="!displayingProductBacklog" type="button" class="btn btn-primary" (click)="showProductBacklog()">Product backlog</button>
         <button *ngIf="!displayingSprintBacklog && !userIsProductOwner" type="button" class="btn btn-outline-primary" (click)="showSprintBacklog()">Sprint backlog</button>
         <button *ngIf="!displayingSprints && !userIsProductOwner" type="button" class="btn btn-outline-secondary" (click)="showSprints()">Sprints</button>
+        <button *ngIf="!displayingForum" type="button" class="btn btn-outline-secondary" (click)="showProjectForum()">Forum</button>
         <!-- <button type="button" class="btn btn-info" (click)="editProjectUsers()">Users</button> -->
       </div>
     </div>
@@ -38,6 +40,11 @@
       <app-sprint-list
         [project]="project"
       ></app-sprint-list>
+    </ng-container>
+    <ng-container *ngIf="displayingForum">
+      <app-project-forum
+        [project]="project"
+      ></app-project-forum>
     </ng-container>
   </div>
 
