@@ -13,6 +13,7 @@
         <div class="cards-container">
           <app-task-card *ngFor="let unassignedTask of unassignedTasks"
             [task]="unassignedTask"
+            [project]="project"
             (taskUpdated)="taskUpdated($event)"
           ></app-task-card>
         </div>
@@ -26,6 +27,7 @@
         <div class="cards-container">
           <app-task-card *ngFor="let assignedTask of assignedTasks"
             [task]="assignedTask"
+            [project]="project"
             (taskUpdated)="taskUpdated($event)"
           ></app-task-card>
         </div>
@@ -39,6 +41,7 @@
         <div class="cards-container">
           <app-task-card *ngFor="let activeTask of activeTasks"
             [task]="activeTask"
+            [project]="project"
             (taskUpdated)="taskUpdated($event)"
           ></app-task-card>
         </div>
@@ -51,6 +54,7 @@
         <div class="cards-container">
           <app-task-card *ngFor="let finishedTask of finishedTasks"
             [task]="finishedTask"
+            [project]="project"
             (taskUpdated)="taskUpdated($event)"
           ></app-task-card>
         </div>
@@ -60,12 +64,6 @@
   </div>
 
 
-
-
-  <!-- <app-user-story-popup
-    (storySaved)="userStorySaved($event)"
-    [project]="project"
-  ></app-user-story-popup> -->
 
 
 

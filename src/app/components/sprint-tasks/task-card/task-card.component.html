@@ -54,3 +54,7 @@
 
 </div>
 
+<app-task-popup
+  [task]="task"
+  (taskSaved)="taskEdited($event)"
+></app-task-popup>

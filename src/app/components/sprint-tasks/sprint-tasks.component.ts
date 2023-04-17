@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { forkJoin, tap } from 'rxjs';
+import { Project } from 'src/app/models/project';
 import { Story } from 'src/app/models/story';
 import { Task } from 'src/app/models/task';
 import { TaskService } from 'src/app/services/task.service';
@@ -21,6 +22,8 @@ export class SprintTasksComponent {
   get sprintStories(): Story[]{
     return this._sprintStories;
   }
+
+  @Input() project: Project;
 
   //--------------end of inputs
 

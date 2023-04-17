@@ -1,0 +1,74 @@
+<div  *ngIf="visible" style="display: block;"
+class="modal show" aria-modal="true" tabindex="-1" role="dialog" > 
+    <div style="display: block; visibility: visible;" class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="storyModalLabel">User story</h5>
+          <button type="button" class="btn-close" (click)="close()" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- <div class="modal-body">
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Name:</div>
+              <div class="col-9">
+                <input [(ngModel)]="task.name" 
+                type="text" class="form-control">
+              </div>
+            </div>
+          </div> -->
+
+          <div class="col-12 form-group">
+            <div class="form-floating">
+              <div class="row">
+                <div class="col-3">Description:</div>
+                <div class="col-9">
+                  <input [(ngModel)]="task.description" 
+                  type="text" class="form-control">
+                  <!-- <textarea class="form-control" 
+                    placeholder="Enter story description" id="descriptionTextArea" 
+                    style="height: 100px"
+                    [(ngModel)]="task.storyDescription"
+                  ></textarea> -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Member:</div>
+              <div class="col-9">
+                <select class="form-select"
+                [disabled]="task.hasAssigneeConfirmed"
+                [(ngModel)]="task.assigneeUserId">
+                <option *ngFor="let pDev of projectDevelopers" value="{{pDev.id}}">
+                  {{pDev.fullName}}
+                </option>
+              </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col-12 form-group">
+            <div class="row">
+              <div class="col-3">Time (h):</div>
+              <div class="col-9">
+                <input type="number" [(ngModel)]="task.timeEstimate"
+                class="form-control">
+              </div>
+            </div>
+          </div>
+
+       
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Cancel</button>
+          <button type="button" class="btn btn-outline-success" (click)="save()">Save</button>
+        </div>
+      </div>
+    </div>
+
+</div>
+
+<div  *ngIf="visible" style="display: block;"
+  class="my-modal-backdrop-show"
+></div>

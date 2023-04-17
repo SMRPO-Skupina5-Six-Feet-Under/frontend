@@ -36,6 +36,7 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                   </td>
                   <td>
                     <select class="form-select"
+                      [disabled]="st.hasAssigneeConfirmed"
                       [(ngModel)]="st.assigneeUserId">
                       <option *ngFor="let pDev of projectDevelopers" value="{{pDev.id}}">
                         {{pDev.fullName}}
