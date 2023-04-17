@@ -184,7 +184,7 @@ export class StoryCardComponent {
       
       this.canEditTasks = (this.currentUserId === this.project.scrumMasterUserId || 
       this.project.projectParticipants.some(p => p.userId === this.currentUserId && p.roleId === ProjectRole.Developer))
-      && this.displayTasks;
+      && this.displayTasks && this.story != null && !this.story.isDone;
     }
   }
 
