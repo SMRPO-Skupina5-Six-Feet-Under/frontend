@@ -1,0 +1,45 @@
+<div class="col-12 container">
+    <div class="row forum-contents">
+        <div class="col-2"></div>
+        <div class="col-8 project-contents">
+            <div class="col-12 project-wall" id="projectWall">
+                <div class="row" *ngFor="let message of messages; index as i">
+                    <div *ngIf="message.userId === currentUser.id" class="col-12">
+                        <div class="row message-row">
+                            <div class="col-4"></div>
+                            <div class="col-8 message-container-right">
+                                <div class="message">
+                                    <div class="message-info">{{message.userFullName}}, {{message.date}}</div>
+                                    <div class="message-content">{{message.content}}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div *ngIf="message.userId !== currentUser.id" class="col-12">
+                        <div class="row message-row">
+                            <div class="col-8 message-container-left">
+                                <div class="message">
+                                    <div class="message-info">{{message.userFullName}}, {{message.date}}</div>
+                                    <div class="message-content">{{message.content}}</div>
+                                </div>
+                            </div>
+                            <div class="col-4"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 message-input">
+                <div class="row">
+                    <div class="col-11 input-text">
+                        <input type="text" [(ngModel)]="newMessage" class="form-control" placeholder="Message" (keyup.enter)="sendMessage()">
+                    </div>
+                    <div class="col-1 input-icon">
+                        <i (click)="sendMessage()" class="icon-btn bi bi-send-fill" data-bs-toggle="tooltip" data-bs-placement="top" title="Send message"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-2"></div>
+    </div>
+</div>
