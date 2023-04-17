@@ -12,6 +12,7 @@ import { TaskService } from 'src/app/services/task.service';
 import { StoryTasksPopupComponent } from '../../popups/story-tasks-popup/story-tasks-popup.component';
 import { Project } from 'src/app/models/project';
 import { LoginService } from 'src/app/services/login.service';
+import { ProjectRole } from 'src/app/enums/project-role';
 
 @Component({
   selector: 'app-story-card',
@@ -46,13 +47,25 @@ export class StoryCardComponent {
     return this._displayTasks;
   }
 
-  @Input() project: Project;
-  @Input() canEdit: boolean = true;
-  @Input() canDelete: boolean = true;
-  @Input() canAddToActiveSprint: boolean = true;
-  @Input() canReject: boolean = true;
-  @Input() canEditTasks: boolean = false;
+  private _project: Project;
+  @Input() set project(value: Project) {
+    if(value == null) return;
+    if(value !== this.project){
+      this._project = value;
+      this.setPermissions();
+    }
+  }
+  public get project(): Project {
+    return this._project;
+  }
 
+  @Input() canEdit: boolean = false;
+  @Input() canDelete: boolean = false;
+  @Input() canAddToActiveSprint: boolean = false;
+  @Input() canReject: boolean = false;
+  //---- display connected inputs
+  @Input() canEditTasks: boolean = false;
+  //---- end of display connected inputs
 
   @Output() storyDeleted: EventEmitter<number> = new EventEmitter<number>();
   @Output() storyEdited: EventEmitter<Story> = new EventEmitter<Story>();
@@ -155,10 +168,24 @@ export class StoryCardComponent {
       tap((user) => {
         if(user != null){
           this.currentUserId = user.id;
+          this.setPermissions();
         }
       }),
       take(1)
     ).subscribe();
+  }
+
+  private setPermissions(){
+    if(this.project != null && this.currentUserId != null){
+      this.canAddToActiveSprint = this.currentUserId === this.project.scrumMasterUserId;
+      this.canEdit = this.currentUserId === this.project.scrumMasterUserId;
+      this.canDelete = this.currentUserId === this.project.scrumMasterUserId;
+      this.canReject = this.currentUserId === this.project.productOwnerUserId;
+      
+      this.canEditTasks = (this.currentUserId === this.project.scrumMasterUserId || 
+      this.project.projectParticipants.some(p => p.userId === this.currentUserId && p.roleId === ProjectRole.Developer))
+      && this.displayTasks;
+    }
   }
 
   private loadStoryTasks(){
