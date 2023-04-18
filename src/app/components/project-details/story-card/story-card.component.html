@@ -97,7 +97,7 @@
       type="button" class="btn btn-outline-secondary btn-sm" 
       (click)="editTasks()">Edit tasks</button>
     
-    <button *ngIf="!story.isDone && canEdit"
+    <button *ngIf="!story.isDone && canEdit && !story.sprint_id"
     type="button" class="btn btn-outline-secondary btn-sm" (click)="editStory()">Edit</button>
   </div>
 </div>
