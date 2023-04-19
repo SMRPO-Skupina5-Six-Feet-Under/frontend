@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { catchError, tap } from 'rxjs/operators'; 
+import { catchError, map, tap } from 'rxjs/operators'; 
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { User, UserCreate } from '../models/user';
@@ -25,6 +25,7 @@ export class UserService {
     const url = "users"
     return this.http.get<User[]>(url)
       .pipe(
+        map((res: User[]) => res.sort((a, b) => a.id - b.id)),
         catchError(er => this.handleErrorService.handleError(er))
       );
   }
