@@ -7,8 +7,8 @@
   <div class="my-card-body text-secondary ">
     <div class="col-12">
       <span *ngIf="story?.priority===storyPriority.must" class="badge rounded-pill bg-danger">{{storyPriority?.must}}</span>
-      <span *ngIf="story?.priority===storyPriority.should" class="badge rounded-pill bg-warning text-dark">{{storyPriority?.could}}</span>
-      <span *ngIf="story?.priority===storyPriority.could" class="badge rounded-pill bg-primary">{{storyPriority?.should}}</span>
+      <span *ngIf="story?.priority===storyPriority.should" class="badge rounded-pill bg-warning text-dark">{{storyPriority?.should}}</span>
+      <span *ngIf="story?.priority===storyPriority.could" class="badge rounded-pill bg-primary">{{storyPriority?.could}}</span>
       <span *ngIf="story?.priority===storyPriority.wont" class="badge rounded-pill bg-secondary">{{storyPriority?.wont}}</span>
     </div>
 
