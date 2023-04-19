@@ -20,6 +20,7 @@ import { ProjectRole } from 'src/app/enums/project-role';
   styleUrls: ['./story-card.component.scss']
 })
 export class StoryCardComponent {
+  //#region inputs/outputs
   private _story: Story;
   @Input() set story(value: Story) {
     if(!value) return;
@@ -70,7 +71,8 @@ export class StoryCardComponent {
   @Output() storyDeleted: EventEmitter<number> = new EventEmitter<number>();
   @Output() storyEdited: EventEmitter<Story> = new EventEmitter<Story>();
   @Output() addedToActiveSprint: EventEmitter<Story> = new EventEmitter<Story>();
-  //-- end of input/output
+  //#endregion
+
   storyPriority = StoryPriority;
   addToActiveSprintDisabled: boolean = false;
   storyTasks: Task[] = [];
@@ -90,7 +92,7 @@ export class StoryCardComponent {
 
   editStory(){
     console.log('edit story');
-    // this.storyEdited.emit(this.story)
+    this.storyEdited.emit(this.story)
   }
 
   addToActiveSprint(){
@@ -126,7 +128,7 @@ export class StoryCardComponent {
 
   //#region Tasks
   editTasks(){
-    this.storyCard.display(this.story, this.project);
+    this.storyTasksPopup.display(this.story, this.project);
   }
 
   acceptTask(task: Task){
@@ -151,7 +153,7 @@ export class StoryCardComponent {
   //#endregion
 
 
-  @ViewChild(StoryTasksPopupComponent) storyCard: StoryTasksPopupComponent;
+  @ViewChild(StoryTasksPopupComponent) storyTasksPopup: StoryTasksPopupComponent;
   constructor(
     private storyService: StoryService,
     private sprintService: SprintService,
@@ -178,8 +180,8 @@ export class StoryCardComponent {
   private setPermissions(){
     if(this.project != null && this.currentUserId != null){
       this.canAddToActiveSprint = this.currentUserId === this.project.scrumMasterUserId;
-      this.canEdit = this.currentUserId === this.project.scrumMasterUserId;
-      this.canDelete = this.currentUserId === this.project.scrumMasterUserId;
+      this.canEdit = this.currentUserId === this.project.scrumMasterUserId || this.currentUserId === this.project.productOwnerUserId;
+      this.canDelete = this.currentUserId === this.project.scrumMasterUserId || this.currentUserId === this.project.productOwnerUserId;;
       this.canReject = this.currentUserId === this.project.productOwnerUserId;
       
       this.canEditTasks = (this.currentUserId === this.project.scrumMasterUserId || 

@@ -26,8 +26,12 @@ export class StoryService {
 
   private addStory(newStory: Story): Observable<Story>{
     const endpoint = 'story';
+
+    const storyToSave: Story = JSON.parse(JSON.stringify(newStory));
+    storyToSave.acceptenceTests = null;
+    storyToSave.timeEstimateOriginal = newStory.timeEstimate;
     const obj = {
-      story: newStory,
+      story: storyToSave,
       tests: newStory.acceptenceTests,
     }
 
@@ -37,14 +41,17 @@ export class StoryService {
   }
 
   private updateStory(story: Story): Observable<Story>{
-    //TODO implement update for acc tests - ko bo na backend also
     const endpoint = `story/${story.id}`;
 
-    // const obj = {
-    //   story: story,
-    //   tests: story.acceptenceTests,
-    // }
-    return this.http.put<Story>(endpoint, story).pipe(
+
+    const storyToSave: Story = JSON.parse(JSON.stringify(story));
+    const newAcceptanceTests = storyToSave.acceptenceTests.filter(test => test.id == null);
+    storyToSave.acceptenceTests = storyToSave.acceptenceTests.filter(test => test.id != null);
+    const obj = {
+      story: storyToSave,
+      tests: newAcceptanceTests,
+    }
+    return this.http.put<Story>(endpoint, obj).pipe(
       catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }

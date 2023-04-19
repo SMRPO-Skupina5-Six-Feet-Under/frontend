@@ -9,6 +9,7 @@ export class Story{
   priority: string = '';
   businessValue: number;
   timeEstimate: number = 0;
+  timeEstimateOriginal: number = 0;
 
   sprint_id: number; //can be null
   isDone: boolean = false;

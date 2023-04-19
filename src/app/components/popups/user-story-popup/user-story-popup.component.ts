@@ -25,7 +25,7 @@ export class UserStoryPopupComponent {
   get project(): Project{
     return this._project;
   }
-  @Output() storySaved: EventEmitter<number> = new EventEmitter<number>();
+  @Output() storySaved: EventEmitter<Story> = new EventEmitter<Story>();
   //-- end of input/output
 
   userStory: Story;
@@ -40,8 +40,6 @@ export class UserStoryPopupComponent {
     if(this.userStory != null){
 
       //! possible check if story has ID
-
-
       
       this.visible = true;
     }
@@ -57,8 +55,8 @@ export class UserStoryPopupComponent {
     else{
       this.storyService.saveStory(this.userStory).pipe(
         tap(story => {
-          this.storySaved.emit(story.id);
           this.visible = false;
+          this.storySaved.emit(story);
         })
       ).subscribe();
     }
@@ -103,7 +101,15 @@ export class UserStoryPopupComponent {
       this.toastr.warning("At least one acceptance test is required");
       return false;
     }
-    
+
+    for (const acTest of this.userStory.acceptenceTests) {
+      acTest.description = acTest.description.trim();
+      if(!acTest.description || acTest.description.length == 0){
+        this.toastr.warning("Acceptance test description is required");
+        return false;
+      }
+    }
+      
     return true;
   }
 

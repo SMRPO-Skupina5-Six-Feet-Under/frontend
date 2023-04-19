@@ -69,7 +69,7 @@ export class ProductBacklogComponent {
     this.userStoryPopupComponent.display(newUserStory);
   }
 
-  userStorySaved(newStoryId: number){
+  userStorySaved(story: Story){
     this.loadStories();
   }
   //#endregion
