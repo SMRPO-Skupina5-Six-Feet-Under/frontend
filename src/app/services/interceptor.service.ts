@@ -10,15 +10,6 @@ import { AuthService } from './auth.service';
 export class InterceptorService implements HttpInterceptor { 
   private baseURL = 'http://localhost:8003/';
 
-
-   //  const httpOptions = {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json',
-    //     Authorization: 'auth-token' //TODO pogruntat authorization za na server na kak način
-    //   })
-    // };
-    // return this.http.post<User>(logInUrl, logInData, httpOptions)
-
   constructor( 
     private router: Router, 
     private auth: AuthService 
