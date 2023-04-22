@@ -14,7 +14,7 @@
 
     <div class="col-12">
       <div class="row">
-        <p><i class="bi bi-clock-history"></i> {{story?.timeEstimate}}</p>
+        <p><i class="bi bi-clock-history"></i> (pts) {{story?.timeEstimate}}</p>
       </div>
     </div>
     <p>Business value: {{story?.businessValue}}</p>
@@ -28,7 +28,9 @@
           <th>Task</th>
           <th>Status / action</th>
           <th>Member</th>
-          <th>Remaining</th>
+          <th>Estimate (h)</th>
+          <th>Remaining (h)</th>
+          <th>Finished</th>
         </tr>
       </thead>
       <tbody>
@@ -63,9 +65,18 @@
           <td>
             {{st.asigneeFullName}}
           </td>
+
+          <td>
+            {{st.timeEstimate}}
+          </td>
         
           <td>
             {{st.timeRemainingEstimate}}
+          </td>
+
+          <td>
+            <i *ngIf="st.isFinished"
+            class="bi bi-check2 success-text"></i>
           </td>
 
           </tr>
@@ -74,11 +85,13 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
         <td>
           <ng-container *ngIf="storyTasks.length > 0">
             SUM: {{remainingTimeSUM}}
           </ng-container>
         </td>
+        <td></td>
       </tfoot>
     </table>
   </div>
