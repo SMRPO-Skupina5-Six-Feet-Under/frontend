@@ -16,8 +16,10 @@ export class HandleErrorService {
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong.
-      console.error(`Server error: ${error.status}, body was: `, error.error.detail);
-      this.toastr.error(error.error?.detail, `Backend error: ${error.status}`);
+      if(error.status){
+        console.error(`Server error: ${error.status}, body was: `, error.error?.detail);
+        this.toastr.error(error.error?.detail, `Backend error: ${error.status}`);
+      }
     }
     // Return an observable with a user-facing error message.
     return throwError(() => of(null)/* new Error('Something bad happened; please try again later.') */);
