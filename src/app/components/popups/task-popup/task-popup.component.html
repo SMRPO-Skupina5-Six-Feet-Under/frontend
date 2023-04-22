@@ -23,6 +23,7 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                 <div class="col-3">Description:</div>
                 <div class="col-9">
                   <input [(ngModel)]="task.description" 
+                  [disabled]="!!task.assigneeUserId"
                   type="text" class="form-control">
                   <!-- <textarea class="form-control" 
                     placeholder="Enter story description" id="descriptionTextArea" 
@@ -39,8 +40,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
               <div class="col-3">Member:</div>
               <div class="col-9">
                 <select class="form-select"
-                [disabled]="task.hasAssigneeConfirmed"
-                [(ngModel)]="task.assigneeUserId">
+                [(ngModel)]="task.assigneeUserId"
+                [disabled]="!!task.assigneeUserId">
                 <option *ngFor="let pDev of projectDevelopers" value="{{pDev.id}}">
                   {{pDev.fullName}}
                 </option>
@@ -53,7 +54,9 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
             <div class="row">
               <div class="col-3">Time (h):</div>
               <div class="col-9">
-                <input type="number" [(ngModel)]="task.timeEstimate"
+                <input type="number" 
+                [(ngModel)]="task.timeEstimate"
+                [disabled]="!!task.assigneeUserId"
                 class="form-control">
               </div>
             </div>
@@ -62,7 +65,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
        
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Cancel</button>
-          <button type="button" class="btn btn-outline-success" (click)="save()">Save</button>
+          <button *ngIf="!task.assigneeUserId"
+           type="button" class="btn btn-outline-success" (click)="save()">Save</button>
         </div>
       </div>
     </div>

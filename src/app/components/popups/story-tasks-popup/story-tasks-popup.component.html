@@ -24,11 +24,16 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
               <tbody>
                 <tr *ngFor="let st of storyTasks; index as i">
                   <td>
-                    <input [(ngModel)]="st.description" type="text" class="form-control">
+                    <input 
+                      [(ngModel)]="st.description" 
+                      [disabled]="!!st.assigneeUserId"
+                      type="text" class="form-control">
                   </td>
                   <td>
                     <div class="cell-align-items-center">
-                      <input type="number" [(ngModel)]="st.timeEstimate"
+                      <input type="number" 
+                        [(ngModel)]="st.timeEstimate"
+                        [disabled]="!!st.assigneeUserId"
                         min="1"
                         style="width: 75px;"
                         class="form-control">
@@ -36,8 +41,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                   </td>
                   <td>
                     <select class="form-select"
-                      [disabled]="st.hasAssigneeConfirmed"
-                      [(ngModel)]="st.assigneeUserId">
+                      [(ngModel)]="st.assigneeUserId"
+                      [disabled]="!!st.assigneeUserId">
                       <option *ngFor="let pDev of projectDevelopers" value="{{pDev.id}}">
                         {{pDev.fullName}}
                       </option>
@@ -45,7 +50,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                   </td>
                   <td class="cell-vertical-align-middle">
                     <div class="cell-align-items-center">
-                      <i class="icon-btn bi bi-trash3" 
+                      <i *ngIf="!st.assigneeUserId"
+                      class="icon-btn bi bi-trash3" 
                         (click)="deleteTask(st, i)">
                       </i>
                     </div>
