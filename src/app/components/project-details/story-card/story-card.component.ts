@@ -1,12 +1,10 @@
 import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { concatMap, map, of, take, tap } from 'rxjs';
-import { SprintStatus } from 'src/app/enums/sprint-status';
+import { take, tap } from 'rxjs';
 import { StoryPriority } from 'src/app/enums/storyPriority';
 import { Sprint } from 'src/app/models/sprint';
 import { Story } from 'src/app/models/story';
 import { Task } from 'src/app/models/task';
-import { SprintService } from 'src/app/services/sprint.service';
 import { StoryService } from 'src/app/services/story.service';
 import { TaskService } from 'src/app/services/task.service';
 import { StoryTasksPopupComponent } from '../../popups/story-tasks-popup/story-tasks-popup.component';
@@ -29,6 +27,8 @@ export class StoryCardComponent {
       this.displayStoryInfo();
       if(this.displayTasks && this.story)
         this.loadStoryTasks();
+
+      this.setTooltipText();
     }
   }
   public get story(): Story {
@@ -60,6 +60,17 @@ export class StoryCardComponent {
     return this._project;
   }
 
+  private _activeSprint: Sprint;
+  @Input() set activeSprint(value: Sprint) {
+    if(value == null) return;
+    this._activeSprint = value;
+
+    this.setTooltipText();
+  }
+  public get activeSprint(): Sprint {
+    return this._activeSprint;
+  }
+
   @Input() canEdit: boolean = false;
   @Input() canDelete: boolean = false;
   @Input() canAddToActiveSprint: boolean = false;
@@ -72,9 +83,10 @@ export class StoryCardComponent {
   @Output() storyEdited: EventEmitter<Story> = new EventEmitter<Story>();
   @Output() addedToActiveSprint: EventEmitter<Story> = new EventEmitter<Story>();
   //#endregion
-
+  tooltipText: string = '';
   storyPriority = StoryPriority;
   addToActiveSprintDisabled: boolean = false;
+  disableAddToActiveSprintVelocity: boolean = true;
   storyTasks: Task[] = [];
   currentUserId: number;
   remainingTimeSUM: number = 0;
@@ -96,23 +108,35 @@ export class StoryCardComponent {
   }
 
   addToActiveSprint(){
-    this.sprintService.loadProjectSprints(this.story.projectId).pipe(
-      map((sprints: Sprint[]) => 
-      sprints.filter(s => s.status === SprintStatus.active)),
-      concatMap((sprints: Sprint[]) => {
-        if(sprints.length === 0){
-          this.toastr.warning("No active sprint found");
-          return of(null);
-        } else{
-          this.story.sprint_id = sprints[0].id;
-          return this.storyService.updateStorySprint(this.story);
-        }
-      }),
+    if(!this.activeSprint){
+      this.toastr.warning("No active sprint found");
+      return;
+    }
+    this.story.sprint_id = this.activeSprint.id;
+    this.storyService.updateStorySprint(this.story).pipe(
       tap((savedStory: Story) => {
         this.story = JSON.parse(JSON.stringify(savedStory));
         this.addedToActiveSprint.emit(this.story);
       })
-    ).subscribe()
+    ).subscribe();
+  
+    // this.sprintService.loadProjectSprints(this.story.projectId).pipe(
+    //   map((sprints: Sprint[]) => 
+    //   sprints.filter(s => s.status === SprintStatus.active)),
+    //   concatMap((sprints: Sprint[]) => {
+    //     if(sprints.length === 0){
+    //       this.toastr.warning("No active sprint found");
+    //       return of(null);
+    //     } else{
+    //       this.story.sprint_id = sprints[0].id;
+    //       return this.storyService.updateStorySprint(this.story);
+    //     }
+    //   }),
+    //   tap((savedStory: Story) => {
+    //     this.story = JSON.parse(JSON.stringify(savedStory));
+    //     this.addedToActiveSprint.emit(this.story);
+    //   })
+    // ).subscribe()
   }
 
 
@@ -156,7 +180,6 @@ export class StoryCardComponent {
   @ViewChild(StoryTasksPopupComponent) storyTasksPopup: StoryTasksPopupComponent;
   constructor(
     private storyService: StoryService,
-    private sprintService: SprintService,
     private toastr: ToastrService,
     private taskService: TaskService,
     private loginService: LoginService
@@ -200,6 +223,14 @@ export class StoryCardComponent {
         console.log('tasks loaded', this.storyTasks);
       })
       ).subscribe();
+    }
+  }
+
+  private setTooltipText(){
+    if(this.story != null && this.activeSprint != null){
+      const newFilledVelocity = this.activeSprint.velocityFilled + this.story.timeEstimate;
+      this.tooltipText = `New sprint velocity ${newFilledVelocity} / ${this.activeSprint.velocity}`;
+      this.disableAddToActiveSprintVelocity = newFilledVelocity > this.activeSprint.velocity;
     }
   }
 

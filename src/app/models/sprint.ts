@@ -7,6 +7,7 @@ export class Sprint{
 
   //frontend only
   status: string; //enum: 'Active', 'Finished'
+  velocityFilled: number = 0;
 }
 
 // <label for="startDate">Start</label>

@@ -1,13 +1,13 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { tap } from 'rxjs';
+import { BehaviorSubject, combineLatest, filter, take, tap } from 'rxjs';
 import { StoryPriority } from 'src/app/enums/storyPriority';
 import { Project } from 'src/app/models/project';
 import { Story } from 'src/app/models/story';
 import { LoginService } from 'src/app/services/login.service';
 import { StoryService } from 'src/app/services/story.service';
 import { UserStoryPopupComponent } from '../../popups/user-story-popup/user-story-popup.component';
-import { SprintService } from 'src/app/services/sprint.service';
+import { Sprint } from 'src/app/models/sprint';
 
 @Component({
   selector: 'app-product-backlog',
@@ -26,7 +26,20 @@ export class ProductBacklogComponent {
   get project(): Project{
     return this._project;
   }
+
+  private _activeSprint: Sprint;
+  @Input() set activeSprint(value: Sprint){
+    if(!value) return;
+
+    this._activeSprint = value;
+    this.activeSprint$.next(value);
+  }
+  get activeSprint(): Sprint{
+    return this._activeSprint;
+  }
   //-- end of input/output
+  activeSprint$: BehaviorSubject<Sprint> = new BehaviorSubject<Sprint>(null);
+  stories$: BehaviorSubject<Story[]> = new BehaviorSubject<Story[]>([]);
 
   userCanAddStory: boolean = false;
 
@@ -87,9 +100,8 @@ export class ProductBacklogComponent {
     private storyService: StoryService,
     private loginService: LoginService,
     private toastr: ToastrService,
-    private sprintService: SprintService
   ) { 
-
+    this.setSprintVelocity();
   }
 
   //#region call when input for project is received
@@ -106,6 +118,7 @@ export class ProductBacklogComponent {
     this.storyService.loadProjectStories(this.project.id).pipe(
       tap((stories: Story[]) => {
         this.stories = stories.sort((a,b) => a.id - b.id);
+        this.stories$.next(this.stories);
 
         this.finishedStories = stories.filter(s => s.isDone);
         stories = stories.filter(s => !s.isDone);
@@ -119,5 +132,26 @@ export class ProductBacklogComponent {
   }
   //#endregion
 
+
+  private setSprintVelocity(){
+    combineLatest([
+      this.activeSprint$.pipe(filter(s => s != null)),
+      this.stories$.pipe(filter(s => s != null && s.length > 0))
+    ]).pipe(
+      tap(([activeSprint, stories]) => {
+        console.log("setvelocityOfStoriesOnActiveSprint");
+        const velocityOfStoriesOnActiveSprint =
+          stories.filter(s => s.sprint_id === activeSprint.id)
+          .reduce((acc, curr) => acc + curr.timeEstimate, 0);
+
+        activeSprint.velocityFilled = velocityOfStoriesOnActiveSprint;
+      })
+    ).subscribe();
+  }
+
+  ngOnDestroy(): void {
+    this.activeSprint$.complete();
+    this.stories$.complete();
+  }
 
 }

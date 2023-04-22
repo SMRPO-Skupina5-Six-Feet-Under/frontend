@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, of } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 import { Story } from '../models/story';
 import { HandleErrorService } from './handler-error.service';
 
@@ -13,6 +13,7 @@ export class StoryService {
     const endpoint = `stories/${projectId}`;
 
     return this.http.get<Story[]>(endpoint).pipe(
+      map(stories => stories.sort((a,b) => a.id - b.id)),
       catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }

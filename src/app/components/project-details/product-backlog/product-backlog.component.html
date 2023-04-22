@@ -1,7 +1,15 @@
 <div class="my-component-container">
   <div class="col-12">
-    <div class="add-user-story-btn-container">
-      <button *ngIf="userCanAddStory" type="button" class="btn btn-outline-success" (click)="addUserStory()">Add user story</button>
+    <div class="top-row-container">
+      <div class="add-user-story-btn-container">
+        <button *ngIf="userCanAddStory" type="button" class="btn btn-outline-success" (click)="addUserStory()">Add user story</button>
+      </div>
+      <div class="sprint-velocity-container" >
+        <ng-container *ngIf="activeSprint">
+          Sprint velocity (pts): {{activeSprint?.velocityFilled}} / {{activeSprint?.velocity}}
+        </ng-container>
+      </div>
+
     </div>
   </div>
 
@@ -16,6 +24,7 @@
           <app-story-card *ngFor="let wh of whStories"
             [story]="wh"
             [project]="project"
+            [activeSprint]="activeSprint"
             (storyDeleted)="whStoryDeleted($event)"
             (storyEdited)="editUserStory($event)"
           ></app-story-card>
@@ -31,6 +40,7 @@
           <app-story-card *ngFor="let unasignedStory of unasignedStories"
             [story]="unasignedStory"
             [project]="project"
+            [activeSprint]="activeSprint"
             (storyDeleted)="unasignedStoryDeleted($event)"
             (storyEdited)="editUserStory($event)"
             (addedToActiveSprint)="addedToActiveSprint($event)"
@@ -48,6 +58,7 @@
           <app-story-card *ngFor="let asignedStory of assignedStories"
             [story]="asignedStory"
             [project]="project"
+            [activeSprint]="activeSprint"
             (storyDeleted)="assignedStoryDeleted($event)"
             (storyEdited)="editUserStory($event)"
           ></app-story-card>
@@ -63,6 +74,7 @@
           <app-story-card *ngFor="let finishedStory of finishedStories"
             [story]="finishedStory"
             [project]="project"
+            [activeSprint]="activeSprint"
             (storyDeleted)="finishedStoryDeleted($event)"
             (storyEdited)="editUserStory($event)"
           ></app-story-card>

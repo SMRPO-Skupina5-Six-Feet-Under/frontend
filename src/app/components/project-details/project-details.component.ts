@@ -28,11 +28,10 @@ export class ProjectDetailsComponent {
   userIsDeveloper: boolean = false;
 
   //#region EditUsers
-  //TODO: treba komponento za urejanje userjev //najlažje modal -> premakni logiko v servis za bo ista tu in na project list
-  editProjectUsers(){ 
-    //dummy nastavek
-    console.log("editUsers");
-  }
+  // editProjectUsers(){ //? not gonna be used 
+  //   //dummy nastavek
+  //   console.log("editUsers");
+  // }
   //#endregion
 
 

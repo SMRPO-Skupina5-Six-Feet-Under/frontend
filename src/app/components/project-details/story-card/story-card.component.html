@@ -100,9 +100,13 @@
     <button *ngIf="canDelete && !story.isDone && !story.sprint_id"
       type="button" class="btn btn-outline-danger btn-sm" 
       (click)="deleteStory()"><i class="bi bi-trash3"></i></button>
-    <button *ngIf="!addToActiveSprintDisabled && canAddToActiveSprint"
+    <button *ngIf="!addToActiveSprintDisabled && canAddToActiveSprint && !disableAddToActiveSprintVelocity"
       type="button" class="btn btn-outline-secondary btn-sm" 
-      (click)="addToActiveSprint()">Add to active sprint</button>
+      (click)="addToActiveSprint()"
+      data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="tooltipText"
+      >
+      Add to active sprint
+    </button>
     <!-- nastavek za zavračanje zgodbe
       <button *ngIf="userIsProductOwner && !story.isDone && storyInActiveSprint && canReject"
     type="button" class="btn btn-outline-danger btn-sm" (click)="rejectStory()">Reject</button> -->

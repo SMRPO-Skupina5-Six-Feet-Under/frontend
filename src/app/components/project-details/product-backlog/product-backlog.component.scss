@@ -1,3 +1,10 @@
+.top-row-container{
+  display: flex;
+  justify-content: space-between;
+  // align-items: center;
+  // margin-bottom: 10px;
+}
+
 .add-user-story-btn-container>button
 {
   margin-left: 10px;
