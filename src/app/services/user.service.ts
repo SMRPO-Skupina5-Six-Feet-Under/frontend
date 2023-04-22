@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, map, tap } from 'rxjs/operators'; 
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { User, UserCreate } from '../models/user';
 import { AuthService } from './auth.service';
@@ -21,11 +21,15 @@ export class UserService {
     private handleErrorService: HandleErrorService
     ) { }
 
+  allUsers$: BehaviorSubject<User[]> = new BehaviorSubject<User[]>([]);
+
   getAllUsers(): Observable<User[]> {
     const url = "users"
     return this.http.get<User[]>(url)
       .pipe(
         map((res: User[]) => res.sort((a, b) => a.id - b.id)),
+        tap((res: User[]) => this.allUsers$.next(res)),
+        tap(() => console.log("Users loaded")),
         catchError(er => this.handleErrorService.handleError(er))
       );
   }

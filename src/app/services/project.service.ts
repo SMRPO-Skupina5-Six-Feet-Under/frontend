@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { enableProdMode, Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { catchError, combineLatest, forkJoin, map, Observable, of} from 'rxjs';
+import { catchError, combineLatest, filter, forkJoin, map, Observable, of} from 'rxjs';
 import { Project } from '../models/project';
 import { Message, NewMessage } from '../models/message';
 import { UserService } from './user.service';
@@ -14,15 +14,23 @@ import { ProjectParticipantsInput } from '../models/projectParticipantsInput';
   providedIn: 'root'
 })
 export class ProjectService {
-
+  userCacheCount = 0;
 
   loadProjects(): Observable<Project[]>{
     const endpoint = 'project/all';
 
+    let usersObservable: Observable<User[]> = this.userService.allUsers$
+    .asObservable().pipe(filter(users => users != null && users.length > 0));
+    if(this.userCacheCount > 50){
+      usersObservable = this.userService.getAllUsers();
+      this.userCacheCount = 0;
+    }
+    this.userCacheCount++;
+
     //napolnimo se z dolocenimi podatki za lazje operiranje
     return combineLatest([
       this.http.get<Project[]>(endpoint).pipe(catchError(err => this.handleErrorService.handleError(err))),
-      this.userService.getAllUsers()
+      usersObservable
       ]).pipe(
         map(([projects, users]: [Project[], User[]]) => {
           for (const project of projects) { //nastavimo propertije projektov za prikaz

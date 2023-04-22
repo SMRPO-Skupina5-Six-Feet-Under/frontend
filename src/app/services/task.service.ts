@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HandleErrorService } from './handler-error.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, combineLatest, map, of, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, filter, map, of, tap } from 'rxjs';
 import { Task } from '../models/task';
 import { User } from '../models/user';
 import { UserService } from './user.service';
@@ -11,13 +11,23 @@ import { ToastrService } from 'ngx-toastr';
   providedIn: 'root'
 })
 export class TaskService {
+  userCacheCount = 0;
 
   loadStoryTasks(storyId: number): Observable<Task[]>{
     if(!storyId) return of(null);
     const endpoint = `task/${storyId}/all`;
 
+    let usersObservable: Observable<User[]> = this.userService.allUsers$
+    .asObservable().pipe(filter(users => users != null && users.length > 0));
+    if(this.userCacheCount > 50){
+      usersObservable = this.userService.getAllUsers();
+      this.userCacheCount = 0;
+    }
+    this.userCacheCount++;
+    
+
     return combineLatest([this.http.get<Task[]>(endpoint),
-      this.userService.getAllUsers()]).pipe(
+      usersObservable]).pipe(
       map(([tasks, users]: [Task[], User[]]) => {
         tasks.forEach(task => {
           this.setTaskClientProperties(task,users);
