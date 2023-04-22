@@ -27,7 +27,7 @@ export class UserStoryPopupComponent {
   }
   @Output() storySaved: EventEmitter<Story> = new EventEmitter<Story>();
   //-- end of input/output
-
+  readOnly: boolean = false;
   userStory: Story;
   visible: boolean = false;
   storyPriorityValues = Object.values(StoryPriority);
@@ -35,7 +35,8 @@ export class UserStoryPopupComponent {
   userIsProductOwner: boolean = false;
 
 
-  display(story: Story){
+  display(story: Story, readOnly: boolean = false){
+    this.readOnly = readOnly;
     this.userStory = JSON.parse(JSON.stringify(story)); //depp copy
     if(this.userStory != null){
 

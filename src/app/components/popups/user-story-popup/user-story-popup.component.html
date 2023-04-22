@@ -10,7 +10,11 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
           <div class="col-12 form-group">
             <div class="row">
               <div class="col-3">Name:</div>
-              <div class="col-9"><input [(ngModel)]="userStory.name" type="text" class="form-control"></div>
+              <div class="col-9">
+                <input [(ngModel)]="userStory.name" 
+                type="text" class="form-control"
+                [disabled]="readOnly"
+                ></div>
             </div>
           </div>
 
@@ -23,6 +27,7 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                     placeholder="Enter story description" id="descriptionTextArea" 
                     style="height: 100px"
                     [(ngModel)]="userStory.storyDescription"
+                    [disabled]="readOnly"
                   ></textarea>
                 </div>
               </div>
@@ -34,7 +39,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
               <div class="col-3">Priority:</div>
               <div class="col-9">
                 <select class="form-select"
-                [(ngModel)]="userStory.priority">
+                [(ngModel)]="userStory.priority"
+                [disabled]="readOnly">
                   <option *ngFor="let sPV of storyPriorityValues" value="{{sPV}}">
                     {{sPV}}
                   </option>
@@ -48,7 +54,9 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
             <div class="row">
               <div class="col-3">Time estimate (pts):</div>
               <div class="col-9">
-                <input type="number" [(ngModel)]="userStory.timeEstimate"
+                <input type="number" 
+                [(ngModel)]="userStory.timeEstimate"
+                [disabled]="readOnly"
                 class="form-control">
               </div>
             </div>
@@ -58,7 +66,10 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
             <div class="row">
               <div class="col-3">Business value:</div>
               <div class="col-9">
-                <input type="number" pattern="[0-10]" min="1" max="10" step="1" [(ngModel)]="userStory.businessValue"
+                <input type="number" 
+                pattern="[0-10]" min="1" max="10" step="1" 
+                [(ngModel)]="userStory.businessValue"
+                [disabled]="readOnly"
                 class="form-control">
               </div>
             </div>
@@ -67,7 +78,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
          
 
 
-          <div class="col-12 form-group">
+          <div *ngIf="!readOnly"
+           class="col-12 form-group">
             <div class="row add-btn-container">
               <h2 class="icon-btn bi bi-plus-square" (click)="addAcceptanceTest()"></h2>
             </div>
@@ -95,12 +107,24 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
               </tbody>
             </table>
           </div>
+
+          <ng-container *ngIf="readOnly">
+            <div class="form-group col-12">
+              <div class="row">
+                <p *ngFor="let aT of userStory.acceptenceTests">
+                  <i class="blue-highlighted-text"> # {{aT.description}}</i>
+                </p>    
+              </div>
+            </div>
+          </ng-container>
   
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Cancel</button>
-          <button type="button" class="btn btn-outline-success" (click)="save()">Save</button>
+          <ng-container *ngIf="!readOnly">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Cancel</button>
+            <button type="button" class="btn btn-outline-success" (click)="save()">Save</button>
+          </ng-container>
         </div>
       </div>
     </div>

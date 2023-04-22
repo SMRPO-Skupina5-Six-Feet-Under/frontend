@@ -1,8 +1,12 @@
 
 <div class="card border-secondary" > <!-- style="max-width: 18rem;" -->
-  <div class="card-header bg-transparent border-secondary">
-    {{story?.name}}
+  <div (click)="displayStoryInfo()"
+    class="card-header bg-transparent border-secondary pointer">
+    <a>{{story?.name}}</a>
   </div>
+  <!-- <div class="card-header bg-transparent border-secondary">
+    {{story?.name}}
+  </div> -->
 
   <div class="my-card-body text-secondary ">
     <div class="col-12">
@@ -19,6 +23,16 @@
     </div>
     <p>Business value: {{story?.businessValue}}</p>
   </div>
+
+  <ng-container *ngIf="displayTasks">
+      <div class="form-group col-12">
+        <div class="row">
+          <p *ngFor="let aT of story.acceptenceTests">
+            <i class="blue-highlighted-text"> # {{aT.description}}</i>
+          </p>    
+        </div>
+      </div>
+  </ng-container>
 
   <div *ngIf="displayTasks" 
     class="col-12">
@@ -123,3 +137,7 @@
 <app-story-tasks-popup
   (storyTasksSaved)="storyTasksSaved($event)"
 ></app-story-tasks-popup>
+
+<app-user-story-popup
+  [project]="project"
+></app-user-story-popup>

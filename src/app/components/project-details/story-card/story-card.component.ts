@@ -11,6 +11,7 @@ import { StoryTasksPopupComponent } from '../../popups/story-tasks-popup/story-t
 import { Project } from 'src/app/models/project';
 import { LoginService } from 'src/app/services/login.service';
 import { ProjectRole } from 'src/app/enums/project-role';
+import { UserStoryPopupComponent } from '../../popups/user-story-popup/user-story-popup.component';
 
 @Component({
   selector: 'app-story-card',
@@ -24,7 +25,7 @@ export class StoryCardComponent {
     if(!value) return;
     if(value !== this.story){
       this._story = value;
-      this.displayStoryInfo();
+      this.setStoryFields();
       if(this.displayTasks && this.story)
         this.loadStoryTasks();
 
@@ -91,7 +92,7 @@ export class StoryCardComponent {
   currentUserId: number;
   remainingTimeSUM: number = 0;
 
-  displayStoryInfo(){
+  setStoryFields(){
     this.addToActiveSprintDisabled = false;
     console.log('display story info');
     if(this.story){
@@ -100,6 +101,10 @@ export class StoryCardComponent {
         this.addToActiveSprintDisabled = true;
       }
     }
+  }
+
+  displayStoryInfo(){
+    this.userStoryPopupComponent.display(this.story, true);
   }
 
   editStory(){
@@ -177,6 +182,7 @@ export class StoryCardComponent {
   //#endregion
 
 
+  @ViewChild(UserStoryPopupComponent) userStoryPopupComponent: UserStoryPopupComponent;
   @ViewChild(StoryTasksPopupComponent) storyTasksPopup: StoryTasksPopupComponent;
   constructor(
     private storyService: StoryService,
