@@ -225,7 +225,7 @@ export class StoryCardComponent {
       this.taskService.loadStoryTasks(this.story.id).pipe(
         tap((tasks: Task[]) => {
         this.storyTasks = tasks;
-        this.remainingTimeSUM = tasks.reduce((sum, task) => sum + task.timeRemainingEstimate ? task.timeRemainingEstimate : 0, 0);
+        this.remainingTimeSUM = tasks.reduce((sum, task) => sum + (task.timeRemainingEstimate ? task.timeRemainingEstimate : 0), 0);
         console.log('tasks loaded', this.storyTasks);
       })
       ).subscribe();
