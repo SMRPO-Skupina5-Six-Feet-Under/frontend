@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { forkJoin, tap } from 'rxjs';
+import { forkJoin, take, tap } from 'rxjs';
 import { Project } from 'src/app/models/project';
 import { Story } from 'src/app/models/story';
 import { Task } from 'src/app/models/task';
@@ -48,9 +48,12 @@ export class SprintTasksComponent {
   private loadSprintTasks(){
     if(this.sprintStories != null && this.sprintStories.length > 0){
       forkJoin(this.sprintStories.map(ss => 
-        this.taskService.loadStoryTasks(ss.id))
+        this.taskService.loadStoryTasks(ss.id)
+        .pipe(tap(tasks => console.log("tasks ", tasks)),take(1))
+        )
       ).pipe(
         tap((tasks: Task[][]) => {
+          console.log("sprint tasks ", tasks);
           this.divideAdnAssignTasksByStatus(tasks.reduce((acc, val) => acc.concat(val), []).sort((a, b) => a.id - b.id));
           console.log('sprint tasks ', this.sprintStories);
         })

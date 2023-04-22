@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { enableProdMode, Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
-import { catchError, combineLatest, filter, forkJoin, map, Observable, of} from 'rxjs';
+import { catchError, combineLatest, filter, forkJoin, map, Observable, of, take} from 'rxjs';
 import { Project } from '../models/project';
 import { Message, NewMessage } from '../models/message';
 import { UserService } from './user.service';
@@ -20,7 +20,7 @@ export class ProjectService {
     const endpoint = 'project/all';
 
     let usersObservable: Observable<User[]> = this.userService.allUsers$
-    .asObservable().pipe(filter(users => users != null && users.length > 0));
+    .asObservable().pipe(filter(users => users != null && users.length > 0), take(1));
     if(this.userCacheCount > 50){
       usersObservable = this.userService.getAllUsers();
       this.userCacheCount = 0;

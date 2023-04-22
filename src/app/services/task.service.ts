@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HandleErrorService } from './handler-error.service';
 import { HttpClient } from '@angular/common/http';
-import { Observable, catchError, combineLatest, filter, map, of, tap } from 'rxjs';
+import { Observable, catchError, combineLatest, filter, map, of, take, tap } from 'rxjs';
 import { Task } from '../models/task';
 import { User } from '../models/user';
 import { UserService } from './user.service';
@@ -27,7 +27,7 @@ export class TaskService {
     
 
     return combineLatest([this.http.get<Task[]>(endpoint),
-      usersObservable]).pipe(
+      usersObservable.pipe(take(1))]).pipe(
       map(([tasks, users]: [Task[], User[]]) => {
         tasks.forEach(task => {
           this.setTaskClientProperties(task,users);
