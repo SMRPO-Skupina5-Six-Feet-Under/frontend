@@ -97,7 +97,7 @@
   </div>
 
   <div class="card-footer bg-transparent border-secondary">
-    <button *ngIf="canDelete"
+    <button *ngIf="canDelete && !story.isDone && !story.sprint_id"
       type="button" class="btn btn-outline-danger btn-sm" 
       (click)="deleteStory()"><i class="bi bi-trash3"></i></button>
     <button *ngIf="!addToActiveSprintDisabled && canAddToActiveSprint"

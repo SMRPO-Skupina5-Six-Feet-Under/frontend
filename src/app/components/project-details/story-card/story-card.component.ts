@@ -181,7 +181,7 @@ export class StoryCardComponent {
     if(this.project != null && this.currentUserId != null){
       this.canAddToActiveSprint = this.currentUserId === this.project.scrumMasterUserId;
       this.canEdit = this.currentUserId === this.project.scrumMasterUserId || this.currentUserId === this.project.productOwnerUserId;
-      this.canDelete = this.currentUserId === this.project.scrumMasterUserId || this.currentUserId === this.project.productOwnerUserId;;
+      this.canDelete = this.currentUserId === this.project.scrumMasterUserId || this.currentUserId === this.project.productOwnerUserId;
       this.canReject = this.currentUserId === this.project.productOwnerUserId;
       
       this.canEditTasks = (this.currentUserId === this.project.scrumMasterUserId || 
