@@ -1,0 +1,16 @@
+<div class="user-tasks-container">
+
+
+
+  <div class="col-12">
+    <div class="row center-elements">
+      <div class="col-8 cards-container">
+        <app-task-card *ngFor="let userTask of userTasks"
+          [task]="userTask"
+          [project]="project"
+      ></app-task-card>
+      </div>
+    </div>
+  </div>
+
+</div>

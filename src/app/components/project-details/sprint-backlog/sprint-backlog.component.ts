@@ -53,13 +53,28 @@ export class SprintBacklogComponent {
   currentUser: User;
   displayingStories: boolean = true;
   displayingTasks: boolean = false;
+  displayingUserTasks: boolean = false;
   sprintStories: Story[] = [];
   sprintTasks: Task[] = [];
 
-  toggleDisplay(){
-    this.displayingStories = !this.displayingStories;
-    this.displayingTasks = !this.displayingTasks;
+  //#region display
+  displaySprintTasks(){
+    this.displayingStories = false;
+    this.displayingTasks = true;
+    this.displayingUserTasks = false;
   }
+  displaySprintStories(){
+    this.displayingStories = true;
+    this.displayingTasks = false;
+    this.displayingUserTasks = false;
+  }
+  displayUserTasks(){
+    this.displayingStories = false;
+    this.displayingTasks = false;
+    this.displayingUserTasks = true;
+  }
+
+  //#endregion
 
 
   userStoryEdited(story: Story){

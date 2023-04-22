@@ -3,16 +3,22 @@
   <div class="col-12">
     <div class="view-changer-button-container">
 
-          <button *ngIf="displayingStories" 
+          <button *ngIf="!displayingTasks" 
             type="button" class="btn btn-outline-primary" 
-            (click)="toggleDisplay()">
+            (click)="displaySprintTasks()">
             Show sprint tasks
           </button>
       
-          <button *ngIf="displayingTasks" 
+          <button *ngIf="!displayingStories" 
             type="button" class="btn btn-outline-primary" 
-            (click)="toggleDisplay()">
+            (click)="displaySprintStories()">
             Show sprint stories
+          </button>
+
+          <button *ngIf="!displayingUserTasks" 
+            type="button" class="btn btn-outline-secondary" 
+            (click)="displayUserTasks()">
+            My tasks
           </button>
 
     </div>
@@ -42,6 +48,12 @@
     [sprintStories]="sprintStories"
     [project]="project"
   ></app-sprint-tasks>
+
+  <app-user-tasks *ngIf="displayingUserTasks"
+    [activeSprint]="activeSprint"
+    [currentUser]="currentUser"
+    [project]="project"
+  ></app-user-tasks>
 
   </div>
 

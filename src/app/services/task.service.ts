@@ -6,6 +6,7 @@ import { Task } from '../models/task';
 import { User } from '../models/user';
 import { UserService } from './user.service';
 import { ToastrService } from 'ngx-toastr';
+import { Sprint } from '../models/sprint';
 
 @Injectable({
   providedIn: 'root'
@@ -96,6 +97,18 @@ export class TaskService {
     return this.http.put<Task>(endpoint, task).pipe(
       tap(() => this.toastr.success('Task declined')),
       catchError(err => this.handleErrorService.handleError(err))
+    );
+  }
+
+
+  //TODO task za userja za sprint
+  loadTasksForActiveSprintUser(activeSprint: Sprint, currentUser: User): Observable<Task[]>{
+    if(!activeSprint || !currentUser) return of([]);
+    const endpoint = `task/${activeSprint.id}/${currentUser.id}/all`;
+
+    return this.http.get<Task[]>(endpoint).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+      take(1)
     );
   }
 

@@ -33,6 +33,7 @@ import { SprintTasksComponent } from './components/sprint-tasks/sprint-tasks.com
 import { TaskCardComponent } from './components/sprint-tasks/task-card/task-card.component';
 import { TaskPopupComponent } from './components/popups/task-popup/task-popup.component';
 import { ProjectForumComponent } from './components/project-details/project-forum/project-forum.component';
+import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { ProjectForumComponent } from './components/project-details/project-foru
     SprintTasksComponent,
     TaskCardComponent,
     TaskPopupComponent,
-    ProjectForumComponent
+    ProjectForumComponent,
+    UserTasksComponent
   ],
   imports: [
     BrowserModule,
