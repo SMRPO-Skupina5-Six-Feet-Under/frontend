@@ -37,6 +37,14 @@ export class SprintTasksComponent {
     this.loadSprintTasks();
   }
 
+  taskDeleted(task: Task){
+    const unassignedTasksIndex = this.unassignedTasks.findIndex(t => t.id === task.id);
+    if(unassignedTasksIndex > -1){
+      this.unassignedTasks.splice(unassignedTasksIndex, 1);
+      return;
+    }
+  }
+
   constructor(
     private taskService: TaskService,
   ) { 

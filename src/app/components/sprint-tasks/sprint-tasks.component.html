@@ -15,6 +15,7 @@
             [task]="unassignedTask"
             [project]="project"
             (taskUpdated)="taskUpdated($event)"
+            (taskDeleted)="taskDeleted($event)"
           ></app-task-card>
         </div>
       </div>
@@ -29,6 +30,7 @@
             [task]="assignedTask"
             [project]="project"
             (taskUpdated)="taskUpdated($event)"
+            (taskDeleted)="taskDeleted($event)"
           ></app-task-card>
         </div>
 
@@ -43,6 +45,7 @@
             [task]="activeTask"
             [project]="project"
             (taskUpdated)="taskUpdated($event)"
+            (taskDeleted)="taskDeleted($event)"
           ></app-task-card>
         </div>
       </div>
@@ -56,6 +59,7 @@
             [task]="finishedTask"
             [project]="project"
             (taskUpdated)="taskUpdated($event)"
+            (taskDeleted)="taskDeleted($event)"
           ></app-task-card>
         </div>
       </div>

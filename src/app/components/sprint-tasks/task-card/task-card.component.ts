@@ -15,6 +15,7 @@ import { Project } from 'src/app/models/project';
 })
 export class TaskCardComponent {
   @Output() taskUpdated = new EventEmitter<Task>();
+  @Output() taskDeleted = new EventEmitter<Task>();
   
   private _task: Task;
   @Input() set task(value: Task){
@@ -48,6 +49,12 @@ export class TaskCardComponent {
 
   editTask(){
     this.taskPopup.display(this.task, this.project);
+  }
+
+  deleteTask(){
+    this.taskService.deleteTask(this.task.id).pipe(
+      tap((deletedTask: Task) => this.taskDeleted.emit(deletedTask))
+    ).subscribe();
   }
 
   taskEdited(task: Task){
