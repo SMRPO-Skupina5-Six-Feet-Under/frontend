@@ -6,7 +6,7 @@ export class Task{
   assigneeUserId: number;
   hasAssigneeConfirmed: boolean = false;
   isActive: boolean = false;
-  isFinished: boolean = false;
+  isDone: boolean = false;
   storyId: number;
 
 

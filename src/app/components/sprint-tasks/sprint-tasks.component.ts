@@ -78,7 +78,7 @@ export class SprintTasksComponent {
     this.activeTasks = [];
     this.finishedTasks = [];
     for (const task of tasks) {
-      if(task.isFinished){
+      if(task.isDone){
         this.finishedTasks.push(task);
         continue;
       }

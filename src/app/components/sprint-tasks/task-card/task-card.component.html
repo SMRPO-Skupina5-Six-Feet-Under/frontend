@@ -49,8 +49,18 @@
       (click)="deleteTask()">
       <i class="bi bi-trash3"></i>
     </button>
+
+    <button *ngIf="!task.isDone && !task.isActive"
+      type="button" class="btn btn-outline-primary btn-sm" 
+      (click)="startTask()">Start
+    </button>
+
+    <button *ngIf="task.isActive"
+      type="button" class="btn btn-outline-secondary btn-sm" 
+      (click)="stopTask()">Stop
+    </button>
     
-    <button *ngIf="!task.isFinished"
+    <button *ngIf="!task.isDone"
       type="button" class="btn btn-outline-secondary btn-sm" 
       (click)="editTask()">Edit
     </button>

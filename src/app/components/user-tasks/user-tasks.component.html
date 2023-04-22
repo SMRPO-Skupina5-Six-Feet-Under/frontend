@@ -8,6 +8,8 @@
         <app-task-card *ngFor="let userTask of userTasks"
           [task]="userTask"
           [project]="project"
+          [showStartStop]="true"
+          (taskUpdated)="taskUpdated($event)" 
       ></app-task-card>
       </div>
     </div>

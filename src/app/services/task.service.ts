@@ -7,6 +7,7 @@ import { User } from '../models/user';
 import { UserService } from './user.service';
 import { ToastrService } from 'ngx-toastr';
 import { Sprint } from '../models/sprint';
+import { WorkTime } from '../models/workTime';
 
 @Injectable({
   providedIn: 'root'
@@ -101,7 +102,6 @@ export class TaskService {
   }
 
 
-  //TODO task za userja za sprint
   loadTasksForActiveSprintUser(activeSprint: Sprint, currentUser: User): Observable<Task[]>{
     if(!activeSprint || !currentUser) return of([]);
     const endpoint = `task/${activeSprint.id}/${currentUser.id}/all`;
@@ -111,6 +111,40 @@ export class TaskService {
       take(1)
     );
   }
+
+  //#region Task work times
+  startTask(task: Task): Observable<Task>{
+    if(task == null) return of(null);
+    const endpoint = `task/start/${task.id}`;
+
+    return this.http.put<Task>(endpoint, task).pipe(
+      tap(() => this.toastr.success('Task started')),
+      catchError(err => this.handleErrorService.handleError(err))
+    );
+  }
+
+  stopTask(task: Task): Observable<WorkTime>{
+    if(task == null) return of(null);
+    const endpoint = `task/stop/${task.id}`;
+
+    return this.http.put<WorkTime>(endpoint, task).pipe(
+      tap(() => this.toastr.success('Task stopped')),
+      catchError(err => this.handleErrorService.handleError(err))
+    );
+  }
+
+  myWorkTimesTask(task: Task): Observable<WorkTime>{
+    if(task == null) return of(null);
+    const endpoint = `task/worktime/my/${task.id}`;
+
+    return this.http.get<WorkTime>(endpoint).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+      take(1)
+    );
+  }
+
+
+  //#endregion
 
   constructor(
     private http: HttpClient,

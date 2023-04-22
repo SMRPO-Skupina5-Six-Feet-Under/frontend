@@ -44,7 +44,7 @@ export class StoryTasksPopupComponent {
       return;
     else{
       forkJoin(
-        this.storyTasks.filter(st => !st.isFinished).map(st => this.taskService.saveTask(st))
+        this.storyTasks.filter(st => !st.isDone).map(st => this.taskService.saveTask(st))
       ).pipe(
         tap(savedTasks => {
           this.storyTasksSaved.emit(this.story);

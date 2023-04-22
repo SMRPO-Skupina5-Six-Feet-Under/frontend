@@ -30,6 +30,7 @@ export class TaskCardComponent {
   }
 
   @Input() project: Project;
+  @Input() showStartStop: boolean = false;
   //--------------end of inputs
   currentUserId: number;
 
@@ -59,6 +60,18 @@ export class TaskCardComponent {
 
   taskEdited(task: Task){
     this.taskUpdated.emit(task);
+  }
+
+  startTask(){
+    this.taskService.startTask(this.task).pipe(
+      tap((startedTask: Task) => this.taskEdited(startedTask))
+    ).subscribe();
+  }
+
+  stopTask(){
+    this.taskService.stopTask(this.task).pipe(
+      tap(() => this.taskEdited(this.task))
+    ).subscribe();
   }
 
   @ViewChild(TaskPopupComponent) taskPopup: TaskPopupComponent;

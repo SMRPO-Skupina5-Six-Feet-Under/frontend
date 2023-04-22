@@ -39,6 +39,9 @@ export class UserTasksComponent {
   //#endregion
   userTasks: Task[] = [];
 
+  taskUpdated(task: Task){
+    this.loadSprintUserTasks();
+  }
 
   constructor(
     private taskService: TaskService
