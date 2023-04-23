@@ -114,7 +114,7 @@
     <button *ngIf="canDelete && !story.isDone && !story.sprint_id"
       type="button" class="btn btn-outline-danger btn-sm" 
       (click)="deleteStory()"><i class="bi bi-trash3"></i></button>
-    <button *ngIf="!addToActiveSprintDisabled && canAddToActiveSprint && !disableAddToActiveSprintVelocity"
+    <button *ngIf="!addToActiveSprintDisabled && canAddToActiveSprint && !disableAddToActiveSprintVelocity && !story.sprint_id"
       type="button" class="btn btn-outline-secondary btn-sm" 
       (click)="addToActiveSprint()"
       data-bs-toggle="tooltip" data-bs-placement="bottom" [title]="tooltipText"
