@@ -71,6 +71,14 @@ export class StoryService {
 
   
 
+  updateStoryTimeEstimate(story: Story): Observable<Story>{
+    const endpoint = `story/${story.id}/timeEstimate`;
+
+    return this.http.put<Story>(endpoint, story).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
+  }
+
   updateStorySprint(story: Story): Observable<Story>{
     const endpoint = `story/${story.id}/sprint/`;
 
