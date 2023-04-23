@@ -15,36 +15,42 @@
     <br>
     <div class="text-same-row">
       <b>Status / action:</b>
-      <ng-container *ngIf="!task.hasAssigneeConfirmed && (task.assigneeUserId === currentUserId
-      || task.assigneeUserId == null)">
-      <span (click)="acceptTask()" 
-        class="pointer">
-        <a>Accept task</a>
-      </span>
-
+      <ng-container *ngIf="task.isDone">
+        <b class="success-text">Done</b>
       </ng-container>
-      <ng-container *ngIf="task.hasAssigneeConfirmed && task.assigneeUserId === currentUserId">
-        <span (click)="declineTask()" 
+      <ng-container *ngIf="!task.isDone">
+        <ng-container *ngIf="!task.hasAssigneeConfirmed && (task.assigneeUserId === currentUserId
+        || task.assigneeUserId == null)">
+        <span (click)="acceptTask()" 
           class="pointer">
-          <a>Decline task</a>
+          <a>Accept task</a>
         </span>
-      </ng-container>
 
-      <ng-container *ngIf="task.hasAssigneeConfirmed && task.assigneeUserId !== currentUserId">
-        <b class="success-text">Accepted</b>
-      </ng-container>
-        
+        </ng-container>
+        <ng-container *ngIf="task.hasAssigneeConfirmed && task.assigneeUserId === currentUserId">
+          <span (click)="declineTask()" 
+            class="pointer">
+            <a>Decline task</a>
+          </span>
+        </ng-container>
 
-      <ng-container *ngIf="!task.hasAssigneeConfirmed && (task.assigneeUserId && task.assigneeUserId !== currentUserId)">
-        <b class="highlighted-text">Pending</b>
+        <ng-container *ngIf="task.hasAssigneeConfirmed && task.assigneeUserId !== currentUserId">
+          <b class="success-text">Accepted</b>
+        </ng-container>
+          
+
+        <ng-container *ngIf="!task.hasAssigneeConfirmed && (task.assigneeUserId && task.assigneeUserId !== currentUserId)">
+          <b class="highlighted-text">Pending</b>
+        </ng-container>
       </ng-container>
+      
     </div>
 
   </div>
 
   <div class="card-footer bg-transparent border-secondary">
 
-    <button *ngIf="!task.assigneeUserId"
+    <button *ngIf="!task.isDone && !task.assigneeUserId"
       type="button" class="btn btn-outline-danger btn-sm" 
       (click)="deleteTask()">
       <i class="bi bi-trash3"></i>

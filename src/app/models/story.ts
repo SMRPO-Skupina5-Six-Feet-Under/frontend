@@ -10,6 +10,8 @@ export class Story{
   businessValue: number;
   timeEstimate: number = 0;
   timeEstimateOriginal: number = 0;
+  rejectReason: string;
+  isConfirmed: boolean = false;
 
   sprint_id: number; //can be null
   isDone: boolean = false;

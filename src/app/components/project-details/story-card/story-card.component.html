@@ -52,27 +52,32 @@
           <td>{{st.description}}</td>
 
           <td>
-            <ng-container *ngIf="!st.hasAssigneeConfirmed && (st.assigneeUserId === currentUserId
-            || st.assigneeUserId == null)">
-            <div (click)="acceptTask(st)" 
-              class="pointer">
-              <a>Accept task</a>
-            </div>
-
+            <ng-container *ngIf="st.isDone">
+              <b class="success-text">Done</b>
             </ng-container>
-            <ng-container *ngIf="st.hasAssigneeConfirmed && st.assigneeUserId === currentUserId">
-              <div (click)="declineTask(st)" 
+            <ng-container *ngIf="!st.isDone">
+              <ng-container *ngIf="!st.hasAssigneeConfirmed && (st.assigneeUserId === currentUserId
+              || st.assigneeUserId == null)">
+              <div (click)="acceptTask(st)" 
                 class="pointer">
-                <a>Decline task</a>
+                <a>Accept task</a>
               </div>
-            </ng-container>
-
-            <ng-container *ngIf="st.hasAssigneeConfirmed && st.assigneeUserId !== currentUserId">
-              <b class="success-text">Accepted</b>
-            </ng-container>
-
-            <ng-container *ngIf="!st.hasAssigneeConfirmed && (st.assigneeUserId && st.assigneeUserId !== currentUserId)">
-              <b class="highlighted-text">Pending</b>
+  
+              </ng-container>
+              <ng-container *ngIf="st.hasAssigneeConfirmed && st.assigneeUserId === currentUserId">
+                <div (click)="declineTask(st)" 
+                  class="pointer">
+                  <a>Decline task</a>
+                </div>
+              </ng-container>
+  
+              <ng-container *ngIf="st.hasAssigneeConfirmed && st.assigneeUserId !== currentUserId">
+                <b class="success-text">Accepted</b>
+              </ng-container>
+  
+              <ng-container *ngIf="!st.hasAssigneeConfirmed && (st.assigneeUserId && st.assigneeUserId !== currentUserId)">
+                <b class="highlighted-text">Pending</b>
+              </ng-container>
             </ng-container>
           </td>
 
