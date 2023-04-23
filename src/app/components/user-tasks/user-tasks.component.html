@@ -8,6 +8,7 @@
         <app-task-card *ngFor="let userTask of userTasks"
           [task]="userTask"
           [project]="project"
+          [activeSprint]="activeSprint"
           [showStartStop]="true"
           (taskUpdated)="taskUpdated($event)" 
       ></app-task-card>

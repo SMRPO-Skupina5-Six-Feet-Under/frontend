@@ -34,6 +34,7 @@ import { TaskCardComponent } from './components/sprint-tasks/task-card/task-card
 import { TaskPopupComponent } from './components/popups/task-popup/task-popup.component';
 import { ProjectForumComponent } from './components/project-details/project-forum/project-forum.component';
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
+import { UserTaskWorktimesPopupComponent } from './components/popups/user-task-worktimes-popup/user-task-worktimes-popup.component';
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { UserTasksComponent } from './components/user-tasks/user-tasks.component
     TaskCardComponent,
     TaskPopupComponent,
     ProjectForumComponent,
-    UserTasksComponent
+    UserTasksComponent,
+    UserTaskWorktimesPopupComponent
   ],
   imports: [
     BrowserModule,

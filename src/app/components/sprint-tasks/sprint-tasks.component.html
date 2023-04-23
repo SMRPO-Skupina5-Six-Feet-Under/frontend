@@ -14,6 +14,7 @@
           <app-task-card *ngFor="let unassignedTask of unassignedTasks"
             [task]="unassignedTask"
             [project]="project"
+            [activeSprint]="activeSprint"
             (taskUpdated)="taskUpdated($event)"
             (taskDeleted)="taskDeleted($event)"
           ></app-task-card>
@@ -29,6 +30,7 @@
           <app-task-card *ngFor="let assignedTask of assignedTasks"
             [task]="assignedTask"
             [project]="project"
+            [activeSprint]="activeSprint"
             (taskUpdated)="taskUpdated($event)"
             (taskDeleted)="taskDeleted($event)"
           ></app-task-card>
@@ -44,6 +46,7 @@
           <app-task-card *ngFor="let activeTask of activeTasks"
             [task]="activeTask"
             [project]="project"
+            [activeSprint]="activeSprint"
             (taskUpdated)="taskUpdated($event)"
             (taskDeleted)="taskDeleted($event)"
           ></app-task-card>
@@ -58,6 +61,7 @@
           <app-task-card *ngFor="let finishedTask of finishedTasks"
             [task]="finishedTask"
             [project]="project"
+            [activeSprint]="activeSprint"
             (taskUpdated)="taskUpdated($event)"
             (taskDeleted)="taskDeleted($event)"
           ></app-task-card>

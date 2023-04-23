@@ -55,6 +55,12 @@
       (click)="startTask()">Start
     </button>
 
+    <button *ngIf="!task.isDone && !task.isActive"
+      type="button" class="btn btn-outline-primary btn-sm" 
+      (click)="showMyTimes()">
+      My times
+    </button>
+
     <button *ngIf="task.isActive"
       type="button" class="btn btn-outline-secondary btn-sm" 
       (click)="stopTask()">Stop
@@ -75,3 +81,6 @@
   [task]="task"
   (taskSaved)="taskEdited($event)"
 ></app-task-popup>
+
+
+<app-user-task-worktimes-popup></app-user-task-worktimes-popup>

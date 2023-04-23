@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { forkJoin, take, tap } from 'rxjs';
 import { Project } from 'src/app/models/project';
+import { Sprint } from 'src/app/models/sprint';
 import { Story } from 'src/app/models/story';
 import { Task } from 'src/app/models/task';
 import { TaskService } from 'src/app/services/task.service';
@@ -24,6 +25,7 @@ export class SprintTasksComponent {
   }
 
   @Input() project: Project;
+  @Input() activeSprint: Sprint;
 
   //--------------end of inputs
 

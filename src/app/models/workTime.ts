@@ -5,4 +5,8 @@ export class WorkTime{
   date: Date;
   timeDone: number;
   timeRemainingEstimate: number;
+
+
+  //polja na klientu
+  filler: boolean = false; // for days no time have been logged
 }

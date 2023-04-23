@@ -133,13 +133,49 @@ export class TaskService {
     );
   }
 
-  myWorkTimesTask(task: Task): Observable<WorkTime>{
-    if(task == null) return of(null);
+  loadMyWorkTimesTask(task: Task): Observable<WorkTime[]>{
+    if(task == null) return of([]);
     const endpoint = `task/worktime/my/${task.id}`;
 
-    return this.http.get<WorkTime>(endpoint).pipe(
+    return this.http.get<WorkTime[]>(endpoint).pipe(
+      map((workTimes: WorkTime[]) => {
+        const orderedWorkTimes = workTimes.sort((a,b) => {
+          return (new Date(a.date)).getTime() - (new Date(b.date)).getTime();
+        });
+
+        return orderedWorkTimes;
+      }),
       catchError(err => this.handleErrorService.handleError(err)),
       take(1)
+    );
+  }
+
+  saveWorkTime(workTime: WorkTime): Observable<WorkTime>{
+    if(workTime == null) return of(null);
+    
+    const saveWorkTime: WorkTime = JSON.parse(JSON.stringify(workTime));
+    if(saveWorkTime.id)
+      return this.updateWorkTime(saveWorkTime);
+    else
+      return this.addWorkTime(saveWorkTime);
+  }
+
+  private updateWorkTime(workTime: WorkTime): Observable<WorkTime>{
+    const endpoint = `task/worktime/${workTime.id}`;
+
+    return this.http.put<WorkTime>(endpoint, workTime).pipe(
+      // tap(() => this.toastr.success('Work time updated successfully')),
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
+  }
+
+  private addWorkTime(workTime: WorkTime): Observable<WorkTime>{
+    return of(null); //TODO implement backend
+    const endpoint = `task/worktime/${workTime.id}`;
+
+    return this.http.post<WorkTime>(endpoint, workTime).pipe(
+      // tap(() => this.toastr.success('Work time updated successfully')),
+      catchError(err => this.handleErrorService.handleError(err)),
     );
   }
 

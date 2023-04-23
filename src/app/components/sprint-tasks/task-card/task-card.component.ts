@@ -6,6 +6,8 @@ import { LoginService } from 'src/app/services/login.service';
 import { TaskService } from 'src/app/services/task.service';
 import { TaskPopupComponent } from '../../popups/task-popup/task-popup.component';
 import { Project } from 'src/app/models/project';
+import { UserTaskWorktimesPopupComponent } from '../../popups/user-task-worktimes-popup/user-task-worktimes-popup.component';
+import { Sprint } from 'src/app/models/sprint';
 
 //! komponenta 
 @Component({
@@ -31,6 +33,7 @@ export class TaskCardComponent {
 
   @Input() project: Project;
   @Input() showStartStop: boolean = false;
+  @Input() activeSprint: Sprint
   //--------------end of inputs
   currentUserId: number;
 
@@ -62,6 +65,7 @@ export class TaskCardComponent {
     this.taskUpdated.emit(task);
   }
 
+  //#region Times
   startTask(){
     this.taskService.startTask(this.task).pipe(
       tap((startedTask: Task) => this.taskEdited(startedTask))
@@ -74,6 +78,14 @@ export class TaskCardComponent {
     ).subscribe();
   }
 
+  showMyTimes(){
+    this.userTaskWorktimes.display(this.task, this.activeSprint, this.currentUserId);
+    //TODO check for correctness
+  }
+
+  //#endregion
+
+  @ViewChild(UserTaskWorktimesPopupComponent) userTaskWorktimes: UserTaskWorktimesPopupComponent;
   @ViewChild(TaskPopupComponent) taskPopup: TaskPopupComponent;
   constructor(
     private loginService: LoginService,
