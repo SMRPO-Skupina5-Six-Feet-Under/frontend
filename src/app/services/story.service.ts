@@ -82,6 +82,18 @@ export class StoryService {
     );
   }
 
+  acceptStory(story: Story): Observable<Story>{
+    if(story == null) return of(null);
+
+    const storyToAccept: Story = JSON.parse(JSON.stringify(story));
+    storyToAccept.isConfirmed = true;
+    const endpoint = `story/${storyToAccept.id}/accept`;
+
+    return this.http.post<Story>(endpoint, storyToAccept).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
+  }
+
 
 
 

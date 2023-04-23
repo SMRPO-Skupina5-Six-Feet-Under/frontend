@@ -126,6 +126,13 @@
       >
       Add to active sprint
     </button>
+
+    <button *ngIf="displayAcceptStory && currentUserPO && story.isDone && !story.isConfirmed"
+      type="button" class="btn btn-outline-success btn-sm" 
+      (click)="acceptStory()">
+      Accept story
+    </button>
+
     <!-- nastavek za zavračanje zgodbe
       <button *ngIf="userIsProductOwner && !story.isDone && storyInActiveSprint && canReject"
     type="button" class="btn btn-outline-danger btn-sm" (click)="rejectStory()">Reject</button> -->

@@ -76,6 +76,7 @@ export class StoryCardComponent {
   @Input() canDelete: boolean = false;
   @Input() canAddToActiveSprint: boolean = false;
   @Input() canReject: boolean = false;
+  @Input() displayAcceptStory: boolean = false;
   //---- display connected inputs
   @Input() canEditTasks: boolean = false;
   //---- end of display connected inputs
@@ -90,6 +91,8 @@ export class StoryCardComponent {
   disableAddToActiveSprintVelocity: boolean = true;
   storyTasks: Task[] = [];
   currentUserId: number;
+  currentUserPO: boolean = false;
+  currentUserSM: boolean = false;
   remainingTimeSUM: number = 0;
 
   setStoryFields(){
@@ -142,6 +145,15 @@ export class StoryCardComponent {
     //     this.addedToActiveSprint.emit(this.story);
     //   })
     // ).subscribe()
+  }
+
+  acceptStory(){
+    this.storyService.acceptStory(this.story).pipe(
+      tap((savedStory: Story) => {
+        this.story = JSON.parse(JSON.stringify(savedStory));
+        this.storyEdited.emit(this.story);
+      })
+    ).subscribe();
   }
 
 
@@ -208,12 +220,15 @@ export class StoryCardComponent {
 
   private setPermissions(){
     if(this.project != null && this.currentUserId != null){
-      this.canAddToActiveSprint = this.currentUserId === this.project.scrumMasterUserId;
-      this.canEdit = this.currentUserId === this.project.scrumMasterUserId || this.currentUserId === this.project.productOwnerUserId;
-      this.canDelete = this.currentUserId === this.project.scrumMasterUserId || this.currentUserId === this.project.productOwnerUserId;
-      this.canReject = this.currentUserId === this.project.productOwnerUserId;
+      this.currentUserSM = this.currentUserId === this.project.scrumMasterUserId;
+      this.currentUserPO = this.currentUserId === this.project.productOwnerUserId;
+      this.canAddToActiveSprint = this.currentUserSM;
+      this.canEdit = this.currentUserSM || this.currentUserPO;
+      this.canDelete = this.currentUserSM || this.currentUserPO;
+      this.canReject = this.currentUserPO;
       
-      this.canEditTasks = (this.currentUserId === this.project.scrumMasterUserId || 
+
+      this.canEditTasks = (this.currentUserSM || 
       this.project.projectParticipants.some(p => p.userId === this.currentUserId && p.roleId === ProjectRole.Developer))
       && this.displayTasks && this.story != null && !this.story.isDone;
     }
