@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild, ElementRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { take, tap } from 'rxjs';
 import { StoryPriority } from 'src/app/enums/storyPriority';
@@ -26,6 +26,7 @@ export class StoryCardComponent {
     if(value !== this.story){
       this._story = value;
       this.setStoryFields();
+      this.originalTimeEstimate = this._story.timeEstimate;
       if(this.displayTasks && this.story)
         this.loadStoryTasks();
 
@@ -34,6 +35,9 @@ export class StoryCardComponent {
   }
   public get story(): Story {
     return this._story;
+  }
+  public set storyTimeEstimate(value: number) {
+    this._story.timeEstimate = value;
   }
 
   private _displayTasks: boolean = false;
@@ -72,6 +76,15 @@ export class StoryCardComponent {
     return this._activeSprint;
   }
 
+  private _storyUnasigned: boolean = false;
+  @Input() set storyUnasigned(value: boolean) {
+    if(value == null) return;
+    this._storyUnasigned = value;
+  }
+  public get storyUnasigned(): boolean {
+    return this._storyUnasigned;
+  }
+
   @Input() canEdit: boolean = false;
   @Input() canDelete: boolean = false;
   @Input() canAddToActiveSprint: boolean = false;
@@ -94,6 +107,7 @@ export class StoryCardComponent {
   currentUserPO: boolean = false;
   currentUserSM: boolean = false;
   remainingTimeSUM: number = 0;
+  originalTimeEstimate: number;
 
   setStoryFields(){
     this.addToActiveSprintDisabled = false;
@@ -121,12 +135,28 @@ export class StoryCardComponent {
       return;
     }
     this.story.sprint_id = this.activeSprint.id;
-    this.storyService.updateStorySprint(this.story).pipe(
-      tap((savedStory: Story) => {
-        this.story = JSON.parse(JSON.stringify(savedStory));
-        this.addedToActiveSprint.emit(this.story);
-      })
-    ).subscribe();
+    if(this.originalTimeEstimate == this.story.timeEstimate){
+      this.storyService.updateStorySprint(this.story).pipe(
+        tap((savedStory: Story) => {
+          this.story = JSON.parse(JSON.stringify(savedStory));
+          this.addedToActiveSprint.emit(this.story);
+        })
+      ).subscribe();
+    }else{
+      // if user changed time estimate, then update time estimate first and then move story to assigned
+      this.storyService.updateStoryTimeEstimate(this.story).pipe(
+        tap((savedStory: Story) => {
+        })
+      ).subscribe().add(() => {
+        this.storyService.updateStorySprint(this.story).pipe(
+          tap((savedStory: Story) => {
+            this.story = JSON.parse(JSON.stringify(savedStory));
+            this.addedToActiveSprint.emit(this.story);
+          })
+        ).subscribe();
+      });
+    }
+
   
     // this.sprintService.loadProjectSprints(this.story.projectId).pipe(
     //   map((sprints: Sprint[]) => 
@@ -193,9 +223,66 @@ export class StoryCardComponent {
 
   //#endregion
 
+  // for updating time estimates directly
+  checkTimeEstimate(){
+    let newtimeEstimate: number;
+    
+    try{
+      newtimeEstimate = Number(this.timeEstimateInput.nativeElement.value);
+    }
+    catch(e){
+      this.toastr.warning("Time estimate must be integer");
+      return;
+    }
+
+    if(newtimeEstimate && !Number.isInteger(newtimeEstimate)){
+      this.toastr.warning("Time estimate must be integer");
+      return;
+    }
+    if(newtimeEstimate < 0){
+      this.toastr.warning("Time estimate must be positive number");
+      return;
+    }
+    this._story.timeEstimate = newtimeEstimate;
+    this.setStoryFields();
+    this.setTooltipText();
+  }
+
+  saveTimeEstimate(){
+    let newtimeEstimate: number;
+    
+    try{
+      newtimeEstimate = Number(this.timeEstimateInput.nativeElement.value);
+    }
+    catch(e){
+      this.toastr.warning("Time estimate must be integer");
+      return;
+    }
+
+    if(newtimeEstimate && !Number.isInteger(newtimeEstimate)){
+      this.toastr.warning("Time estimate must be integer");
+      return;
+    }
+    if(newtimeEstimate < 0){
+      this.toastr.warning("Time estimate must be positive number");
+      return;
+    }
+
+    this._story.timeEstimate = newtimeEstimate;
+    this.setStoryFields();
+    this.setTooltipText();
+
+    this.storyService.updateStoryTimeEstimate(this.story).pipe(
+      tap((savedStory: Story) => {
+        this.toastr.success("Time estimate successfully changed.");
+      })
+    ).subscribe();
+  }
+
 
   @ViewChild(UserStoryPopupComponent) userStoryPopupComponent: UserStoryPopupComponent;
   @ViewChild(StoryTasksPopupComponent) storyTasksPopup: StoryTasksPopupComponent;
+  @ViewChild('timeEstimateInput') timeEstimateInput: ElementRef;
   constructor(
     private storyService: StoryService,
     private toastr: ToastrService,
