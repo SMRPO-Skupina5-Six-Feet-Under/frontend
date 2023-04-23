@@ -9,6 +9,7 @@ import { HandleErrorService } from './handler-error.service';
 })
 export class StoryService {
 
+ //#region Load stories
   loadProjectStories(projectId:number): Observable<Story[]>{
     const endpoint = `stories/${projectId}`;
 
@@ -18,6 +19,16 @@ export class StoryService {
     ); 
   }
 
+  loadStoryById(id: number): Observable<Story>{
+    const endpoint = `story/${id}`;
+
+    return this.http.get<Story>(endpoint).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    ); 
+  }
+  //#endregion
+
+  //#region Save stories
   saveStory(story: Story): Observable<Story>{
     if(story.id) //*if story has id (it's already in db) update it
       return this.updateStory(story);
@@ -56,14 +67,9 @@ export class StoryService {
       catchError(err => this.handleErrorService.handleError(err)),
     ); 
   }
+  //#endregion
 
-  loadStoryById(id: number): Observable<Story>{
-    const endpoint = `story/${id}`;
-
-    return this.http.get<Story>(endpoint).pipe(
-      catchError(err => this.handleErrorService.handleError(err)),
-    ); 
-  }
+  
 
   updateStorySprint(story: Story): Observable<Story>{
     const endpoint = `story/${story.id}/sprint/`;
@@ -82,6 +88,8 @@ export class StoryService {
     );
   }
 
+
+  //#region Accept / Reject Story
   acceptStory(story: Story): Observable<Story>{
     if(story == null) return of(null);
 
@@ -94,7 +102,23 @@ export class StoryService {
     );
   }
 
+  rejectStory(story: Story): Observable<Story>{
+    if(story == null) return of(null);
 
+
+    const storyToReject: Story = JSON.parse(JSON.stringify(story));
+    storyToReject.isConfirmed = false;
+    const endpoint = `story/${storyToReject.id}/reject`;
+
+    return this.http.post<Story>(endpoint, storyToReject).pipe(
+      catchError(err => this.handleErrorService.handleError(err)),
+    );
+  }
+
+
+
+
+  //#endregion
 
 
 

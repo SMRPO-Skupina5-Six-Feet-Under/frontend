@@ -115,6 +115,15 @@
     </table>
   </div>
 
+  <div *ngIf="!!story.rejectReason"
+  class="form-group col-12">
+    <div class="row">
+      <p>
+        <b class="text-danger"> {{story.rejectReason}}</b>
+      </p>    
+    </div>
+  </div>
+
   <div class="card-footer bg-transparent border-secondary">
     <button *ngIf="canDelete && !story.isDone && !story.sprint_id"
       type="button" class="btn btn-outline-danger btn-sm" 
@@ -133,9 +142,13 @@
       Accept story
     </button>
 
-    <!-- nastavek za zavračanje zgodbe
-      <button *ngIf="userIsProductOwner && !story.isDone && storyInActiveSprint && canReject"
-    type="button" class="btn btn-outline-danger btn-sm" (click)="rejectStory()">Reject</button> -->
+    <button *ngIf="currentUserPO && !story.isConfirmed && story.sprint_id"
+      type="button" class="btn btn-outline-danger btn-sm" 
+      id="rejectStoryButton"
+      (click)="openRejectReasonPopup()">
+      Reject
+    </button>
+
     <button *ngIf="canEditTasks && !story.isDone"
       type="button" class="btn btn-outline-secondary btn-sm" 
       (click)="editTasks()">Edit tasks</button>
@@ -153,3 +166,9 @@
 <app-user-story-popup
   [project]="project"
 ></app-user-story-popup>
+
+<app-reject-reason-popup
+  (reason)="rejectStory($event)"
+></app-reject-reason-popup>
+
+

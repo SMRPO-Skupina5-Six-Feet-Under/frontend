@@ -12,6 +12,7 @@ import { Project } from 'src/app/models/project';
 import { LoginService } from 'src/app/services/login.service';
 import { ProjectRole } from 'src/app/enums/project-role';
 import { UserStoryPopupComponent } from '../../popups/user-story-popup/user-story-popup.component';
+import { RejectReasonPopupComponent } from '../../popups/reject-reason-popup/reject-reason-popup.component';
 
 @Component({
   selector: 'app-story-card',
@@ -167,6 +168,25 @@ export class StoryCardComponent {
   }
 
 
+//#region reject story
+  openRejectReasonPopup(){
+    this.rejectReasonPopup.display();
+  }
+
+  rejectStory(rejectReason: string){
+   this.story.rejectReason = rejectReason;
+    this.storyService.rejectStory(this.story)
+    .pipe(
+      tap((savedStory: Story) => {
+        this.story = JSON.parse(JSON.stringify(savedStory));
+        this.addedToActiveSprint.emit(savedStory);
+      })
+    ).subscribe();
+  }
+
+  //#endregion
+
+
   //#region Tasks
   editTasks(){
     this.storyTasksPopup.display(this.story, this.project);
@@ -194,6 +214,7 @@ export class StoryCardComponent {
   //#endregion
 
 
+  @ViewChild(RejectReasonPopupComponent) rejectReasonPopup: RejectReasonPopupComponent;
   @ViewChild(UserStoryPopupComponent) userStoryPopupComponent: UserStoryPopupComponent;
   @ViewChild(StoryTasksPopupComponent) storyTasksPopup: StoryTasksPopupComponent;
   constructor(
@@ -225,7 +246,6 @@ export class StoryCardComponent {
       this.canAddToActiveSprint = this.currentUserSM;
       this.canEdit = this.currentUserSM || this.currentUserPO;
       this.canDelete = this.currentUserSM || this.currentUserPO;
-      this.canReject = this.currentUserPO;
       
 
       this.canEditTasks = (this.currentUserSM || 

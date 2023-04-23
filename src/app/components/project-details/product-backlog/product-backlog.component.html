@@ -61,6 +61,8 @@
             [activeSprint]="activeSprint"
             (storyDeleted)="assignedStoryDeleted($event)"
             (storyEdited)="editUserStory($event)"
+            (addedToActiveSprint)="addedToActiveSprint($event)"
+
           ></app-story-card>
         </div>
       </div>
@@ -78,6 +80,7 @@
             [displayAcceptStory]="true"
             (storyDeleted)="finishedStoryDeleted($event)"
             (storyEdited)="editUserStory($event)"
+            (addedToActiveSprint)="addedToActiveSprint($event)"
           ></app-story-card>
         </div>
       </div>
