@@ -182,7 +182,7 @@ export class StoryCardComponent {
     this.storyService.acceptStory(this.story).pipe(
       tap((savedStory: Story) => {
         this.story = JSON.parse(JSON.stringify(savedStory));
-        this.storyEdited.emit(this.story);
+        // this.storyEdited.emit(this.story);
       })
     ).subscribe();
   }
