@@ -191,34 +191,32 @@ export class TaskService {
   }
 
   private convertDateToUTC(date: Date): Date{ 
-    const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), 
-    date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(),
-    date.getUTCSeconds()); 
-    console.log('utc-date', utcDate);
+    // const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), 
+    // date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(),
+    // date.getUTCSeconds()); 
+    // console.log('utc-date', utcDate);
 
     let dateDiff = new Date(date.toLocaleDateString());
-    console.log('dateDiff', dateDiff);
-    let utcDateDiff = new Date(utcDate.toLocaleDateString());
-    console.log('utcDateDiff', utcDateDiff);
+    // console.log('dateDiff', dateDiff);
+    // let utcDateDiff = new Date(utcDate.toLocaleDateString());
+    // console.log('utcDateDiff', utcDateDiff);
 
     const dateDiffDateUTC = new Date(Date.UTC(
       dateDiff.getFullYear(), dateDiff.getMonth(), dateDiff.getDate(),
       dateDiff.getHours(), dateDiff.getMinutes(), dateDiff.getSeconds()));
     console.log('dateDiffDateUTC', dateDiffDateUTC);
 
-    const dateDiffDateUTCGetUTC = new Date(Date.UTC(
-      dateDiff.getUTCFullYear(), dateDiff.getUTCMonth(), dateDiff.getUTCDate(),
-      dateDiff.getUTCHours(), dateDiff.getUTCMinutes(), dateDiff.getUTCSeconds()));
-    console.log('dateDiffDateUTCGetUTC', dateDiffDateUTCGetUTC);
+    // const dateDiffDateUTCGetUTC = new Date(Date.UTC(
+    //   dateDiff.getUTCFullYear(), dateDiff.getUTCMonth(), dateDiff.getUTCDate(),
+    //   dateDiff.getUTCHours(), dateDiff.getUTCMinutes(), dateDiff.getUTCSeconds()));
+    // console.log('dateDiffDateUTCGetUTC', dateDiffDateUTCGetUTC);
 
-    let stringImplementation  = new Date(dateDiff.toUTCString().substr(0, 25));
-    console.log('stringImplementation', stringImplementation);
+    // let stringImplementation  = new Date(dateDiff.toUTCString().substr(0, 25));
+    // console.log('stringImplementation', stringImplementation);
 
 
     return dateDiffDateUTC;
-    return new Date(date.getUTCFullYear(), date.getUTCMonth(), 
-    date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(),
-     date.getUTCSeconds()); 
+   
   }
 
 
