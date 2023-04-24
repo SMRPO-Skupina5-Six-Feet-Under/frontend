@@ -26,6 +26,7 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                   <td>
                     <input type="number" 
                         [(ngModel)]="wT.timeDone"
+                        [disabled]="readonly"
                         min="0"
                         style="width: 75px;"
                         class="form-control">
@@ -33,6 +34,7 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                   <td>
                     <input type="number" 
                         [(ngModel)]="wT.timeRemainingEstimate"
+                        [disabled]="readonly"
                         min="0"
                         style="width: 75px;"
                         class="form-control">
@@ -54,7 +56,8 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
           (click)="toggleShowEmptyWorkTimes()">Hide empty rows</button>
           <div class="footer-right">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="close()">Cancel</button>
-            <button type="button" class="btn btn-outline-success" (click)="save()">Save</button>
+            <button *ngIf="!readonly"
+            type="button" class="btn btn-outline-success" (click)="save()">Save</button>
           </div>
         </div>
       </div>

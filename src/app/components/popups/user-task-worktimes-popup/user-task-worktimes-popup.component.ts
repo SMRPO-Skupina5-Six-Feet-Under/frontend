@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { tap } from 'rxjs';
+import { Component, EventEmitter, Output } from '@angular/core';
+import { Observable, concat, delay, map, tap } from 'rxjs';
 import { Sprint } from 'src/app/models/sprint';
 import { Task } from 'src/app/models/task';
 import { WorkTime } from 'src/app/models/workTime';
@@ -12,6 +12,7 @@ import { TaskService } from 'src/app/services/task.service';
 })
 export class UserTaskWorktimesPopupComponent {
 
+  @Output() workTimesUpdated: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   visible: boolean = false;
   showEmptyWorkTimes: boolean = false;
@@ -19,6 +20,7 @@ export class UserTaskWorktimesPopupComponent {
   task: Task;
   currentUserId: number;
   workTimes: WorkTime[];
+  readonly: boolean = true;
 
   display(inputTask: Task, inputActiveSprint: Sprint, inputCurrentUserId: number){
     this.task = null;
@@ -29,6 +31,10 @@ export class UserTaskWorktimesPopupComponent {
     if(!inputTask || !inputActiveSprint || !inputCurrentUserId) return;
 
     this.task = inputTask;
+    if(this.task.isDone)
+      this.readonly = true;
+    else
+      this.readonly = false;
     this.activeSprint = inputActiveSprint;
     this.currentUserId = inputCurrentUserId;
 
@@ -43,13 +49,29 @@ export class UserTaskWorktimesPopupComponent {
   }
 
   save(){
+    let requests: Observable<WorkTime>[] = [];
     for (const workTime of this.workTimes) {
       if(workTime.filler && 
         (workTime.timeDone == null || workTime.timeDone < 1))
         continue;
       else
-        this.taskService.saveWorkTime(workTime).subscribe();
+      {
+        // console.log("saving workTime: ", workTime);
+        requests.push(this.taskService.saveWorkTime(workTime));
+      }
+      
     }
+
+    concat(...requests).subscribe({
+      // next: (workTime: WorkTime) => {
+      //   console.log("workTime saved: ", workTime);
+      // },
+      complete: () => {
+        this.workTimesUpdated.emit(true);
+        this.close();
+      }
+    })
+
   }
 
   toggleShowEmptyWorkTimes(){
@@ -67,6 +89,10 @@ export class UserTaskWorktimesPopupComponent {
     if(!this.task) return;
 
     this.taskService.loadMyWorkTimesTask(this.task).pipe(
+      // map((workTimes: WorkTime[]) => {
+      //   const mergedWorkTimes = [];
+
+      // }),
       tap((workTimes: WorkTime[]) => {
         this.workTimes = workTimes;
         console.log("workTimes loaded: ", workTimes);

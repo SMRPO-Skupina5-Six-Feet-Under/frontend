@@ -107,6 +107,7 @@ export class TaskService {
     const endpoint = `task/${activeSprint.id}/${currentUser.id}/all`;
 
     return this.http.get<Task[]>(endpoint).pipe(
+      map((tasks: Task[]) => tasks.sort((a,b) => a.id - b.id)),
       catchError(err => this.handleErrorService.handleError(err)),
       take(1)
     );
@@ -138,6 +139,13 @@ export class TaskService {
     const endpoint = `task/worktime/my/${task.id}`;
 
     return this.http.get<WorkTime[]>(endpoint).pipe(
+      map((workTimes : WorkTime[]) => {
+        workTimes.forEach(workTime => {
+          // workTime.date = new Date(workTime.date);
+          // workTime.date = new Date(workTime.date.getTime() + Math.abs((workTime.date.getTimezoneOffset() * 60000)));
+        });
+        return workTimes;
+      }),
       map((workTimes: WorkTime[]) => {
         const orderedWorkTimes = workTimes.sort((a,b) => {
           return (new Date(a.date)).getTime() - (new Date(b.date)).getTime();
@@ -154,6 +162,10 @@ export class TaskService {
     if(workTime == null) return of(null);
     
     const saveWorkTime: WorkTime = JSON.parse(JSON.stringify(workTime));
+    saveWorkTime.date = new Date(saveWorkTime.date);
+    saveWorkTime.date = new Date(saveWorkTime.date.getTime() + Math.abs((saveWorkTime.date.getTimezoneOffset() * 60000)));
+    saveWorkTime.date = this.convertDateToUTC(saveWorkTime.date);
+    console.log("workTime saved: ", saveWorkTime);
     if(saveWorkTime.id)
       return this.updateWorkTime(saveWorkTime);
     else
@@ -170,13 +182,43 @@ export class TaskService {
   }
 
   private addWorkTime(workTime: WorkTime): Observable<WorkTime>{
-    return of(null); //TODO implement backend
-    const endpoint = `task/worktime/${workTime.id}`;
+    const endpoint = `task/worktime/${workTime.taskId}`;
 
     return this.http.post<WorkTime>(endpoint, workTime).pipe(
       // tap(() => this.toastr.success('Work time updated successfully')),
       catchError(err => this.handleErrorService.handleError(err)),
     );
+  }
+
+  private convertDateToUTC(date: Date): Date{ 
+    const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), 
+    date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(),
+    date.getUTCSeconds()); 
+    console.log('utc-date', utcDate);
+
+    let dateDiff = new Date(date.toLocaleDateString());
+    console.log('dateDiff', dateDiff);
+    let utcDateDiff = new Date(utcDate.toLocaleDateString());
+    console.log('utcDateDiff', utcDateDiff);
+
+    const dateDiffDateUTC = new Date(Date.UTC(
+      dateDiff.getFullYear(), dateDiff.getMonth(), dateDiff.getDate(),
+      dateDiff.getHours(), dateDiff.getMinutes(), dateDiff.getSeconds()));
+    console.log('dateDiffDateUTC', dateDiffDateUTC);
+
+    const dateDiffDateUTCGetUTC = new Date(Date.UTC(
+      dateDiff.getUTCFullYear(), dateDiff.getUTCMonth(), dateDiff.getUTCDate(),
+      dateDiff.getUTCHours(), dateDiff.getUTCMinutes(), dateDiff.getUTCSeconds()));
+    console.log('dateDiffDateUTCGetUTC', dateDiffDateUTCGetUTC);
+
+    let stringImplementation  = new Date(dateDiff.toUTCString().substr(0, 25));
+    console.log('stringImplementation', stringImplementation);
+
+
+    return dateDiffDateUTC;
+    return new Date(date.getUTCFullYear(), date.getUTCMonth(), 
+    date.getUTCDate(), date.getUTCHours(), date.getUTCMinutes(),
+     date.getUTCSeconds()); 
   }
 
 

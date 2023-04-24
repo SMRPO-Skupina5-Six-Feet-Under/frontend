@@ -92,4 +92,6 @@
 ></app-task-popup>
 
 
-<app-user-task-worktimes-popup></app-user-task-worktimes-popup>
+<app-user-task-worktimes-popup
+  (workTimesUpdated)="taskEdited(task)"
+></app-user-task-worktimes-popup>
