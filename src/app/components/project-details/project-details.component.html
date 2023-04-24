@@ -12,6 +12,7 @@
         <h4 *ngIf="displayingProductBacklog">Product Backlog</h4>
         <h4 *ngIf="displayingSprints">Sprints</h4>
         <h4 *ngIf="displayingForum">Forum</h4>
+        <h4 *ngIf="displayingUserDocs">User documentation</h4>
       </div>
       <div class="buttons-container">
         
@@ -19,6 +20,7 @@
         <button *ngIf="!displayingSprintBacklog && !userIsProductOwner" type="button" class="btn btn-outline-primary" (click)="showSprintBacklog()">Sprint backlog</button>
         <button *ngIf="!displayingSprints && !userIsProductOwner" type="button" class="btn btn-outline-secondary" (click)="showSprints()">Sprints</button>
         <button *ngIf="!displayingForum" type="button" class="btn btn-outline-secondary" (click)="showProjectForum()">Forum</button>
+        <button *ngIf="!displayingUserDocs" type="button" class="btn btn-outline-secondary" (click)="showUserDocs()">User docs</button>
         <!-- <button type="button" class="btn btn-info" (click)="editProjectUsers()">Users</button> -->
       </div>
     </div>
@@ -46,6 +48,11 @@
       <app-project-forum
         [project]="project"
       ></app-project-forum>
+    </ng-container>
+    <ng-container *ngIf="displayingUserDocs">
+      <app-user-docs
+        [project]="project"
+      ></app-user-docs>
     </ng-container>
   </div>
 
