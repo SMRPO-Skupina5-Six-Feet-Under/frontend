@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { enableProdMode, Injectable } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { catchError, combineLatest, filter, forkJoin, map, Observable, of, take} from 'rxjs';
-import { Project } from '../models/project';
+import { Project, ProjectDocumentation } from '../models/project';
 import { Message, NewMessage } from '../models/message';
 import { UserService } from './user.service';
 import { User } from '../models/user';
@@ -127,6 +127,28 @@ export class ProjectService {
         this.setMessageClientProperties(message, users);
         return message;
       })
+    );
+  }
+
+  //#endregion
+
+  //#region Documentation
+
+  /*
+  convertFileToString(file: File){
+    const endpoint = `project/documentation/import`;
+
+    return this.http.post<string>(endpoint, file).pipe(
+      catchError(err => this.handleErrorService.handleError(err))
+    );
+  }
+  */
+
+  saveDocumentation(projectId: number, content: ProjectDocumentation){
+    const endpoint = `project/documentation/${projectId}`;
+
+    return this.http.put<string>(endpoint, content).pipe(
+      catchError(err => this.handleErrorService.handleError(err))
     );
   }
 
