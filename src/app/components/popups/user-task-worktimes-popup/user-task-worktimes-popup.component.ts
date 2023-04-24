@@ -31,7 +31,7 @@ export class UserTaskWorktimesPopupComponent {
     if(!inputTask || !inputActiveSprint || !inputCurrentUserId) return;
 
     this.task = inputTask;
-    if(this.task.isDone)
+    if(this.task.isDone || (this.task.assigneeUserId !== inputCurrentUserId || !this.task.hasAssigneeConfirmed))
       this.readonly = true;
     else
       this.readonly = false;
