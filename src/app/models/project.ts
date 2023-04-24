@@ -5,6 +5,7 @@ export class Project{
   name: string = '';
   description: string = '';
   projectParticipants: ProjectParticipantsInput[] = [];
+  documentation: string = '';
 
 
   //* polja na klientu
@@ -14,4 +15,8 @@ export class Project{
   productOwnerUserId: number;
   productOwnerUserName: string;
   developerFullNamesIds: {id: number, fullName: string} [] = [];
+}
+
+export class ProjectDocumentation{
+  text: string = '';
 }

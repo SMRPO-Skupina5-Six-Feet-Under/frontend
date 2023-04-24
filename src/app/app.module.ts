@@ -36,6 +36,7 @@ import { ProjectForumComponent } from './components/project-details/project-foru
 import { UserTasksComponent } from './components/user-tasks/user-tasks.component';
 import { UserTaskWorktimesPopupComponent } from './components/popups/user-task-worktimes-popup/user-task-worktimes-popup.component';
 import { RejectReasonPopupComponent } from './components/popups/reject-reason-popup/reject-reason-popup.component';
+import { UserDocsComponent } from './components/project-details/user-docs/user-docs.component';
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { RejectReasonPopupComponent } from './components/popups/reject-reason-po
     ProjectForumComponent,
     UserTasksComponent,
     UserTaskWorktimesPopupComponent,
-    RejectReasonPopupComponent
+    RejectReasonPopupComponent,
+    UserDocsComponent
   ],
   imports: [
     BrowserModule,

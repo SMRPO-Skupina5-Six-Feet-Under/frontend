@@ -101,7 +101,6 @@ export class ProjectForumComponent {
   }
 
   private scrollToBottom(){
-    console.log("Test");
     try {
         var scroll = document.querySelector('#projectWall');
         scroll.scrollTop = scroll.scrollHeight - scroll.clientHeight;

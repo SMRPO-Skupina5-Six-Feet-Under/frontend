@@ -22,6 +22,7 @@ export class ProjectDetailsComponent {
   displayingSprintBacklog: boolean = false;
   displayingSprints: boolean = false;
   displayingForum: boolean = false;
+  displayingUserDocs: boolean = false;
 
   userIsScrumMaster: boolean = false;
   userIsProductOwner: boolean = false;
@@ -41,6 +42,7 @@ export class ProjectDetailsComponent {
     this.displayingProductBacklog = false;
     this.displayingSprintBacklog = false;
     this.displayingForum = false;
+    this.displayingUserDocs = false;
     this.displayingSprints = true;
   }
   //#endregion
@@ -50,6 +52,7 @@ export class ProjectDetailsComponent {
     this.displayingSprintBacklog = false;
     this.displayingSprints = false;
     this.displayingForum = false;
+    this.displayingUserDocs = false;
     this.displayingProductBacklog = true;
   }
 
@@ -57,6 +60,7 @@ export class ProjectDetailsComponent {
     this.displayingProductBacklog = false;
     this.displayingSprints = false;
     this.displayingForum = false;
+    this.displayingUserDocs = false;
     this.displayingSprintBacklog = true;
   }
 
@@ -64,7 +68,16 @@ export class ProjectDetailsComponent {
     this.displayingProductBacklog = false;
     this.displayingSprints = false;
     this.displayingSprintBacklog = false;
+    this.displayingUserDocs = false;
     this.displayingForum = true;
+  }
+
+  showUserDocs(){
+    this.displayingProductBacklog = false;
+    this.displayingSprints = false;
+    this.displayingSprintBacklog = false;
+    this.displayingForum = false;
+    this.displayingUserDocs = true;
   }
   //#endregion
 
