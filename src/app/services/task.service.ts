@@ -165,7 +165,7 @@ export class TaskService {
     saveWorkTime.date = new Date(saveWorkTime.date);
     saveWorkTime.date = new Date(saveWorkTime.date.getTime() + Math.abs((saveWorkTime.date.getTimezoneOffset() * 60000)));
     saveWorkTime.date = this.convertDateToUTC(saveWorkTime.date);
-    console.log("workTime saved: ", saveWorkTime);
+    // console.log("workTime saved: ", saveWorkTime);
     if(saveWorkTime.id)
       return this.updateWorkTime(saveWorkTime);
     else
