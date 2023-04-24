@@ -24,7 +24,7 @@ export class TaskCardComponent {
     if(!value) return;
 
     this._task = value;	
-  
+    this.setPermissions();
   }
 
   get task(): Task{
@@ -36,6 +36,8 @@ export class TaskCardComponent {
   @Input() activeSprint: Sprint
   //--------------end of inputs
   currentUserId: number;
+  taskIsAccepted: boolean = false;
+  taskIsForCurrentUser: boolean = false;
 
   acceptTask(){
     console.log('accepted task', this.task);
@@ -100,9 +102,17 @@ export class TaskCardComponent {
       tap((user: User) => {
         if(user == null) return;
         this.currentUserId = user.id;
+        this.setPermissions();
       }),
       take(1)
     ).subscribe();
+  }
+
+
+  private setPermissions(){
+    if(this.task && this.currentUserId){
+      this.taskIsForCurrentUser = this.task.assigneeUserId === this.currentUserId;
+    }
   }
 
 

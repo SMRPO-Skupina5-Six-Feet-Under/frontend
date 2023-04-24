@@ -1,9 +1,16 @@
 
 <div class="card border-secondary" > <!-- style="max-width: 18rem;" -->
-  <div (click)="displayStoryInfo()"
-    class="card-header bg-transparent border-secondary pointer">
-    <a>{{story?.name}}</a>
+  <div class="card-header bg-transparent border-secondary ">
+    <a (click)="displayStoryInfo()"
+    class="pointer">
+      {{story?.name}}
+    </a> 
+
+    <ng-container *ngIf="story.isConfirmed">
+      <i style="margin-left: 10px; color: #15da7f" class="bi bi-check-square-fill"></i>
+    </ng-container>
   </div>
+  
   <!-- <div class="card-header bg-transparent border-secondary">
     {{story?.name}}
   </div> -->
