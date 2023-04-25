@@ -173,7 +173,7 @@
       Reject
     </button>
 
-    <button *ngIf="canEditTasks && !story.isDone"
+    <button *ngIf="canEditTasks && !story.isConfirmed"
       type="button" class="btn btn-outline-secondary btn-sm" 
       (click)="editTasks()">Edit tasks</button>
     
