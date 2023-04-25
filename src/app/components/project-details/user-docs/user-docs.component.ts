@@ -60,8 +60,23 @@ export class UserDocsComponent {
     }
   }
 
+  appendFile(event: any){
+    // check if there is a file inputed
+    if(this.fileAppend.nativeElement.files && this.fileAppend.nativeElement.files[0]) {
+      var file: File = this.fileAppend.nativeElement.files[0];
+      this.selectedFileName = "Uploaded file: " + file.name;
+      var reader = new FileReader();
+
+      reader.addEventListener("load", (e) => {
+        this.documentation = this.documentation.concat(e.target.result.toString());
+        this.save();
+      });
+
+      reader.readAsText(file);
+    }
+  }
+
   save(){
-    console.log(this.documentation);
     this._project.documentation = this.documentation;
     this.newDocumentation = {
       ... new ProjectDocumentation
@@ -89,6 +104,7 @@ export class UserDocsComponent {
   }
 
   @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('fileAppend') fileAppend: ElementRef;
   constructor(
     private projectService: ProjectService,
     private loginService: LoginService,

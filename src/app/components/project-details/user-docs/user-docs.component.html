@@ -1,13 +1,17 @@
 <div class="col-12 container">
     <div class="row buttonRow">
-        <div class="col-4">
+        <div class="col-12">
             <button onclick="document.getElementById('fileInput').click()" class="btn btn-outline-secondary">Upload documentation</button>
-            <input #fileInput id="fileInput" type="file" accept=".txt" style="display:none" (change)="openFile($event)">
-            <!--
-            <input #fileInput type="file" class="fileInputBtn" accept=".txt" (change)="openFile($event)">-->
+            <input #fileInput id="fileInput" type="file" accept=".txt" style="display:none" (click)="fileInput.value = null" value="" (change)="openFile($event)">
+
+            <button onclick="document.getElementById('fileAppend').click()" class="btn btn-outline-secondary btnFileAppend">Append documentation</button>
+            <input #fileAppend id="fileAppend" type="file" accept=".txt" style="display:none" (click)="fileAppend.value = null" value="" (change)="appendFile($event)">
+        </div>
+    </div>
+    <div class="row buttonRow2">
+        <div class="col-12">
             <p class="fileName">{{selectedFileName}}</p>
         </div>
-        <div class="col-8"></div>
     </div>
     <div class="row docs-contents">
         <div class="col-1"></div>
@@ -16,7 +20,7 @@
         </div>
         <div class="col-1"></div>
     </div>
-    <div class="row buttonRow">
+    <div class="row buttonRowBottom">
         <div class="col-4">
             <button #fileDownload type="button" class="btn btn-outline-secondary" (click)="downloadFile()">Download documentation</button>
         </div>
