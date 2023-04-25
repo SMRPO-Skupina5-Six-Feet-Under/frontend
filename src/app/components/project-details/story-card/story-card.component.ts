@@ -183,6 +183,7 @@ export class StoryCardComponent {
       tap((savedStory: Story) => {
         this.story = JSON.parse(JSON.stringify(savedStory));
         // this.storyEdited.emit(this.story);
+        this.addedToActiveSprint.emit(this.story);
       })
     ).subscribe();
   }

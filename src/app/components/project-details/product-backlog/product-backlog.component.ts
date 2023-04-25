@@ -49,6 +49,7 @@ export class ProductBacklogComponent {
   unasignedStories: Story[] = [];
   assignedStories: Story[] = [];
   finishedStories: Story[] = [];
+  confirmedStories: Story[] = [];
 
 
   //#region StoryDeleted
@@ -120,6 +121,8 @@ export class ProductBacklogComponent {
         this.stories = stories.sort((a,b) => a.id - b.id);
         this.stories$.next(this.stories);
 
+        this.confirmedStories = stories.filter(s => s.isConfirmed);
+        stories = stories.filter(s => !s.isConfirmed);
         this.finishedStories = stories.filter(s => s.isDone);
         stories = stories.filter(s => !s.isDone);
         this.assignedStories = stories.filter(s => s.sprint_id);
