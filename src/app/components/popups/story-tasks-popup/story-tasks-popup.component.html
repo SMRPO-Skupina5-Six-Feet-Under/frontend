@@ -41,7 +41,7 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
                   </td>
                   <td>
                     <select class="form-select"
-                      [(ngModel)]="st.assigneeUserId"
+                      [(ngModel)]="st.asigneeEditUserId"
                       [disabled]="st.isDone || (!!st.assigneeUserId && !!st.id)">
                       <option *ngFor="let pDev of projectDevelopers" value="{{pDev.id}}">
                         {{pDev.fullName}}

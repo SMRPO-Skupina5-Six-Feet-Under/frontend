@@ -4,6 +4,7 @@ export class Task{
   description: string;
   timeEstimate: number; //in hours
   assigneeUserId: number;
+
   hasAssigneeConfirmed: boolean = false;
   isActive: boolean = false;
   isDone: boolean = false;
@@ -15,4 +16,5 @@ export class Task{
 
   //polja na klientu
   asigneeFullName: string;
+  asigneeEditUserId: number;
 }

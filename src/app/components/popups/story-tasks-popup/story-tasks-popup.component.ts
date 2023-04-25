@@ -46,7 +46,12 @@ export class StoryTasksPopupComponent {
       forkJoin(
         this.storyTasks.filter(st => !st.isDone && 
           !(!!st.assigneeUserId && !!st.id))
-          .map(st => this.taskService.saveTask(st))
+          .map(st =>{
+            
+            const stToSave = JSON.parse(JSON.stringify(st));
+            stToSave.assigneeUserId = stToSave.asigneeEditUserId;
+            return this.taskService.saveTask(stToSave);
+          } )
       ).pipe(
         tap(savedTasks => {
           this.storyTasksSaved.emit(this.story);
