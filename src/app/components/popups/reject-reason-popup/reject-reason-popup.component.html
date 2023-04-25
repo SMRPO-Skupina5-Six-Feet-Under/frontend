@@ -8,9 +8,10 @@ class="modal show" aria-modal="true" tabindex="-1" role="dialog" >
         </div>
         <div class="modal-body">
           
-          <input 
-          [(ngModel)]="rejectReason" 
-          type="text" class="form-control">
+          <textarea class="form-control" 
+            style="height: 100px"
+            [(ngModel)]="rejectReason" 
+          ></textarea>
         
         </div>
         <div class="modal-footer">

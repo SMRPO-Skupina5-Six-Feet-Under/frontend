@@ -128,12 +128,23 @@
     </table>
   </div>
 
-  <div *ngIf="!!story.rejectReason"
+  <!-- <div *ngIf="!!story.rejectReason"
   class="form-group col-12">
     <div class="row">
       <p>
         <b class="text-danger"> {{story.rejectReason}}</b>
       </p>    
+    </div>
+  </div> -->
+
+  <div *ngIf="!!story.rejectReason"
+    class="form-group col-12">
+    <div class="row">
+      <p>
+        <b class="text-danger multiline">
+          {{story.rejectReason}}
+        </b>
+      </p>
     </div>
   </div>
 
